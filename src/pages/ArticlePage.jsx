@@ -76,7 +76,7 @@ export default function ArticlePage() {
               {article.category.name}
             </Link>
           )}
-          <h1 className="mb-3 text-3xl font-bold leading-relaxed text-ink sm:text-4xl">
+          <h1 className="mb-3 text-3xl font-bold leading-[2.2] text-ink sm:text-4xl sm:leading-[2.3]">
             {article.title}
           </h1>
 

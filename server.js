@@ -36,8 +36,7 @@ function injectMeta(html, { title, description, image, url }) {
     `<meta property="og:description" content="${esc(description)}" />`,
     `<meta property="og:url" content="${esc(url)}" />`,
     image && `<meta property="og:image" content="${esc(image)}" />`,
-    image && `<meta property="og:image:width" content="1200" />`,
-    image && `<meta property="og:image:height" content="630" />`,
+    image && `<meta property="og:image:secure_url" content="${esc(image)}" />`,
     `<meta name="twitter:card" content="${image ? 'summary_large_image' : 'summary'}" />`,
     `<meta name="twitter:title" content="${esc(title)}" />`,
     `<meta name="twitter:description" content="${esc(description)}" />`,
@@ -61,7 +60,10 @@ app.get('/article/:slug', async (req, res) => {
   try {
     const r = await fetch(`${API_BASE}/api/articles/${encodeURIComponent(req.params.slug)}`);
     if (!r.ok) return res.send(template);
-    const { data: a } = await r.json();
+    const json = await r.json();
+    // GET /api/articles/:slug returns { data: { article, related } }.
+    const a = json?.data?.article;
+    if (!a) return res.send(template);
     let image = a.coverImage || '';
     if (image && !/^https?:\/\//.test(image)) image = `${API_BASE}${image}`;
     const url = `${req.protocol}://${req.get('host')}${req.originalUrl}`;

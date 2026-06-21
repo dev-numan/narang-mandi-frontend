@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { adminApi } from '../../api/index.js';
@@ -24,13 +25,35 @@ export default function Dashboard() {
     recentQuery.refetch();
   };
 
+  const [copiedId, setCopiedId] = useState(null);
+
+  const copyLink = async (article) => {
+    const url = `${window.location.origin}/article/${article.slug}`;
+    try {
+      await navigator.clipboard.writeText(url);
+    } catch {
+      const el = document.createElement('textarea');
+      el.value = url;
+      document.body.appendChild(el);
+      el.select();
+      document.execCommand('copy');
+      document.body.removeChild(el);
+    }
+    setCopiedId(article._id);
+    setTimeout(() => setCopiedId((id) => (id === article._id ? null : id)), 1500);
+  };
+
   const columns = [
     {
       key: 'title',
       header: 'Title',
       render: (r) => (
-        <Link to={`/admin/articles/${r._id}/edit`} className="font-medium text-ink hover:text-brand">
-          <span className="urdu">{r.title}</span>
+        <Link
+          to={`/admin/articles/${r._id}/edit`}
+          title={r.title}
+          className="urdu block max-w-[18rem] truncate pb-1 font-medium leading-[2.2] text-ink hover:text-brand lg:max-w-[26rem] xl:max-w-[34rem]"
+        >
+          {r.title}
         </Link>
       ),
     },
@@ -41,6 +64,30 @@ export default function Dashboard() {
       render: (r) => <StatusBadge status={r.status} />,
     },
     { key: 'views', header: 'Views', render: (r) => r.views },
+    {
+      key: 'actions',
+      header: 'Actions',
+      render: (r) => (
+        <div className="flex gap-2">
+          <Link
+            to={`/admin/articles/${r._id}/edit`}
+            className="rounded border border-gray-300 px-2 py-1 text-xs hover:bg-gray-50"
+          >
+            Edit
+          </Link>
+          <button
+            onClick={() => copyLink(r)}
+            className={`rounded border px-2 py-1 text-xs ${
+              copiedId === r._id
+                ? 'border-green-300 bg-green-50 text-green-700'
+                : 'border-gray-300 hover:bg-gray-50'
+            }`}
+          >
+            {copiedId === r._id ? 'Copied!' : 'Copy link'}
+          </button>
+        </div>
+      ),
+    },
   ];
 
   return (

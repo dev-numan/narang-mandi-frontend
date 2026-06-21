@@ -96,8 +96,12 @@ input.urdu {
 .article-content {
   font-size: 1rem;
   line-height: 2.3;
+  /* Urdu words are connected ligatures — never split a word across lines.
+     Wrap only at spaces (word boundaries), like a whole word should. */
+  word-break: keep-all;
+  /* Safety net: only break a single token that alone is wider than the line
+     (e.g. a long URL). Normal Urdu words are never split by this. */
   overflow-wrap: break-word;
-  word-break: break-word;
 }
 .article-content h1,
 .article-content h2,

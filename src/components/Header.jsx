@@ -50,7 +50,7 @@ export default function Header() {
           <div className="min-w-0">
             <h1 className="whitespace-nowrap pb-1 text-lg font-bold leading-[1.9] text-brand sm:text-2xl">{siteName}</h1>
             {settings?.tagline && (
-              <p className="mt-1 truncate text-xs leading-relaxed text-gray-500">{settings.tagline}</p>
+              <p className="mt-1 truncate pb-1 text-xs leading-[1.9] text-gray-500">{settings.tagline}</p>
             )}
           </div>
         </Link>

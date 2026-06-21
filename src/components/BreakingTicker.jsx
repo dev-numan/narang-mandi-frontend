@@ -22,25 +22,31 @@ export default function BreakingTicker() {
   const items = [...manual, ...breaking];
   if (items.length === 0) return null;
 
+  // One row of headlines. Rendered twice inside the track so the -50% scroll
+  // loops seamlessly with the strip always full (no empty lead-in delay).
+  const Row = ({ ariaHidden }) =>
+    items.map((it) => (
+      <span key={`${ariaHidden ? 'dup-' : ''}${it._id}`} className="mx-6 text-sm" aria-hidden={ariaHidden}>
+        {it.slug ? (
+          <Link to={`/article/${it.slug}`} className="hover:underline">
+            {it.title}
+          </Link>
+        ) : (
+          it.title
+        )}
+        <span className="mr-6 text-brand-light">●</span>
+      </span>
+    ));
+
   return (
     <div className="ticker-wrap flex items-stretch overflow-hidden bg-ink text-white">
       <span className="z-10 flex flex-shrink-0 items-center bg-brand px-4 text-sm font-bold">
         بریکنگ نیوز
       </span>
       <div className="relative flex-1 overflow-hidden py-2">
-        <div className="animate-ticker">
-          {items.map((it, idx) => (
-            <span key={it._id} className="mx-6 text-sm">
-              {it.slug ? (
-                <Link to={`/article/${it.slug}`} className="hover:underline">
-                  {it.title}
-                </Link>
-              ) : (
-                it.title
-              )}
-              {idx < items.length - 1 && <span className="mr-6 text-brand-light">●</span>}
-            </span>
-          ))}
+        <div className="animate-ticker" dir="ltr">
+          <Row ariaHidden={false} />
+          <Row ariaHidden={true} />
         </div>
       </div>
     </div>

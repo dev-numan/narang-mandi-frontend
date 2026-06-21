@@ -47,15 +47,18 @@ input.urdu {
   min-height: 3.2rem;
 }
 
-/* Breaking-news marquee */
+/* Breaking-news marquee — two identical copies scroll by exactly one copy
+   width (-50%) so the strip is full from frame 0 and loops seamlessly. */
 @keyframes ticker {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(100%); }
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
 }
 .animate-ticker {
-  display: inline-block;
+  display: flex;
+  width: max-content;
+  flex-shrink: 0;
   white-space: nowrap;
-  animation: ticker 60s linear infinite;
+  animation: ticker 30s linear infinite;
 }
 .ticker-wrap:hover .animate-ticker {
   animation-play-state: paused;

@@ -52,7 +52,7 @@ export default function BreakingTicker() {
         بریکنگ نیوز
       </span>
       <div className="relative flex-1 overflow-hidden py-2">
-        {/* Two identical copies scrolling right-to-left (-50%) for a gapless loop. */}
+        {/* Two identical copies scrolling left-to-right (-50% → 0) for a gapless loop. */}
         <div className="animate-ticker" dir="ltr">
           <Row ariaHidden={false} />
           <Row ariaHidden={true} />

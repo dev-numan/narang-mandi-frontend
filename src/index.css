@@ -50,8 +50,8 @@ input.urdu {
 /* Breaking-news marquee — two identical copies scroll by exactly one copy
    width (-50%) so the strip is full from frame 0 and loops seamlessly. */
 @keyframes ticker {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
+  from { transform: translateX(-50%); }
+  to { transform: translateX(0); }
 }
 .animate-ticker {
   display: flex;

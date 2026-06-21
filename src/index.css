@@ -47,8 +47,10 @@ input.urdu {
   min-height: 3.2rem;
 }
 
-/* Breaking-news marquee — two identical copies scroll by exactly one copy
-   width (-50%) so the strip is full from frame 0 and loops seamlessly. */
+/* Breaking-news marquee — two identical groups; the track sits at -50% and
+   slides to 0 (left-to-right). Because each group is repeated to be at least
+   the strip width, the strip is full from the first frame and the loop is
+   seamless (no gap, no lead-in delay). */
 @keyframes ticker {
   from { transform: translateX(-50%); }
   to { transform: translateX(0); }
@@ -57,10 +59,9 @@ input.urdu {
   display: flex;
   width: max-content;
   flex-shrink: 0;
-  white-space: nowrap;
   animation: ticker 30s linear infinite;
 }
-.ticker-wrap:hover .animate-ticker {
+.ticker-hover:hover .animate-ticker {
   animation-play-state: paused;
 }
 

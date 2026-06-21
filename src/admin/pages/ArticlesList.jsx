@@ -16,6 +16,25 @@ export default function ArticlesList() {
   const [search, setSearch] = useState('');
   const [toDelete, setToDelete] = useState(null);
   const [actionError, setActionError] = useState('');
+  const [copiedId, setCopiedId] = useState(null);
+
+  // Copy the public short link for an article to the clipboard.
+  const copyLink = async (article) => {
+    const url = `${window.location.origin}/article/${article.slug}`;
+    try {
+      await navigator.clipboard.writeText(url);
+    } catch {
+      // Fallback for browsers without clipboard API / insecure context.
+      const el = document.createElement('textarea');
+      el.value = url;
+      document.body.appendChild(el);
+      el.select();
+      document.execCommand('copy');
+      document.body.removeChild(el);
+    }
+    setCopiedId(article._id);
+    setTimeout(() => setCopiedId((id) => (id === article._id ? null : id)), 1500);
+  };
 
   const { data: categories = [] } = useQuery({
     queryKey: ['categories', 'all'],
@@ -46,8 +65,12 @@ export default function ArticlesList() {
       key: 'title',
       header: 'Title',
       render: (r) => (
-        <Link to={`/admin/articles/${r._id}/edit`} className="font-medium text-ink hover:text-brand">
-          <span className="urdu">{r.title}</span>
+        <Link
+          to={`/admin/articles/${r._id}/edit`}
+          title={r.title}
+          className="urdu block max-w-[22rem] truncate font-medium text-ink hover:text-brand lg:max-w-[32rem] xl:max-w-[40rem]"
+        >
+          {r.title}
         </Link>
       ),
     },
@@ -70,6 +93,16 @@ export default function ArticlesList() {
           >
             Edit
           </Link>
+          <button
+            onClick={() => copyLink(r)}
+            className={`rounded border px-2 py-1 text-xs ${
+              copiedId === r._id
+                ? 'border-green-300 bg-green-50 text-green-700'
+                : 'border-gray-300 hover:bg-gray-50'
+            }`}
+          >
+            {copiedId === r._id ? 'Copied!' : 'Copy link'}
+          </button>
           <button
             onClick={() => setToDelete(r)}
             className="rounded border border-red-300 px-2 py-1 text-xs text-red-600 hover:bg-red-50"

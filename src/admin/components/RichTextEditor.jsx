@@ -2,6 +2,19 @@ import { useMemo, useRef, useCallback } from 'react';
 import ReactQuill from 'react-quill-new';
 import { uploadApi } from '../../api/index.js';
 
+// Convert a share/watch URL from common providers into an embeddable URL.
+// Unknown providers are returned unchanged (paste an embed URL directly).
+function toEmbedUrl(raw) {
+  const url = (raw || '').trim();
+  let m;
+  if ((m = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([\w-]{11})/)))
+    return `https://www.youtube.com/embed/${m[1]}`;
+  if ((m = url.match(/vimeo\.com\/(?:video\/)?(\d+)/))) return `https://player.vimeo.com/video/${m[1]}`;
+  if ((m = url.match(/dailymotion\.com\/(?:video|embed\/video)\/([a-zA-Z0-9]+)/)))
+    return `https://www.dailymotion.com/embed/video/${m[1]}`;
+  return url;
+}
+
 export default function RichTextEditor({ value, onChange }) {
   const quillRef = useRef(null);
 
@@ -32,6 +45,18 @@ export default function RichTextEditor({ value, onChange }) {
     };
   }, []);
 
+  // Video handler: ask for a URL, normalize it to an embed URL, insert player.
+  const videoHandler = useCallback(() => {
+    // eslint-disable-next-line no-alert
+    const url = window.prompt('ویڈیو لنک (YouTube, Vimeo, Dailymotion…)');
+    if (!url) return;
+    const editor = quillRef.current?.getEditor();
+    const range = editor?.getSelection(true);
+    const index = range ? range.index : editor.getLength();
+    editor.insertEmbed(index, 'video', toEmbedUrl(url), 'user');
+    editor.setSelection(index + 1);
+  }, []);
+
   const modules = useMemo(
     () => ({
       toolbar: {
@@ -39,16 +64,16 @@ export default function RichTextEditor({ value, onChange }) {
           [{ header: [1, 2, 3, 4, false] }],
           ['bold', 'italic', 'underline', 'strike'],
           [{ list: 'ordered' }, { list: 'bullet' }],
-          ['blockquote', 'link', 'image'],
+          ['blockquote', 'link', 'image', 'video'],
           [{ align: [] }],
           [{ direction: 'rtl' }],
           ['clean'],
         ],
-        handlers: { image: imageHandler },
+        handlers: { image: imageHandler, video: videoHandler },
       },
       clipboard: { matchVisual: false },
     }),
-    [imageHandler]
+    [imageHandler, videoHandler]
   );
 
   const formats = [
@@ -61,6 +86,7 @@ export default function RichTextEditor({ value, onChange }) {
     'blockquote',
     'link',
     'image',
+    'video',
     'align',
     'direction',
   ];

@@ -68,7 +68,7 @@ export default function ArticlesList() {
         <Link
           to={`/admin/articles/${r._id}/edit`}
           title={r.title}
-          className="urdu block max-w-[22rem] truncate pb-1 font-medium leading-[2.2] text-ink hover:text-brand lg:max-w-[32rem] xl:max-w-[40rem]"
+          className="urdu block max-w-[17.6rem] truncate pb-1 font-medium leading-[2.2] text-ink hover:text-brand lg:max-w-[25.6rem] xl:max-w-[32rem]"
         >
           {r.title}
         </Link>

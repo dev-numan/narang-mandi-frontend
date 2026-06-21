@@ -27,15 +27,15 @@ export default function AdminLayout() {
     <div className="admin-root flex min-h-screen bg-gray-100">
       {/* Sidebar */}
       <aside
-        className={`fixed inset-y-0 left-0 z-30 w-60 transform bg-ink text-gray-300 transition-transform md:static md:translate-x-0 ${
+        className={`fixed inset-y-0 left-0 z-30 w-60 transform bg-ink text-gray-300 transition-transform md:static md:flex-shrink-0 md:translate-x-0 ${
           open ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
         <div className="flex h-16 items-center gap-2 border-b border-white/10 px-5">
-          <span className="flex h-8 w-8 items-center justify-center rounded bg-brand font-bold text-white">
+          <span className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded bg-brand font-bold text-white">
             ن
           </span>
-          <span className="font-bold text-white">Narang Mandi Admin</span>
+          <span className="min-w-0 text-sm font-bold leading-tight text-white">Narang Mandi Admin</span>
         </div>
         <nav className="p-3">
           {links.map((n) => (
@@ -70,7 +70,7 @@ export default function AdminLayout() {
       )}
 
       {/* Main */}
-      <div className="flex flex-1 flex-col">
+      <div className="flex min-w-0 flex-1 flex-col">
         <header className="flex h-16 items-center justify-between border-b bg-white px-4 shadow-sm">
           <button
             className="rounded p-2 text-xl md:hidden"

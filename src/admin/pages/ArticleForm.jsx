@@ -1,7 +1,7 @@
 import { useEffect, useState, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import DOMPurify from 'dompurify';
+import { sanitizeHtml } from '../../utils/sanitize.js';
 import { adminApi, articlesApi, categoriesApi } from '../../api/index.js';
 import RichTextEditor from '../components/RichTextEditor.jsx';
 import ImageUploader from '../components/ImageUploader.jsx';
@@ -128,7 +128,7 @@ export default function ArticleForm() {
     saveMut.mutate({ payload });
   };
 
-  const safePreview = useMemo(() => DOMPurify.sanitize(form.content || ''), [form.content]);
+  const safePreview = useMemo(() => sanitizeHtml(form.content || ''), [form.content]);
 
   return (
     <div>

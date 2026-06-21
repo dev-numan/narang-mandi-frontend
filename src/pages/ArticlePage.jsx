@@ -2,7 +2,7 @@ import { useEffect, useMemo } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { useQuery } from '@tanstack/react-query';
-import DOMPurify from 'dompurify';
+import { sanitizeHtml } from '../utils/sanitize.js';
 import { articlesApi } from '../api/index.js';
 import ShareButtons from '../components/ShareButtons.jsx';
 import ArticleCard from '../components/ArticleCard.jsx';
@@ -35,7 +35,7 @@ export default function ArticlePage() {
   }, [slug]);
 
   const safeHtml = useMemo(
-    () => (article ? DOMPurify.sanitize(article.content || '') : ''),
+    () => (article ? sanitizeHtml(article.content || '') : ''),
     [article]
   );
 

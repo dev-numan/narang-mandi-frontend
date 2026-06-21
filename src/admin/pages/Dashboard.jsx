@@ -51,7 +51,7 @@ export default function Dashboard() {
         <Link
           to={`/admin/articles/${r._id}/edit`}
           title={r.title}
-          className="urdu block max-w-[18rem] truncate pb-1 font-medium leading-[2.2] text-ink hover:text-brand lg:max-w-[26rem] xl:max-w-[34rem]"
+          className="urdu block max-w-[14.4rem] truncate pb-1 font-medium leading-[2.2] text-ink hover:text-brand lg:max-w-[20.8rem] xl:max-w-[27.2rem]"
         >
           {r.title}
         </Link>

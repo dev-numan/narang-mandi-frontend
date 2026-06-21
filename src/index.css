@@ -65,6 +65,19 @@ input.urdu {
   animation-play-state: paused;
 }
 
+/* Embedded videos (YouTube/Vimeo/etc.) — responsive 16:9 in editor + article. */
+.article-content iframe,
+.ql-editor iframe,
+.ql-video {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  height: auto;
+  margin: 1rem 0;
+  border: 0;
+  border-radius: 0.5rem;
+}
+
 /* Line clamp helpers */
 .clamp-2 {
   display: -webkit-box;
@@ -138,4 +151,24 @@ input.urdu {
 .ql-container,
 .ql-toolbar {
   direction: ltr; /* keep toolbar buttons in natural order */
+}
+
+/* Even, vertically-centered toolbar spacing (Quill's default block layout
+   leaves uneven gaps between groups). */
+.ql-toolbar.ql-snow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 2px;
+  padding: 6px 8px;
+}
+.ql-toolbar.ql-snow .ql-formats {
+  display: inline-flex;
+  align-items: center;
+  margin-right: 10px;
+}
+.ql-toolbar.ql-snow button,
+.ql-toolbar.ql-snow .ql-picker {
+  display: inline-flex;
+  align-items: center;
 }

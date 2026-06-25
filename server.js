@@ -19,19 +19,6 @@ const PORT = process.env.PORT || 4173;
 const API_BASE = (process.env.API_URL || process.env.VITE_API_BASE || '').replace(/\/$/, '');
 
 const app = express();
-// Honor X-Forwarded-Host/Proto so req.hostname is the real public host when
-// running behind a reverse proxy (Render/Railway/etc.).
-app.set('trust proxy', true);
-
-// Permanent redirect from the old subdomain to the new primary domain,
-// preserving the full path + query (e.g. /article/foo, /13432?x=1).
-app.use((req, res, next) => {
-  if (req.hostname === 'narangmandi.fleetily.com') {
-    return res.redirect(301, 'https://narangmandi.com' + req.originalUrl);
-  }
-  next();
-});
-
 const template = readFileSync(path.join(DIST, 'index.html'), 'utf-8');
 
 const esc = (s = '') =>

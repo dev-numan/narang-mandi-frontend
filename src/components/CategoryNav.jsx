@@ -12,6 +12,10 @@ export default function CategoryNav() {
 
   const items = [
     { to: '/', label: 'صفحۂ اول', end: true },
+    { to: '/places', label: 'مشہور مقامات' },
+    { to: '/community', label: 'کمیونٹی چیٹ' },
+    { to: '/trains', label: 'ٹرین اوقات' },
+    { to: '/classifieds', label: 'اشتہارات' },
     ...categories.map((c) => ({ to: `/category/${c.slug}`, label: c.name, key: c._id })),
   ];
 

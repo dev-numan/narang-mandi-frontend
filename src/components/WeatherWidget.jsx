@@ -9,40 +9,8 @@ const WEATHER_URL =
   '&current=temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,wind_speed_10m' +
   '&timezone=Asia/Karachi';
 
-// WMO weather code → Urdu label + emoji icon
-function codeInfo(code) {
-  const map = {
-    0: ['☀️', 'صاف'],
-    1: ['🌤️', 'زیادہ تر صاف'],
-    2: ['⛅', 'جزوی ابر آلود'],
-    3: ['☁️', 'ابر آلود'],
-    45: ['🌫️', 'دھند'],
-    48: ['🌫️', 'دھند'],
-    51: ['🌦️', 'ہلکی پھوار'],
-    53: ['🌦️', 'پھوار'],
-    55: ['🌦️', 'تیز پھوار'],
-    56: ['🌧️', 'جمتی پھوار'],
-    57: ['🌧️', 'جمتی پھوار'],
-    61: ['🌧️', 'ہلکی بارش'],
-    63: ['🌧️', 'بارش'],
-    65: ['🌧️', 'تیز بارش'],
-    66: ['🌧️', 'جمتی بارش'],
-    67: ['🌧️', 'جمتی بارش'],
-    71: ['❄️', 'ہلکی برف باری'],
-    73: ['❄️', 'برف باری'],
-    75: ['❄️', 'تیز برف باری'],
-    77: ['❄️', 'برف کے دانے'],
-    80: ['🌦️', 'بارش کے چھینٹے'],
-    81: ['🌧️', 'بارش کے چھینٹے'],
-    82: ['⛈️', 'شدید بارش'],
-    85: ['❄️', 'برفانی چھینٹے'],
-    86: ['❄️', 'برفانی چھینٹے'],
-    95: ['⛈️', 'گرج چمک'],
-    96: ['⛈️', 'گرج چمک کے ساتھ ژالہ'],
-    99: ['⛈️', 'گرج چمک کے ساتھ ژالہ'],
-  };
-  return map[code] || ['🌡️', '—'];
-}
+// Always show a static cloud icon, regardless of the actual weather condition.
+const CLOUD_ICON = '☁️';
 
 function useWeather() {
   return useQuery({
@@ -64,7 +32,7 @@ export default function WeatherWidget({ variant = 'card' }) {
 
   if (isError) return null;
 
-  const [icon, label] = data ? codeInfo(data.weather_code) : ['🌡️', ''];
+  const icon = CLOUD_ICON;
   const temp = data ? Math.round(data.temperature_2m) : null;
 
   // Compact inline chip (used in the header)
@@ -73,11 +41,10 @@ export default function WeatherWidget({ variant = 'card' }) {
     return (
       <span
         className="hidden items-center gap-1 rounded-full bg-gray-100 px-3 py-1 text-sm text-ink sm:inline-flex"
-        title={`نارنگ منڈی — ${label}`}
+        title="نارنگ منڈی"
       >
         <span className="text-base leading-none">{icon}</span>
         <span className="font-semibold">{temp}°</span>
-        <span className="text-gray-500">{label}</span>
       </span>
     );
   }
@@ -98,7 +65,6 @@ export default function WeatherWidget({ variant = 'card' }) {
             <span className="text-5xl leading-none">{icon}</span>
             <div>
               <div className="text-4xl font-bold">{temp}°<span className="text-2xl">C</span></div>
-              <div className="text-sm text-sky-100">{label}</div>
             </div>
           </div>
 

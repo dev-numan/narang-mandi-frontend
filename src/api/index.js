@@ -41,6 +41,83 @@ export const categoriesApi = {
   remove: (id) => api.delete(`/categories/${id}`).then((r) => r.data),
 };
 
+// ---- Places ----
+export const placesApi = {
+  // public
+  categories: () => api.get('/places/categories').then((r) => r.data.data),
+  list: (params) => api.get('/places', { params }).then((r) => r.data.data),
+  submit: (payload) => api.post('/places', payload).then((r) => r.data),
+  // admin
+  adminList: (params) => api.get('/admin/places', { params }).then((r) => r.data.data),
+  create: (payload) => api.post('/admin/places', payload).then((r) => r.data.data),
+  update: (id, payload) => api.put(`/admin/places/${id}`, payload).then((r) => r.data.data),
+  setStatus: (id, status) =>
+    api.patch(`/admin/places/${id}/status`, { status }).then((r) => r.data.data),
+  remove: (id) => api.delete(`/admin/places/${id}`).then((r) => r.data),
+  // place categories (admin)
+  createCategory: (payload) =>
+    api.post('/admin/place-categories', payload).then((r) => r.data.data),
+  updateCategory: (id, payload) =>
+    api.put(`/admin/place-categories/${id}`, payload).then((r) => r.data.data),
+  removeCategory: (id) => api.delete(`/admin/place-categories/${id}`).then((r) => r.data),
+};
+
+// ---- Community ----
+export const communityApi = {
+  threads: () => api.get('/community/threads').then((r) => r.data.data),
+  createThread: (payload) => api.post('/community/threads', payload).then((r) => r.data.data),
+  thread: (slug, clientId) =>
+    api.get(`/community/threads/${slug}`, { params: { clientId } }).then((r) => r.data.data),
+  postMessage: (slug, payload) =>
+    api.post(`/community/threads/${slug}/messages`, payload).then((r) => r.data.data),
+  react: (messageId, payload) =>
+    api.post(`/community/messages/${messageId}/reactions`, payload).then((r) => r.data.data),
+  // admin
+  adminThreads: () => api.get('/admin/community/threads').then((r) => r.data.data),
+  adminLockThread: (id) => api.patch(`/admin/community/threads/${id}/lock`).then((r) => r.data.data),
+  adminDeleteThread: (id) => api.delete(`/admin/community/threads/${id}`).then((r) => r.data),
+  adminDeleteMessage: (id) => api.delete(`/admin/community/messages/${id}`).then((r) => r.data),
+};
+
+// ---- Trains ----
+export const trainsApi = {
+  list: (all = false) =>
+    api.get('/trains', { params: all ? { all: true } : {} }).then((r) => r.data.data),
+  // admin
+  create: (payload) => api.post('/admin/trains', payload).then((r) => r.data.data),
+  update: (id, payload) => api.put(`/admin/trains/${id}`, payload).then((r) => r.data.data),
+  remove: (id) => api.delete(`/admin/trains/${id}`).then((r) => r.data),
+};
+
+// ---- Classifieds ----
+export const classifiedsApi = {
+  // public
+  categories: () => api.get('/classifieds/categories').then((r) => r.data.data),
+  list: (params) => api.get('/classifieds', { params }).then((r) => r.data.data),
+  get: (slug) => api.get(`/classifieds/${slug}`).then((r) => r.data.data),
+  submit: (payload) => api.post('/classifieds', payload).then((r) => r.data),
+  uploadImage: (file) => {
+    const form = new FormData();
+    form.append('image', file);
+    return api
+      .post('/classifieds/upload', form, { headers: { 'Content-Type': 'multipart/form-data' } })
+      .then((r) => r.data.data.url);
+  },
+  // admin
+  adminList: (params) => api.get('/admin/classifieds', { params }).then((r) => r.data.data),
+  create: (payload) => api.post('/admin/classifieds', payload).then((r) => r.data.data),
+  update: (id, payload) => api.put(`/admin/classifieds/${id}`, payload).then((r) => r.data.data),
+  setStatus: (id, status) =>
+    api.patch(`/admin/classifieds/${id}/status`, { status }).then((r) => r.data.data),
+  remove: (id) => api.delete(`/admin/classifieds/${id}`).then((r) => r.data),
+  // categories (admin)
+  createCategory: (payload) =>
+    api.post('/admin/classified-categories', payload).then((r) => r.data.data),
+  updateCategory: (id, payload) =>
+    api.put(`/admin/classified-categories/${id}`, payload).then((r) => r.data.data),
+  removeCategory: (id) => api.delete(`/admin/classified-categories/${id}`).then((r) => r.data),
+};
+
 // ---- Settings ----
 export const settingsApi = {
   get: () => api.get('/settings').then((r) => r.data.data),

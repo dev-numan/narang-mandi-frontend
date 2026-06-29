@@ -15,6 +15,8 @@ export default defineConfig(({ mode }) => {
         // Proxy API + uploaded images to the Express server during development
         '/api': { target, changeOrigin: true },
         '/uploads': { target, changeOrigin: true },
+        // Socket.IO (realtime community chat) — needs websocket upgrade
+        '/socket.io': { target, changeOrigin: true, ws: true },
       },
     },
   };

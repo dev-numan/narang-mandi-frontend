@@ -92,6 +92,22 @@ app.get('/article/:slug', async (req, res) => {
   }
 });
 
+// Sitemap — the dynamic XML lives on the API server (root route, not under
+// /api), so nginx never proxies it to this host. Fetch it from the backend and
+// re-serve it with the correct content type. Without this, the SPA catch-all
+// below returns index.html for /sitemap.xml and Google discards it as non-XML.
+app.get('/sitemap.xml', async (req, res) => {
+  try {
+    const r = await fetch(`${API_BASE}/sitemap.xml`);
+    if (!r.ok) return res.status(502).type('application/xml').send('');
+    const xml = await r.text();
+    res.set('Cache-Control', 'public, max-age=3600');
+    return res.type('application/xml').send(xml);
+  } catch {
+    return res.status(502).type('application/xml').send('');
+  }
+});
+
 // SPA fallback for every other route.
 app.get('*', (req, res) => res.send(template));
 

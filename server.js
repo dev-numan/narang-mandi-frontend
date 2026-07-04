@@ -66,7 +66,7 @@ function injectMeta(html, { title, description, image, url, type = 'article', ld
   const tags = [
     `<link rel="canonical" href="${esc(url)}" />`,
     `<meta property="og:type" content="${esc(type)}" />`,
-    `<meta property="og:site_name" content="نارنگ منڈی نیوز" />`,
+    `<meta property="og:site_name" content="Narang Mandi" />`,
     `<meta property="og:title" content="${esc(title)}" />`,
     `<meta property="og:description" content="${esc(description)}" />`,
     `<meta property="og:url" content="${esc(url)}" />`,

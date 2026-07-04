@@ -10,7 +10,7 @@ export default function PrivacyPolicy() {
   return (
     <>
       <Helmet>
-        <title>رازداری کی پالیسی — {siteName}</title>
+        <title>Narang Mandi | رازداری کی پالیسی</title>
         <meta
           name="description"
           content={`${siteName} کی رازداری کی پالیسی — ہم آپ کی معلومات کیسے جمع، استعمال اور محفوظ کرتے ہیں۔`}

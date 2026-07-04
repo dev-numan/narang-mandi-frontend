@@ -35,7 +35,7 @@ export default function TrainsPage() {
   return (
     <>
       <Helmet>
-        <title>ٹرین کے اوقات — نارنگ منڈی</title>
+        <title>Narang Mandi | ٹرین کے اوقات</title>
         <meta name="description" content="نارنگ منڈی ریلوے اسٹیشن پر رکنے والی ٹرینوں کے آمد و روانگی کے اوقات" />
       </Helmet>
 

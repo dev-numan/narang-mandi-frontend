@@ -194,7 +194,7 @@ export default function PlacesPage() {
   return (
     <>
       <Helmet>
-        <title>مشہور مقامات — نارنگ منڈی</title>
+        <title>Narang Mandi | مشہور مقامات</title>
         <meta name="description" content="نارنگ منڈی کے مشہور مقامات، بازار، دکانیں اور خدمات کی فہرست" />
       </Helmet>
 

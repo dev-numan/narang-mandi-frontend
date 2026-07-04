@@ -23,7 +23,7 @@ export default function SearchPage() {
   return (
     <>
       <Helmet>
-        <title>تلاش: {q} — نارنگ منڈی نیوز</title>
+        <title>Narang Mandi | تلاش: {q}</title>
       </Helmet>
 
       <div className="mx-auto mb-6 max-w-2xl">

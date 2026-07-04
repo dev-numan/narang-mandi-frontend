@@ -27,7 +27,7 @@ export default function CategoryPage() {
   return (
     <>
       <Helmet>
-        <title>{category?.name || 'زمرہ'} — نارنگ منڈی نیوز</title>
+        <title>Narang Mandi | {category?.name || 'زمرہ'}</title>
       </Helmet>
 
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">

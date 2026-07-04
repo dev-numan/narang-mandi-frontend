@@ -167,7 +167,7 @@ export default function ClassifiedsPage() {
   return (
     <>
       <Helmet>
-        <title>اشتہارات — نارنگ منڈی</title>
+        <title>Narang Mandi | اشتہارات</title>
         <meta name="description" content="نارنگ منڈی کے مقامی اشتہارات — خرید و فروخت، نوکریاں، گاڑیاں" />
       </Helmet>
 

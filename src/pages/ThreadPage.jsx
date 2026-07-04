@@ -270,7 +270,7 @@ export default function ThreadPage() {
   return (
     <>
       <Helmet>
-        <title>{thread.title} — کمیونٹی چیٹ</title>
+        <title>Narang Mandi | {thread.title} — کمیونٹی چیٹ</title>
       </Helmet>
 
       <div className="mb-3">

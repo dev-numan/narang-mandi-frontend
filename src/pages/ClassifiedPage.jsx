@@ -34,7 +34,7 @@ export default function ClassifiedPage() {
   return (
     <>
       <Helmet>
-        <title>{item.title} — اشتہارات</title>
+        <title>Narang Mandi | {item.title} — اشتہارات</title>
       </Helmet>
 
       <div className="mb-3">

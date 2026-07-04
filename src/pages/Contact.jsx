@@ -10,7 +10,7 @@ export default function Contact() {
   return (
     <>
       <Helmet>
-        <title>رابطہ — نارنگ منڈی نیوز</title>
+        <title>Narang Mandi | رابطہ</title>
       </Helmet>
       <div className="mx-auto max-w-2xl rounded-xl bg-white p-6 shadow-sm sm:p-8">
         <h1 className="mb-4 border-b-2 border-brand pb-2 text-2xl font-bold text-ink sm:text-3xl">رابطہ</h1>

@@ -90,7 +90,7 @@ export default function CommunityPage() {
   return (
     <>
       <Helmet>
-        <title>کمیونٹی چیٹ — نارنگ منڈی</title>
+        <title>Narang Mandi | کمیونٹی چیٹ</title>
         <meta name="description" content="نارنگ منڈی کمیونٹی چیٹ — چیٹ رومز بنائیں اور براہِ راست گفتگو میں شامل ہوں" />
       </Helmet>
 

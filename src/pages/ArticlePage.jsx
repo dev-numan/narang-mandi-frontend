@@ -57,7 +57,7 @@ export default function ArticlePage() {
   return (
     <>
       <Helmet>
-        <title>{article.title} — نارنگ منڈی نیوز</title>
+        <title>Narang Mandi | {article.title}</title>
         <meta name="description" content={article.excerpt || article.title} />
         <meta property="og:type" content="article" />
         <meta property="og:title" content={article.title} />

@@ -5,7 +5,7 @@ export default function NotFound() {
   return (
     <>
       <Helmet>
-        <title>صفحہ نہیں ملا — نارنگ منڈی نیوز</title>
+        <title>Narang Mandi | صفحہ نہیں ملا</title>
       </Helmet>
       <div className="flex flex-col items-center justify-center py-24 text-center">
         <h1 className="text-7xl font-bold text-brand">۴۰۴</h1>

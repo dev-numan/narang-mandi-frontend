@@ -9,7 +9,7 @@ export default function About() {
   return (
     <>
       <Helmet>
-        <title>ہمارے بارے میں — {siteName}</title>
+        <title>Narang Mandi | ہمارے بارے میں</title>
       </Helmet>
       <div className="mx-auto max-w-3xl rounded-xl bg-white p-6 shadow-sm sm:p-8">
         <h1 className="mb-4 border-b-2 border-brand pb-2 text-2xl font-bold text-ink sm:text-3xl">

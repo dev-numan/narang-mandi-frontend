@@ -141,11 +141,12 @@ app.get('/', async (req, res) => {
   ]);
   const categories = catsJson?.data || [];
   const articles = artsJson?.data || [];
-  const description = 'نارنگ منڈی کی تازہ ترین خبریں، سیاست، کھیل، مقامی واقعات اور بہت کچھ۔';
-  const content = `${renderNav(categories)}<main><h1>نارنگ منڈی نیوز</h1>${renderArticleList(articles)}</main>`;
+  const description =
+    'نارنگ منڈی کی تازہ ترین خبریں، سیاست، کھیل، مقامی واقعات اور بہت کچھ۔ Narang Mandi News — latest local news from Narang Mandi.';
+  const content = `${renderNav(categories)}<main><h1>نارنگ منڈی نیوز — Narang Mandi News</h1>${renderArticleList(articles)}</main>`;
   const html = injectBody(
     injectMeta(template, {
-      title: 'نارنگ منڈی نیوز — آپ کے شہر کی خبریں',
+      title: 'نارنگ منڈی نیوز — Narang Mandi News | آپ کے شہر کی خبریں',
       description,
       image: `${SITE}/favicon.svg`,
       url: `${SITE}/`,

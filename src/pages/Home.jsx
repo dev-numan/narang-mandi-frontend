@@ -28,7 +28,7 @@ export default function Home() {
   return (
     <>
       <Helmet>
-        <title>{settings?.siteName || 'نارنگ منڈی نیوز'} — تازہ ترین خبریں</title>
+        <title>Narang Mandi | {settings?.siteName || 'نارنگ منڈی نیوز'} — تازہ ترین خبریں</title>
       </Helmet>
 
       <HeroCarousel />

@@ -20,6 +20,7 @@ import NotFound from './pages/NotFound.jsx';
 
 // Admin
 import ProtectedRoute from './admin/ProtectedRoute.jsx';
+import { RequireAdmin, RequireCategoryAccess } from './admin/RoleGate.jsx';
 import AdminLayout from './admin/AdminLayout.jsx';
 import Login from './admin/pages/Login.jsx';
 import Dashboard from './admin/pages/Dashboard.jsx';
@@ -71,14 +72,21 @@ export default function App() {
         <Route path="articles" element={<ArticlesList />} />
         <Route path="articles/new" element={<ArticleForm />} />
         <Route path="articles/:id/edit" element={<ArticleForm />} />
-        <Route path="categories" element={<Categories />} />
-        <Route path="places" element={<Places />} />
-        <Route path="community" element={<Community />} />
-        <Route path="trains" element={<Trains />} />
-        <Route path="classifieds" element={<Classifieds />} />
-        <Route path="settings" element={<SettingsPage />} />
+        <Route
+          path="categories"
+          element={
+            <RequireCategoryAccess>
+              <Categories />
+            </RequireCategoryAccess>
+          }
+        />
+        <Route path="places" element={<RequireAdmin><Places /></RequireAdmin>} />
+        <Route path="community" element={<RequireAdmin><Community /></RequireAdmin>} />
+        <Route path="trains" element={<RequireAdmin><Trains /></RequireAdmin>} />
+        <Route path="classifieds" element={<RequireAdmin><Classifieds /></RequireAdmin>} />
+        <Route path="settings" element={<RequireAdmin><SettingsPage /></RequireAdmin>} />
         <Route path="profile" element={<Profile />} />
-        <Route path="users" element={<Users />} />
+        <Route path="users" element={<RequireAdmin><Users /></RequireAdmin>} />
       </Route>
     </Routes>
   );

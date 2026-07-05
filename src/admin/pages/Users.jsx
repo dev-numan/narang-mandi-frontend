@@ -6,7 +6,7 @@ import DataTable from '../components/DataTable.jsx';
 import ConfirmDialog from '../components/ConfirmDialog.jsx';
 import Loader, { ErrorState } from '../../components/Loader.jsx';
 
-const EMPTY = { name: '', email: '', password: '', role: 'editor' };
+const EMPTY = { name: '', email: '', password: '', role: 'editor', canManageCategories: false };
 
 export default function Users() {
   const qc = useQueryClient();
@@ -34,7 +34,11 @@ export default function Users() {
   const saveMut = useMutation({
     mutationFn: () => {
       if (isEdit) {
-        const payload = { name: form.name, role: form.role };
+        const payload = {
+          name: form.name,
+          role: form.role,
+          canManageCategories: form.canManageCategories,
+        };
         if (form.password) payload.password = form.password; // only if changing
         return adminApi.updateUser(modal.id, payload);
       }
@@ -67,7 +71,13 @@ export default function Users() {
   };
   const openEdit = (u) => {
     setError('');
-    setForm({ name: u.name, email: u.email, password: '', role: u.role });
+    setForm({
+      name: u.name,
+      email: u.email,
+      password: '',
+      role: u.role,
+      canManageCategories: !!u.canManageCategories,
+    });
     setModal({ mode: 'edit', id: u._id });
   };
 
@@ -75,6 +85,18 @@ export default function Users() {
     { key: 'name', header: 'Name' },
     { key: 'email', header: 'Email' },
     { key: 'role', header: 'Role', render: (r) => <span className="capitalize">{r.role}</span> },
+    {
+      key: 'categories',
+      header: 'Categories',
+      render: (r) =>
+        r.role === 'admin' ? (
+          <span className="text-xs text-gray-400">All (admin)</span>
+        ) : r.canManageCategories ? (
+          <span className="text-xs font-medium text-green-700">Can manage</span>
+        ) : (
+          <span className="text-xs text-gray-400">No access</span>
+        ),
+    },
     {
       key: 'actions',
       header: 'Actions',
@@ -173,6 +195,27 @@ export default function Users() {
                 <option value="editor">editor</option>
                 <option value="admin">admin</option>
               </select>
+              {form.role === 'editor' ? (
+                <label className="flex items-start gap-2 rounded-lg bg-gray-50 px-3 py-2 text-sm text-gray-700">
+                  <input
+                    type="checkbox"
+                    checked={form.canManageCategories}
+                    onChange={(e) => setForm({ ...form, canManageCategories: e.target.checked })}
+                    className="mt-0.5 h-4 w-4 rounded border-gray-300"
+                  />
+                  <span>
+                    Allow managing categories
+                    <span className="block text-xs text-gray-400">
+                      Editor can add, edit and delete categories. (Editors always only see their
+                      own articles.)
+                    </span>
+                  </span>
+                </label>
+              ) : (
+                <p className="rounded-lg bg-gray-50 px-3 py-2 text-xs text-gray-400">
+                  Admins have full access to all sections and categories.
+                </p>
+              )}
             </div>
             <div className="mt-6 flex justify-end gap-3">
               <button

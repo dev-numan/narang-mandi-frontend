@@ -5,15 +5,23 @@ import { useAuth } from '../context/AuthContext.jsx';
 const NAV = [
   { to: '/admin', label: 'Dashboard', icon: '▦', end: true },
   { to: '/admin/articles', label: 'Articles', icon: '📰' },
-  { to: '/admin/categories', label: 'Categories', icon: '🏷️' },
-  { to: '/admin/places', label: 'Places', icon: '📍' },
-  { to: '/admin/community', label: 'Community', icon: '💬' },
-  { to: '/admin/trains', label: 'Trains', icon: '🚆' },
-  { to: '/admin/classifieds', label: 'Classifieds', icon: '🛒' },
-  { to: '/admin/settings', label: 'Settings', icon: '⚙️' },
+  { to: '/admin/categories', label: 'Categories', icon: '🏷️', needsCategoryAccess: true },
+  { to: '/admin/places', label: 'Places', icon: '📍', adminOnly: true },
+  { to: '/admin/community', label: 'Community', icon: '💬', adminOnly: true },
+  { to: '/admin/trains', label: 'Trains', icon: '🚆', adminOnly: true },
+  { to: '/admin/classifieds', label: 'Classifieds', icon: '🛒', adminOnly: true },
+  { to: '/admin/settings', label: 'Settings', icon: '⚙️', adminOnly: true },
   { to: '/admin/profile', label: 'Profile', icon: '👤' },
   { to: '/admin/users', label: 'Users', icon: '👥', adminOnly: true },
 ];
+
+// Decides which nav links a user may see. Admins see everything; editors see
+// only articles-related items (plus Categories when granted the permission).
+function canSee(item, user) {
+  if (item.adminOnly) return user?.role === 'admin';
+  if (item.needsCategoryAccess) return user?.role === 'admin' || !!user?.canManageCategories;
+  return true;
+}
 
 export default function AdminLayout() {
   const { user, logout } = useAuth();
@@ -25,7 +33,7 @@ export default function AdminLayout() {
     navigate('/admin/login');
   };
 
-  const links = NAV.filter((n) => !n.adminOnly || user?.role === 'admin');
+  const links = NAV.filter((n) => canSee(n, user));
 
   return (
     <div className="admin-root flex min-h-screen bg-gray-100">

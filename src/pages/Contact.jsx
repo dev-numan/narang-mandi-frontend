@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useQuery } from '@tanstack/react-query';
 import { settingsApi } from '../api/index.js';
+import { SITE_NAME } from '../constants/brand.js';
 
 export default function Contact() {
   const { data: settings } = useQuery({ queryKey: ['settings'], queryFn: settingsApi.get });
@@ -10,7 +11,8 @@ export default function Contact() {
   return (
     <>
       <Helmet>
-        <title>Narang Mandi | رابطہ</title>
+        <title>{SITE_NAME} | رابطہ</title>
+        <meta property="og:site_name" content={SITE_NAME} />
       </Helmet>
       <div className="mx-auto max-w-2xl rounded-xl bg-white p-6 shadow-sm sm:p-8">
         <h1 className="mb-4 border-b-2 border-brand pb-2 text-2xl font-bold text-ink sm:text-3xl">رابطہ</h1>

@@ -1,13 +1,14 @@
 import { useEffect, useState, useCallback } from 'react';
+import { SITE_NAME } from '../constants/brand.js';
 
-// Branded promotional slides (نارنگ منڈی نیوز). Built in JSX so the Nastaliq
+// Branded promotional slides. Built in JSX so the Nastaliq
 // font and theme colours render crisply. Full literal class strings keep the
 // gradient utilities in Tailwind's JIT output.
 const SLIDES = [
   {
     id: 'awaaz',
     gradient: 'bg-gradient-to-br from-brand-dark via-brand to-brand-light',
-    eyebrow: 'نارنگ منڈی نیوز',
+    eyebrow: SITE_NAME,
     title: 'سچ کی آواز',
     subtitle: 'آپ کے شہر کی ہر خبر، سب سے پہلے — بے باک، غیر جانبدار، باوقار',
     chips: [],

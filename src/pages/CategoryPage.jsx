@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { useQuery } from '@tanstack/react-query';
 import { articlesApi, categoriesApi } from '../api/index.js';
+import { SITE_NAME } from '../constants/brand.js';
 import ArticleCard from '../components/ArticleCard.jsx';
 import Sidebar from '../components/Sidebar.jsx';
 import Pagination from '../components/Pagination.jsx';
@@ -27,7 +28,8 @@ export default function CategoryPage() {
   return (
     <>
       <Helmet>
-        <title>Narang Mandi | {category?.name || 'زمرہ'}</title>
+        <title>{SITE_NAME} | {category?.name || 'زمرہ'}</title>
+        <meta property="og:site_name" content={SITE_NAME} />
       </Helmet>
 
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">

@@ -3,6 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { useQuery } from '@tanstack/react-query';
 import { articlesApi } from '../api/index.js';
+import { SITE_NAME } from '../constants/brand.js';
 import ArticleCard from '../components/ArticleCard.jsx';
 import SearchBar from '../components/SearchBar.jsx';
 import Pagination from '../components/Pagination.jsx';
@@ -23,7 +24,8 @@ export default function SearchPage() {
   return (
     <>
       <Helmet>
-        <title>Narang Mandi | تلاش: {q}</title>
+        <title>{SITE_NAME} | تلاش: {q}</title>
+        <meta property="og:site_name" content={SITE_NAME} />
       </Helmet>
 
       <div className="mx-auto mb-6 max-w-2xl">

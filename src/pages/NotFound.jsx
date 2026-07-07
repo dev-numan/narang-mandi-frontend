@@ -1,11 +1,13 @@
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
+import { SITE_NAME } from '../constants/brand.js';
 
 export default function NotFound() {
   return (
     <>
       <Helmet>
-        <title>Narang Mandi | صفحہ نہیں ملا</title>
+        <title>{SITE_NAME} | صفحہ نہیں ملا</title>
+        <meta property="og:site_name" content={SITE_NAME} />
       </Helmet>
       <div className="flex flex-col items-center justify-center py-24 text-center">
         <h1 className="text-7xl font-bold text-brand">۴۰۴</h1>

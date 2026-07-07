@@ -1,6 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 import { useQuery } from '@tanstack/react-query';
-import { articlesApi, categoriesApi, settingsApi } from '../api/index.js';
+import { articlesApi, categoriesApi } from '../api/index.js';
+import { SITE_NAME, SITE_NAME_URDU } from '../constants/brand.js';
 import HeroCarousel from '../components/HeroCarousel.jsx';
 import CategorySection from '../components/CategorySection.jsx';
 import ArticleCard from '../components/ArticleCard.jsx';
@@ -8,7 +9,6 @@ import Sidebar from '../components/Sidebar.jsx';
 import Loader, { EmptyState, ErrorState } from '../components/Loader.jsx';
 
 export default function Home() {
-  const { data: settings } = useQuery({ queryKey: ['settings'], queryFn: settingsApi.get });
   const { data: categories = [] } = useQuery({
     queryKey: ['categories'],
     queryFn: () => categoriesApi.list(),
@@ -28,7 +28,8 @@ export default function Home() {
   return (
     <>
       <Helmet>
-        <title>Narang Mandi | {settings?.siteName || 'نارنگ منڈی نیوز'} — تازہ ترین خبریں</title>
+        <title>{SITE_NAME} | {SITE_NAME_URDU} — تازہ ترین خبریں</title>
+        <meta property="og:site_name" content={SITE_NAME} />
       </Helmet>
 
       <HeroCarousel />

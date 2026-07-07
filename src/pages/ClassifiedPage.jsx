@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { useQuery } from '@tanstack/react-query';
 import { classifiedsApi } from '../api/index.js';
+import { SITE_NAME } from '../constants/brand.js';
 import { formatPrice, timeAgoUrdu } from '../utils/format.js';
 import Loader from '../components/Loader.jsx';
 
@@ -34,7 +35,8 @@ export default function ClassifiedPage() {
   return (
     <>
       <Helmet>
-        <title>Narang Mandi | {item.title} — اشتہارات</title>
+        <title>{SITE_NAME} | {item.title} — اشتہارات</title>
+        <meta property="og:site_name" content={SITE_NAME} />
       </Helmet>
 
       <div className="mb-3">

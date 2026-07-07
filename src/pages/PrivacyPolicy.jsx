@@ -1,19 +1,20 @@
 import { Helmet } from 'react-helmet-async';
 import { useQuery } from '@tanstack/react-query';
 import { settingsApi } from '../api/index.js';
+import { SITE_NAME } from '../constants/brand.js';
 
 export default function PrivacyPolicy() {
   const { data: settings } = useQuery({ queryKey: ['settings'], queryFn: settingsApi.get });
-  const siteName = settings?.siteName || 'نارنگ منڈی نیوز';
   const email = settings?.contactEmail || 'info@narangmandi.com';
 
   return (
     <>
       <Helmet>
-        <title>Narang Mandi | رازداری کی پالیسی</title>
+        <title>{SITE_NAME} | رازداری کی پالیسی</title>
+        <meta property="og:site_name" content={SITE_NAME} />
         <meta
           name="description"
-          content={`${siteName} کی رازداری کی پالیسی — ہم آپ کی معلومات کیسے جمع، استعمال اور محفوظ کرتے ہیں۔`}
+          content={`${SITE_NAME} کی رازداری کی پالیسی — ہم آپ کی معلومات کیسے جمع، استعمال اور محفوظ کرتے ہیں۔`}
         />
       </Helmet>
 
@@ -24,7 +25,7 @@ export default function PrivacyPolicy() {
 
         <div className="article-content">
           <p>
-            {siteName} میں آپ کی رازداری ہمارے لیے اہم ہے۔ یہ پالیسی وضاحت کرتی ہے کہ جب آپ
+            {SITE_NAME} میں آپ کی رازداری ہمارے لیے اہم ہے۔ یہ پالیسی وضاحت کرتی ہے کہ جب آپ
             ہماری ویب سائٹ استعمال کرتے ہیں تو ہم کونسی معلومات جمع کرتے ہیں، انہیں کیسے
             استعمال کرتے ہیں، اور آپ کے پاس کیا اختیارات ہیں۔ ہماری ویب سائٹ استعمال کرنے سے
             آپ اس پالیسی سے اتفاق کرتے ہیں۔

@@ -19,6 +19,8 @@ const DIST = path.join(__dirname, 'dist');
 const PORT = process.env.PORT || 4173;
 // Public canonical origin, used for canonical/og:url and JSON-LD.
 const SITE = (process.env.SITE_URL || 'https://narangmandi.com').replace(/\/$/, '');
+const SITE_NAME = 'Narang Mandi';
+const SITE_NAME_URDU = 'نارنگ منڈی نیوز';
 // Where to fetch article data from (the backend). Falls back to the build-time
 // API base so a single env var works for both.
 const API_BASE = (process.env.API_URL || process.env.VITE_API_BASE || '').replace(/\/$/, '');
@@ -66,7 +68,7 @@ function injectMeta(html, { title, description, image, url, type = 'article', ld
   const tags = [
     `<link rel="canonical" href="${esc(url)}" />`,
     `<meta property="og:type" content="${esc(type)}" />`,
-    `<meta property="og:site_name" content="Narang Mandi" />`,
+    `<meta property="og:site_name" content="${esc(SITE_NAME)}" />`,
     `<meta property="og:title" content="${esc(title)}" />`,
     `<meta property="og:description" content="${esc(description)}" />`,
     `<meta property="og:url" content="${esc(url)}" />`,
@@ -142,11 +144,11 @@ app.get('/', async (req, res) => {
   const categories = catsJson?.data || [];
   const articles = artsJson?.data || [];
   const description =
-    'نارنگ منڈی کی تازہ ترین خبریں، سیاست، کھیل، مقامی واقعات اور بہت کچھ۔ Narang Mandi News — latest local news from Narang Mandi.';
-  const content = `${renderNav(categories)}<main><h1>نارنگ منڈی نیوز — Narang Mandi News</h1>${renderArticleList(articles)}</main>`;
+    'نارنگ منڈی کی تازہ ترین خبریں، سیاست، کھیل، مقامی واقعات اور بہت کچھ۔ Narang Mandi — latest local news from Narang Mandi.';
+  const content = `${renderNav(categories)}<main><h1>${esc(SITE_NAME)}</h1><p>${esc(SITE_NAME_URDU)} — آپ کے شہر کی تازہ ترین خبریں</p>${renderArticleList(articles)}</main>`;
   const html = injectBody(
     injectMeta(template, {
-      title: 'نارنگ منڈی نیوز — Narang Mandi News | آپ کے شہر کی خبریں',
+      title: `${SITE_NAME} | ${SITE_NAME_URDU} — تازہ ترین خبریں`,
       description,
       image: `${SITE}/favicon.svg`,
       url: `${SITE}/`,
@@ -168,11 +170,11 @@ app.get('/category/:slug', async (req, res) => {
   const articles = artsJson?.data || [];
   const cat = categories.find((c) => c.slug === req.params.slug);
   const name = cat?.name || 'زمرہ';
-  const description = `${name} کی تازہ ترین خبریں — نارنگ منڈی نیوز۔`;
+  const description = `${name} کی تازہ ترین خبریں — ${SITE_NAME}۔`;
   const content = `${renderNav(categories)}<main><h1>${esc(name)}</h1>${renderArticleList(articles)}</main>`;
   const html = injectBody(
     injectMeta(template, {
-      title: `${name} — نارنگ منڈی نیوز`,
+      title: `${name} | ${SITE_NAME}`,
       description,
       image: `${SITE}/favicon.svg`,
       url: `${SITE}/category/${req.params.slug}`,
@@ -209,10 +211,10 @@ app.get('/article/:slug', async (req, res) => {
       dateModified: a.updatedAt || a.createdAt,
       author: a.author?.name
         ? { '@type': 'Person', name: a.author.name }
-        : { '@type': 'Organization', name: 'نارنگ منڈی نیوز' },
+        : { '@type': 'Organization', name: SITE_NAME },
       publisher: {
         '@type': 'Organization',
-        name: 'نارنگ منڈی نیوز',
+        name: SITE_NAME,
         logo: { '@type': 'ImageObject', url: `${SITE}/favicon.svg` },
       },
       mainEntityOfPage: { '@type': 'WebPage', '@id': url },
@@ -230,7 +232,7 @@ app.get('/article/:slug', async (req, res) => {
 
     const html = injectBody(
       injectMeta(template, {
-        title: `${a.title} — نارنگ منڈی نیوز`,
+        title: `${a.title} | ${SITE_NAME}`,
         description,
         image,
         url,

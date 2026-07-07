@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { settingsApi } from '../../api/index.js';
+import { SITE_NAME } from '../../constants/brand.js';
 import { useAuth } from '../../context/AuthContext.jsx';
 import ImageUploader from '../components/ImageUploader.jsx';
 import Loader from '../../components/Loader.jsx';
@@ -19,7 +20,7 @@ export default function SettingsPage() {
   useEffect(() => {
     if (data && !form) {
       setForm({
-        siteName: data.siteName || '',
+        siteName: SITE_NAME,
         logo: data.logo || '',
         tagline: data.tagline || '',
         contactEmail: data.contactEmail || '',
@@ -80,13 +81,15 @@ export default function SettingsPage() {
       <form onSubmit={submit} className="space-y-5 rounded-xl border border-gray-200 bg-white p-6">
         {isAdmin && (
           <>
-            <Field label="Site name (Urdu)">
+            <Field label="Site name">
               <input
-                dir="rtl"
-                value={form.siteName}
-                onChange={(e) => setForm({ ...form, siteName: e.target.value })}
-                className="urdu w-full rounded-lg border border-gray-300 px-3 py-2 outline-none focus:border-brand"
+                value={SITE_NAME}
+                readOnly
+                className="w-full rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-gray-700 outline-none"
               />
+              <p className="mt-1 text-xs text-gray-500">
+                The public site name is fixed as &ldquo;Narang Mandi&rdquo; for branding and search results.
+              </p>
             </Field>
             <Field label="Tagline">
               <input

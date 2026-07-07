@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { categoriesApi, settingsApi } from '../api/index.js';
+import { SITE_NAME } from '../constants/brand.js';
 
 export default function Footer() {
   const { data: settings } = useQuery({ queryKey: ['settings'], queryFn: settingsApi.get });
@@ -8,7 +9,7 @@ export default function Footer() {
     queryKey: ['categories'],
     queryFn: () => categoriesApi.list(),
   });
-  const siteName = settings?.siteName || 'نارنگ منڈی نیوز';
+  const siteName = SITE_NAME;
   const year = new Date().getFullYear();
 
   return (

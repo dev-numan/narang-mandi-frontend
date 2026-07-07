@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { classifiedsApi } from '../api/index.js';
+import { SITE_NAME } from '../constants/brand.js';
 import { formatPrice, timeAgoUrdu } from '../utils/format.js';
 import MultiImageUploader from '../components/MultiImageUploader.jsx';
 import Loader, { EmptyState } from '../components/Loader.jsx';
@@ -167,7 +168,8 @@ export default function ClassifiedsPage() {
   return (
     <>
       <Helmet>
-        <title>Narang Mandi | اشتہارات</title>
+        <title>{SITE_NAME} | اشتہارات</title>
+        <meta property="og:site_name" content={SITE_NAME} />
         <meta name="description" content="نارنگ منڈی کے مقامی اشتہارات — خرید و فروخت، نوکریاں، گاڑیاں" />
       </Helmet>
 

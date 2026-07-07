@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { useQuery } from '@tanstack/react-query';
 import { sanitizeHtml } from '../utils/sanitize.js';
+import { SITE_NAME } from '../constants/brand.js';
 import { articlesApi } from '../api/index.js';
 import ShareButtons from '../components/ShareButtons.jsx';
 import ArticleCard from '../components/ArticleCard.jsx';
@@ -57,8 +58,9 @@ export default function ArticlePage() {
   return (
     <>
       <Helmet>
-        <title>Narang Mandi | {article.title}</title>
+        <title>{SITE_NAME} | {article.title}</title>
         <meta name="description" content={article.excerpt || article.title} />
+        <meta property="og:site_name" content={SITE_NAME} />
         <meta property="og:type" content="article" />
         <meta property="og:title" content={article.title} />
         <meta property="og:description" content={article.excerpt || article.title} />

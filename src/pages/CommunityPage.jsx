@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { communityApi } from '../api/index.js';
+import { SITE_NAME } from '../constants/brand.js';
 import { getClientId } from '../utils/identity.js';
 import { useChatProfile } from '../components/CommunityLayout.jsx';
 import { timeAgoUrdu, toUrduNumber } from '../utils/format.js';
@@ -90,7 +91,8 @@ export default function CommunityPage() {
   return (
     <>
       <Helmet>
-        <title>Narang Mandi | کمیونٹی چیٹ</title>
+        <title>{SITE_NAME} | کمیونٹی چیٹ</title>
+        <meta property="og:site_name" content={SITE_NAME} />
         <meta name="description" content="نارنگ منڈی کمیونٹی چیٹ — چیٹ رومز بنائیں اور براہِ راست گفتگو میں شامل ہوں" />
       </Helmet>
 

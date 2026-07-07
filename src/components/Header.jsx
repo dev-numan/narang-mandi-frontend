@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { settingsApi } from '../api/index.js';
+import { SITE_NAME, SITE_NAME_URDU } from '../constants/brand.js';
 import SearchBar from './SearchBar.jsx';
 import WeatherWidget from './WeatherWidget.jsx';
 
@@ -27,7 +28,7 @@ function SocialIcons({ links }) {
 export default function Header() {
   const [showSearch, setShowSearch] = useState(false);
   const { data: settings } = useQuery({ queryKey: ['settings'], queryFn: settingsApi.get });
-  const siteName = settings?.siteName || 'نارنگ منڈی نیوز';
+  const tagline = settings?.tagline || `${SITE_NAME_URDU} — آپ کے شہر کی تازہ ترین خبریں`;
 
   const today = new Date().toLocaleDateString('ur-PK', {
     weekday: 'long',
@@ -41,17 +42,15 @@ export default function Header() {
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-2 px-4 py-3 sm:gap-4 sm:py-4">
         <Link to="/" className="flex min-w-0 items-center gap-2 sm:gap-3">
           {settings?.logo ? (
-            <img src={settings.logo} alt={siteName} className="h-10 w-auto flex-shrink-0 sm:h-12" />
+            <img src={settings.logo} alt={SITE_NAME} className="h-10 w-auto flex-shrink-0 sm:h-12" />
           ) : (
             <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-brand text-lg font-bold leading-none text-white sm:h-12 sm:w-12 sm:text-xl">
               ن
             </span>
           )}
           <div className="min-w-0">
-            <h1 className="whitespace-nowrap pb-1 text-lg font-bold leading-[1.9] text-brand sm:text-2xl">{siteName}</h1>
-            {settings?.tagline && (
-              <p className="mt-1 truncate pb-1 text-xs leading-[1.9] text-gray-500">{settings.tagline}</p>
-            )}
+            <h1 className="whitespace-nowrap pb-1 text-lg font-bold leading-[1.9] text-brand sm:text-2xl">{SITE_NAME}</h1>
+            <p className="mt-1 truncate pb-1 text-xs leading-[1.9] text-gray-500">{tagline}</p>
           </div>
         </Link>
 

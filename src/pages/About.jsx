@@ -1,15 +1,12 @@
 import { Helmet } from 'react-helmet-async';
-import { useQuery } from '@tanstack/react-query';
-import { settingsApi } from '../api/index.js';
+import { SITE_NAME } from '../constants/brand.js';
 
 export default function About() {
-  const { data: settings } = useQuery({ queryKey: ['settings'], queryFn: settingsApi.get });
-  const siteName = settings?.siteName || 'نارنگ منڈی نیوز';
-
   return (
     <>
       <Helmet>
-        <title>Narang Mandi | ہمارے بارے میں</title>
+        <title>{SITE_NAME} | ہمارے بارے میں</title>
+        <meta property="og:site_name" content={SITE_NAME} />
       </Helmet>
       <div className="mx-auto max-w-3xl rounded-xl bg-white p-6 shadow-sm sm:p-8">
         <h1 className="mb-4 border-b-2 border-brand pb-2 text-2xl font-bold text-ink sm:text-3xl">
@@ -17,7 +14,7 @@ export default function About() {
         </h1>
         <div className="article-content">
           <p>
-            {siteName} نارنگ منڈی شہر کی ایک معتبر خبر رساں ویب سائٹ ہے جو اپنے قارئین تک
+            {SITE_NAME} نارنگ منڈی شہر کی ایک معتبر خبر رساں ویب سائٹ ہے جو اپنے قارئین تک
             تازہ ترین، مستند اور غیر جانبدار خبریں پہنچانے کے لیے کوشاں ہے۔
           </p>
           <p>

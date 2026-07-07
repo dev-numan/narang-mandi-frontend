@@ -4,7 +4,7 @@ import { formatUrduDate } from '../utils/format.js';
 const PLACEHOLDER =
   'data:image/svg+xml;utf8,' +
   encodeURIComponent(
-    '<svg xmlns="http://www.w3.org/2000/svg" width="600" height="400"><rect width="100%" height="100%" fill="#e5e7eb"/><text x="50%" y="50%" font-size="28" fill="#9ca3af" text-anchor="middle" dominant-baseline="middle" font-family="serif">نارنگ منڈی نیوز</text></svg>'
+    '<svg xmlns="http://www.w3.org/2000/svg" width="600" height="400"><rect width="100%" height="100%" fill="#e5e7eb"/><text x="50%" y="50%" font-size="28" fill="#9ca3af" text-anchor="middle" dominant-baseline="middle" font-family="serif">Narang Mandi</text></svg>'
   );
 
 export default function ArticleCard({ article, variant = 'default' }) {

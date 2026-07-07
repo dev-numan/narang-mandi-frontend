@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { placesApi } from '../api/index.js';
+import { SITE_NAME } from '../constants/brand.js';
 import Loader, { EmptyState } from '../components/Loader.jsx';
 
 function Stars({ rating, count }) {
@@ -194,7 +195,8 @@ export default function PlacesPage() {
   return (
     <>
       <Helmet>
-        <title>Narang Mandi | مشہور مقامات</title>
+        <title>{SITE_NAME} | مشہور مقامات</title>
+        <meta property="og:site_name" content={SITE_NAME} />
         <meta name="description" content="نارنگ منڈی کے مشہور مقامات، بازار، دکانیں اور خدمات کی فہرست" />
       </Helmet>
 

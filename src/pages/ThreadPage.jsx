@@ -5,6 +5,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { communityApi } from '../api/index.js';
 import { getSocket } from '../api/socket.js';
 import { getClientId } from '../utils/identity.js';
+import { SITE_NAME } from '../constants/brand.js';
 import { useChatProfile } from '../components/CommunityLayout.jsx';
 import { timeAgoUrdu, toUrduNumber } from '../utils/format.js';
 import Loader from '../components/Loader.jsx';
@@ -270,7 +271,8 @@ export default function ThreadPage() {
   return (
     <>
       <Helmet>
-        <title>Narang Mandi | {thread.title} — کمیونٹی چیٹ</title>
+        <title>{SITE_NAME} | {thread.title} — کمیونٹی چیٹ</title>
+        <meta property="og:site_name" content={SITE_NAME} />
       </Helmet>
 
       <div className="mb-3">

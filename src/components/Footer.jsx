@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { categoriesApi, settingsApi } from '../api/index.js';
 import { SITE_NAME } from '../constants/brand.js';
+import { CONTACT_WHATSAPP_DISPLAY, CONTACT_WHATSAPP_URL } from '../constants/contact.js';
 
 export default function Footer() {
   const { data: settings } = useQuery({ queryKey: ['settings'], queryFn: settingsApi.get });
@@ -37,7 +38,14 @@ export default function Footer() {
           <h4 className="mb-3 font-bold text-white">روابط</h4>
           <ul className="space-y-1 text-sm">
             <li><Link to="/about" className="hover:text-white">ہمارے بارے میں</Link></li>
-            <li><Link to="/contact" className="hover:text-white">رابطہ</Link></li>
+            <li>
+              <Link to="/contact" className="hover:text-white">رابطہ</Link>
+            </li>
+            <li>
+              <a href={CONTACT_WHATSAPP_URL} target="_blank" rel="noreferrer" className="hover:text-white" dir="ltr">
+                واٹس ایپ: {CONTACT_WHATSAPP_DISPLAY}
+              </a>
+            </li>
             <li><Link to="/privacy" className="hover:text-white">رازداری کی پالیسی</Link></li>
             {settings?.contactEmail && (
               <li className="text-gray-400">{settings.contactEmail}</li>

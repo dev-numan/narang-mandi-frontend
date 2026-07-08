@@ -248,6 +248,15 @@ app.get('/article/:slug', async (req, res) => {
   }
 });
 
+// Legacy static-site URLs (old .html pages) → current routes.
+const LEGACY_REDIRECTS = {
+  '/home.html': '/',
+  '/contact-us.html': '/contact',
+};
+app.get(Object.keys(LEGACY_REDIRECTS), (req, res) => {
+  res.redirect(301, LEGACY_REDIRECTS[req.path]);
+});
+
 // Sitemap — the dynamic XML lives on the API server (root route, not under
 // /api), so nginx never proxies it to this host. Fetch it from the backend and
 // re-serve it with the correct content type. Without this, the SPA catch-all

@@ -6,6 +6,7 @@ import { classifiedsApi } from '../api/index.js';
 import { SITE_NAME } from '../constants/brand.js';
 import { formatPrice, timeAgoUrdu } from '../utils/format.js';
 import MultiImageUploader from '../components/MultiImageUploader.jsx';
+import SoldStampOverlay from '../components/SoldStampOverlay.jsx';
 import Loader, { EmptyState } from '../components/Loader.jsx';
 
 function PriceTag({ price, negotiable }) {
@@ -22,37 +23,60 @@ function PriceTag({ price, negotiable }) {
 
 function ListingCard({ item }) {
   const img = item.images?.[0];
+  const waNumber = (item.phone || '').replace(/[^\d]/g, '').replace(/^0/, '92');
+
   return (
-    <Link
-      to={`/classifieds/${item.slug}`}
-      className="flex flex-col overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm transition hover:border-brand hover:shadow-md"
-    >
-      <div className="relative h-40 bg-gray-100">
-        {img ? (
-          <img src={img} alt={item.title} className="h-full w-full object-cover" />
-        ) : (
-          <div className="urdu flex h-full items-center justify-center text-gray-300">
-            {item.category?.icon || '🏷️'}
+    <div className="flex flex-col overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm transition hover:border-brand hover:shadow-md">
+      <Link to={`/classifieds/${item.slug}`} className="block">
+        <div className="relative h-40 bg-gray-100">
+          {img ? (
+            <img src={img} alt={item.title} className="h-full w-full object-cover" />
+          ) : (
+            <div className="urdu flex h-full items-center justify-center text-gray-300">
+              {item.category?.icon || '🏷️'}
+            </div>
+          )}
+          {item.isSold && <SoldStampOverlay />}
+        </div>
+        <div className="p-3 pb-0">
+          <h3 className="urdu mb-1 line-clamp-1 font-bold text-ink">{item.title}</h3>
+          <div className="mb-2">
+            <PriceTag price={item.price} negotiable={item.negotiable} />
+          </div>
+        </div>
+      </Link>
+      <div className="flex flex-1 flex-col px-3 pb-3">
+        {item.phone && (
+          <div className="mb-2 flex items-center justify-between gap-2 border-t border-gray-100 pt-2">
+            <a
+              href={`tel:${item.phone}`}
+              dir="ltr"
+              className="text-sm font-semibold text-ink hover:text-brand"
+            >
+              📞 {item.phone}
+            </a>
+            {waNumber && (
+              <a
+                href={`https://wa.me/${waNumber}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="WhatsApp"
+                className="relative z-10 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-green-600 text-white hover:bg-green-700"
+              >
+                <svg viewBox="0 0 24 24" className="h-4 w-4 fill-current" aria-hidden="true">
+                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.435 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+                </svg>
+              </a>
+            )}
           </div>
         )}
-        {item.isSold && (
-          <span className="urdu absolute right-2 top-2 rounded-full bg-gray-800/80 px-2 py-0.5 text-xs text-white">
-            فروخت ہو گیا
-          </span>
-        )}
-      </div>
-      <div className="flex flex-1 flex-col p-3">
-        <h3 className="urdu mb-1 line-clamp-1 font-bold text-ink">{item.title}</h3>
-        <div className="mb-2">
-          <PriceTag price={item.price} negotiable={item.negotiable} />
-        </div>
         <div className="urdu mt-auto flex items-center justify-between text-xs text-gray-400">
           <span>{item.category?.name}</span>
           <span>{timeAgoUrdu(item.createdAt)}</span>
         </div>
         {item.location && <p className="urdu mt-1 text-xs text-gray-400">📍 {item.location}</p>}
       </div>
-    </Link>
+    </div>
   );
 }
 
@@ -72,12 +96,29 @@ function PostAdModal({ categories, onClose }) {
   const [form, setForm] = useState(EMPTY);
   const [error, setError] = useState('');
   const [done, setDone] = useState('');
+  const [saleCode, setSaleCode] = useState('');
+  const [copied, setCopied] = useState(false);
 
   const mut = useMutation({
     mutationFn: (payload) => classifiedsApi.submit(payload),
-    onSuccess: (res) => setDone(res.message || 'شکریہ! آپ کا اشتہار موصول ہو گیا۔'),
+    onSuccess: (res) => {
+      setDone(res.message || 'شکریہ! آپ کا اشتہار موصول ہو گیا۔');
+      setSaleCode(res.data?.saleCode || '');
+    },
     onError: (err) => setError(err.message),
   });
+
+  const copyCode = async () => {
+    if (!saleCode) return;
+    const text = `کوڈ: ${saleCode}\nفون: ${form.phone}`;
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      setCopied(false);
+    }
+  };
 
   const submit = (e) => {
     e.preventDefault();
@@ -94,7 +135,27 @@ function PostAdModal({ categories, onClose }) {
         {done ? (
           <div className="text-center">
             <div className="mb-3 text-4xl">✅</div>
-            <p className="urdu mb-5 text-gray-700">{done}</p>
+            <p className="urdu mb-4 text-gray-700">{done}</p>
+            {saleCode && (
+              <div className="mb-5 rounded-xl border-2 border-dashed border-brand/40 bg-brand/5 p-4">
+                <p className="urdu mb-2 text-sm font-semibold text-ink">آپ کا خصوصی کوڈ</p>
+                <p className="urdu mb-3 text-xs text-gray-600">
+                  یہ کوڈ اور اپنا فون نمبر ({form.phone}) محفوظ رکھیں۔ فروخت کے بعد دونوں درج کر کے اشتہار فروخت شدہ قرار دیں۔
+                </p>
+                <div className="flex items-center justify-center gap-2">
+                  <span className="rounded-lg bg-white px-4 py-2 font-mono text-xl font-bold tracking-widest text-brand" dir="ltr">
+                    {saleCode}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={copyCode}
+                    className="urdu rounded-lg border border-brand px-3 py-2 text-sm font-semibold text-brand hover:bg-brand/10"
+                  >
+                    {copied ? 'کاپی ہو گیا ✓' : 'کاپی کریں'}
+                  </button>
+                </div>
+              </div>
+            )}
             <button onClick={onClose} className="urdu rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-white hover:bg-brand-dark">
               بند کریں
             </button>
@@ -136,6 +197,81 @@ function PostAdModal({ categories, onClose }) {
           </form>
         )}
       </div>
+    </div>
+  );
+}
+
+function MarkSoldCard({ onSuccess }) {
+  const [code, setCode] = useState('');
+  const [phone, setPhone] = useState('');
+  const [error, setError] = useState('');
+  const [message, setMessage] = useState('');
+
+  const mut = useMutation({
+    mutationFn: (payload) => classifiedsApi.markSold(payload),
+    onSuccess: (res) => {
+      setMessage(res.message || 'آپ کی چیز فروخت شدہ قرار دے دی گئی ہے۔');
+      setError('');
+      setCode('');
+      setPhone('');
+      onSuccess?.();
+    },
+    onError: (err) => {
+      setError(err.message);
+      setMessage('');
+    },
+  });
+
+  const submit = (e) => {
+    e.preventDefault();
+    setError('');
+    setMessage('');
+    const trimmed = code.replace(/\D/g, '').slice(0, 8);
+    if (trimmed.length < 6) {
+      setError('براہِ کرم درست کوڈ درج کریں');
+      return;
+    }
+    if (!phone.trim()) {
+      setError('براہِ کرم وہی فون نمبر درج کریں جو اشتہار میں دیا تھا');
+      return;
+    }
+    mut.mutate({ saleCode: trimmed, phone: phone.trim() });
+  };
+
+  return (
+    <div className="mt-4 rounded-xl border border-gray-200 bg-white p-4">
+      <h2 className="urdu mb-1 text-lg font-bold text-ink">چیز فروخت ہو گئی؟</h2>
+      <p className="urdu mb-3 text-xs text-gray-500">
+        اشتہار دیتے وقت ملنے والا کوڈ اور وہی فون نمبر درج کریں — اشتہار فروخت شدہ ہو جائے گا۔
+      </p>
+      <form onSubmit={submit} className="space-y-2">
+        <input
+          dir="ltr"
+          inputMode="numeric"
+          maxLength={8}
+          placeholder="کوڈ"
+          value={code}
+          onChange={(e) => setCode(e.target.value.replace(/\D/g, '').slice(0, 8))}
+          className="w-full rounded-lg border border-gray-300 px-3 py-2 text-center font-mono text-lg tracking-widest outline-none focus:border-brand"
+        />
+        <input
+          dir="ltr"
+          required
+          placeholder="فون نمبر (اشتہار والا)"
+          value={phone}
+          onChange={(e) => setPhone(e.target.value)}
+          className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:border-brand"
+        />
+        {error && <p className="urdu text-xs text-red-600">{error}</p>}
+        {message && <p className="urdu text-xs text-green-700">{message}</p>}
+        <button
+          type="submit"
+          disabled={mut.isPending || code.length < 6 || !phone.trim()}
+          className="urdu w-full rounded-lg bg-gray-800 px-3 py-2 text-sm font-semibold text-white hover:bg-gray-900 disabled:opacity-60"
+        >
+          {mut.isPending ? 'تصدیق ہو رہی ہے…' : 'فروخت شدہ قرار دیں'}
+        </button>
+      </form>
     </div>
   );
 }
@@ -224,6 +360,7 @@ export default function ClassifiedsPage() {
               ))}
             </ul>
           </div>
+          <MarkSoldCard onSuccess={() => qc.invalidateQueries({ queryKey: ['classifieds'] })} />
         </aside>
       </div>
 

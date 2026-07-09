@@ -6,6 +6,7 @@ import { classifiedsApi } from '../api/index.js';
 import { SITE_NAME } from '../constants/brand.js';
 import { formatPrice, timeAgoUrdu } from '../utils/format.js';
 import Loader from '../components/Loader.jsx';
+import SoldStampOverlay from '../components/SoldStampOverlay.jsx';
 
 export default function ClassifiedPage() {
   const { slug } = useParams();
@@ -54,11 +55,7 @@ export default function ClassifiedPage() {
                 {item.category?.icon || '🏷️'}
               </div>
             )}
-            {item.isSold && (
-              <span className="urdu absolute right-3 top-3 rounded-full bg-gray-800/80 px-3 py-1 text-sm text-white">
-                فروخت ہو گیا
-              </span>
-            )}
+            {item.isSold && <SoldStampOverlay />}
           </div>
           {images.length > 1 && (
             <div className="mt-2 flex gap-2 overflow-x-auto">
@@ -66,9 +63,10 @@ export default function ClassifiedPage() {
                 <button
                   key={url + i}
                   onClick={() => setActive(i)}
-                  className={`h-16 w-16 shrink-0 overflow-hidden rounded-lg border-2 ${i === active ? 'border-brand' : 'border-transparent'}`}
+                  className={`relative h-16 w-16 shrink-0 overflow-hidden rounded-lg border-2 ${i === active ? 'border-brand' : 'border-transparent'}`}
                 >
                   <img src={url} alt="" className="h-full w-full object-cover" />
+                  {item.isSold && <SoldStampOverlay />}
                 </button>
               ))}
             </div>

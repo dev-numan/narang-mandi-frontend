@@ -124,6 +124,7 @@ export default function Classifieds() {
     { key: 'title', header: 'Title', render: (r) => <span className="urdu font-medium">{r.title}</span> },
     { key: 'category', header: 'Category', render: (r) => <span className="urdu">{r.category?.name || '—'}</span> },
     { key: 'price', header: 'Price', render: (r) => (r.price != null ? formatPrice(r.price) : '—') },
+    { key: 'saleCode', header: 'Code', render: (r) => <span className="font-mono text-xs">{r.saleCode || '—'}</span> },
     {
       key: 'status',
       header: 'Status',

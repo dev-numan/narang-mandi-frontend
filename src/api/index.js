@@ -96,6 +96,7 @@ export const classifiedsApi = {
   list: (params) => api.get('/classifieds', { params }).then((r) => r.data.data),
   get: (slug) => api.get(`/classifieds/${slug}`).then((r) => r.data.data),
   submit: (payload) => api.post('/classifieds', payload).then((r) => r.data),
+  markSold: (payload) => api.post('/classifieds/mark-sold', payload).then((r) => r.data),
   uploadImage: (file) => {
     const form = new FormData();
     form.append('image', file);

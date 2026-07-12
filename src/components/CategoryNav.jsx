@@ -21,6 +21,7 @@ export default function CategoryNav() {
     { to: '/community', label: 'کمیونٹی چیٹ' },
     { to: '/trains', label: 'ٹرین اوقات' },
     { to: '/classifieds', label: 'اشتہارات' },
+    { to: '/shops', label: 'دکانیں' },
     ...categories.map((c) => ({ to: `/category/${c.slug}`, label: c.name, key: c._id })),
   ];
 

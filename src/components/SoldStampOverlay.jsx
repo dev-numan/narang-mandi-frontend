@@ -6,7 +6,7 @@ export default function SoldStampOverlay() {
       <img
         src={SOLD_STAMP_URL}
         alt="فروخت ہو گیا"
-        className="h-[85%] w-[85%] object-contain opacity-70"
+        className="h-[85%] w-[85%] object-contain opacity-100"
       />
     </div>
   );

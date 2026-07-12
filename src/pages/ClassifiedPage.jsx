@@ -105,23 +105,29 @@ export default function ClassifiedPage() {
 
           <div className="rounded-xl border border-gray-200 bg-white p-4">
             <h2 className="urdu mb-2 text-sm font-bold text-ink">رابطہ</h2>
-            {item.contactName && <p className="urdu mb-2 text-sm text-gray-600">{item.contactName}</p>}
-            {item.phone && (
-              <div className="flex flex-wrap gap-2">
-                <a href={`tel:${item.phone}`} dir="ltr" className="rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-white hover:bg-brand-dark">
-                  📞 {item.phone}
-                </a>
-                {waNumber && (
-                  <a
-                    href={`https://wa.me/${waNumber}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="rounded-lg bg-green-600 px-4 py-2 text-sm font-semibold text-white hover:bg-green-700"
-                  >
-                    WhatsApp
-                  </a>
+            {item.isSold ? (
+              <p className="urdu text-sm text-gray-500">یہ چیز فروخت ہو چکی ہے — رابطے کی تفصیلات دستیاب نہیں۔</p>
+            ) : (
+              <>
+                {item.contactName && <p className="urdu mb-2 text-sm text-gray-600">{item.contactName}</p>}
+                {item.phone && (
+                  <div className="flex flex-wrap gap-2">
+                    <a href={`tel:${item.phone}`} dir="ltr" className="rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-white hover:bg-brand-dark">
+                      📞 {item.phone}
+                    </a>
+                    {waNumber && (
+                      <a
+                        href={`https://wa.me/${waNumber}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="rounded-lg bg-green-600 px-4 py-2 text-sm font-semibold text-white hover:bg-green-700"
+                      >
+                        WhatsApp
+                      </a>
+                    )}
+                  </div>
                 )}
-              </div>
+              </>
             )}
           </div>
         </div>

@@ -119,6 +119,51 @@ export const classifiedsApi = {
   removeCategory: (id) => api.delete(`/admin/classified-categories/${id}`).then((r) => r.data),
 };
 
+// ---- Shops / Dukanen (public, customer-facing) ----
+export const shopsApi = {
+  list: (params) => api.get('/shops', { params }).then((r) => r.data.data),
+  get: (slug) => api.get(`/shops/${slug}`).then((r) => r.data.data),
+  products: (slug, params) =>
+    api.get(`/shops/${slug}/products`, { params }).then((r) => r.data.data),
+  product: (slug, productSlug) =>
+    api.get(`/shops/${slug}/products/${productSlug}`).then((r) => r.data.data),
+  placeOrder: (slug, payload) => api.post(`/shops/${slug}/orders`, payload).then((r) => r.data),
+  lookupOrder: (payload) => api.post('/shops/orders/lookup', payload).then((r) => r.data.data),
+};
+
+// ---- Shopkeeper panel (/shop/admin) ----
+export const shopAdminApi = {
+  shop: () => api.get('/shop-admin/shop').then((r) => r.data.data),
+  updateShop: (payload) => api.put('/shop-admin/shop', payload).then((r) => r.data.data),
+  stats: () => api.get('/shop-admin/stats').then((r) => r.data.data),
+  // categories
+  categories: () => api.get('/shop-admin/categories').then((r) => r.data.data),
+  createCategory: (payload) => api.post('/shop-admin/categories', payload).then((r) => r.data.data),
+  updateCategory: (id, payload) =>
+    api.put(`/shop-admin/categories/${id}`, payload).then((r) => r.data.data),
+  removeCategory: (id) => api.delete(`/shop-admin/categories/${id}`).then((r) => r.data),
+  // products
+  products: () => api.get('/shop-admin/products').then((r) => r.data.data),
+  createProduct: (payload) => api.post('/shop-admin/products', payload).then((r) => r.data.data),
+  updateProduct: (id, payload) =>
+    api.put(`/shop-admin/products/${id}`, payload).then((r) => r.data.data),
+  removeProduct: (id) => api.delete(`/shop-admin/products/${id}`).then((r) => r.data),
+  // orders
+  orders: (params) => api.get('/shop-admin/orders', { params }).then((r) => r.data.data),
+  setOrderStatus: (id, status) =>
+    api.patch(`/shop-admin/orders/${id}/status`, { status }).then((r) => r.data.data),
+};
+
+// ---- Shops (super-admin management) ----
+export const adminShopsApi = {
+  list: () => api.get('/admin/shops').then((r) => r.data.data),
+  create: (payload) => api.post('/admin/shops', payload).then((r) => r.data.data),
+  update: (id, payload) => api.put(`/admin/shops/${id}`, payload).then((r) => r.data.data),
+  setStatus: (id, isActive) =>
+    api.patch(`/admin/shops/${id}/status`, { isActive }).then((r) => r.data.data),
+  remove: (id) => api.delete(`/admin/shops/${id}`).then((r) => r.data),
+};
+
 // ---- Settings ----
 export const settingsApi = {
   get: () => api.get('/settings').then((r) => r.data.data),

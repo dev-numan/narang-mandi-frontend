@@ -124,7 +124,24 @@ export default function Classifieds() {
     { key: 'title', header: 'Title', render: (r) => <span className="urdu font-medium">{r.title}</span> },
     { key: 'category', header: 'Category', render: (r) => <span className="urdu">{r.category?.name || '—'}</span> },
     { key: 'price', header: 'Price', render: (r) => (r.price != null ? formatPrice(r.price) : '—') },
-    { key: 'saleCode', header: 'Code', render: (r) => <span className="font-mono text-xs">{r.saleCode || '—'}</span> },
+    {
+      key: 'saleCode',
+      header: 'Pin Code',
+      render: (r) =>
+        r.saleCode ? (
+          <button
+            type="button"
+            onClick={() => navigator.clipboard.writeText(r.saleCode)}
+            title="Click to copy"
+            className="rounded bg-gray-100 px-2 py-1 font-mono text-sm font-bold tracking-wider text-brand hover:bg-gray-200"
+          >
+            {r.saleCode}
+          </button>
+        ) : (
+          <span className="text-xs text-gray-400">—</span>
+        ),
+    },
+    { key: 'phone', header: 'Phone', render: (r) => <span dir="ltr" className="font-mono text-xs">{r.phone || '—'}</span> },
     {
       key: 'status',
       header: 'Status',

@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { HelmetProvider } from 'react-helmet-async';
 import App from './App.jsx';
 import { AuthProvider } from './context/AuthContext.jsx';
+import { CartProvider } from './context/CartContext.jsx';
 import 'react-quill-new/dist/quill.snow.css';
 import './index.css';
 
@@ -20,7 +21,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       <QueryClientProvider client={queryClient}>
         <BrowserRouter>
           <AuthProvider>
-            <App />
+            <CartProvider>
+              <App />
+            </CartProvider>
           </AuthProvider>
         </BrowserRouter>
       </QueryClientProvider>

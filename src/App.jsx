@@ -13,6 +13,11 @@ import ThreadPage from './pages/ThreadPage.jsx';
 import TrainsPage from './pages/TrainsPage.jsx';
 import ClassifiedsPage from './pages/ClassifiedsPage.jsx';
 import ClassifiedPage from './pages/ClassifiedPage.jsx';
+import ShopsPage from './pages/ShopsPage.jsx';
+import ShopPage from './pages/ShopPage.jsx';
+import ProductPage from './pages/ProductPage.jsx';
+import CartPage from './pages/CartPage.jsx';
+import OrderLookupPage from './pages/OrderLookupPage.jsx';
 import About from './pages/About.jsx';
 import Contact from './pages/Contact.jsx';
 import PrivacyPolicy from './pages/PrivacyPolicy.jsx';
@@ -34,6 +39,17 @@ import Classifieds from './admin/pages/Classifieds.jsx';
 import SettingsPage from './admin/pages/Settings.jsx';
 import Profile from './admin/pages/Profile.jsx';
 import Users from './admin/pages/Users.jsx';
+import Shops from './admin/pages/Shops.jsx';
+
+// Shopkeeper panel
+import ShopProtectedRoute from './shop/ShopProtectedRoute.jsx';
+import ShopAdminLayout from './shop/ShopAdminLayout.jsx';
+import ShopLogin from './shop/pages/Login.jsx';
+import ShopDashboard from './shop/pages/Dashboard.jsx';
+import ShopProducts from './shop/pages/Products.jsx';
+import ShopCategories from './shop/pages/Categories.jsx';
+import ShopOrders from './shop/pages/Orders.jsx';
+import ShopProfile from './shop/pages/ShopProfile.jsx';
 
 export default function App() {
   return (
@@ -52,6 +68,11 @@ export default function App() {
         <Route path="/trains" element={<TrainsPage />} />
         <Route path="/classifieds" element={<ClassifiedsPage />} />
         <Route path="/classifieds/:slug" element={<ClassifiedPage />} />
+        <Route path="/shops" element={<ShopsPage />} />
+        <Route path="/shops/:shopSlug" element={<ShopPage />} />
+        <Route path="/shops/:shopSlug/product/:productSlug" element={<ProductPage />} />
+        <Route path="/cart" element={<CartPage />} />
+        <Route path="/orders/track" element={<OrderLookupPage />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/privacy" element={<PrivacyPolicy />} />
@@ -84,9 +105,27 @@ export default function App() {
         <Route path="community" element={<RequireAdmin><Community /></RequireAdmin>} />
         <Route path="trains" element={<RequireAdmin><Trains /></RequireAdmin>} />
         <Route path="classifieds" element={<RequireAdmin><Classifieds /></RequireAdmin>} />
+        <Route path="shops" element={<RequireAdmin><Shops /></RequireAdmin>} />
         <Route path="settings" element={<RequireAdmin><SettingsPage /></RequireAdmin>} />
         <Route path="profile" element={<Profile />} />
         <Route path="users" element={<RequireAdmin><Users /></RequireAdmin>} />
+      </Route>
+
+      {/* Shopkeeper panel (LTR shell, RTL content) */}
+      <Route path="/shop/admin/login" element={<ShopLogin />} />
+      <Route
+        path="/shop/admin"
+        element={
+          <ShopProtectedRoute>
+            <ShopAdminLayout />
+          </ShopProtectedRoute>
+        }
+      >
+        <Route index element={<ShopDashboard />} />
+        <Route path="products" element={<ShopProducts />} />
+        <Route path="categories" element={<ShopCategories />} />
+        <Route path="orders" element={<ShopOrders />} />
+        <Route path="profile" element={<ShopProfile />} />
       </Route>
     </Routes>
   );

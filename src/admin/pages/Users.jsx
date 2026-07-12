@@ -194,8 +194,14 @@ export default function Users() {
               >
                 <option value="editor">editor</option>
                 <option value="admin">admin</option>
+                <option value="shopkeeper">shopkeeper</option>
               </select>
-              {form.role === 'editor' ? (
+              {form.role === 'shopkeeper' ? (
+                <p className="rounded-lg bg-gray-50 px-3 py-2 text-xs text-gray-400">
+                  Shopkeepers sign in at /shop/admin. To create a shopkeeper together with a shop,
+                  use the <span className="font-semibold">Dukanen</span> page instead.
+                </p>
+              ) : form.role === 'editor' ? (
                 <label className="flex items-start gap-2 rounded-lg bg-gray-50 px-3 py-2 text-sm text-gray-700">
                   <input
                     type="checkbox"

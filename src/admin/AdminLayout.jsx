@@ -10,6 +10,7 @@ const NAV = [
   { to: '/admin/community', label: 'Community', icon: '💬', adminOnly: true },
   { to: '/admin/trains', label: 'Trains', icon: '🚆', adminOnly: true },
   { to: '/admin/classifieds', label: 'Classifieds', icon: '🛒', adminOnly: true },
+  { to: '/admin/shops', label: 'Dukanen', icon: '🏪', adminOnly: true },
   { to: '/admin/settings', label: 'Settings', icon: '⚙️', adminOnly: true },
   { to: '/admin/profile', label: 'Profile', icon: '👤' },
   { to: '/admin/users', label: 'Users', icon: '👥', adminOnly: true },

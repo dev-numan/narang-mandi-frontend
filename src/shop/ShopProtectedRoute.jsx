@@ -2,7 +2,9 @@ import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.jsx';
 import Loader from '../components/Loader.jsx';
 
-export default function ProtectedRoute({ children }) {
+// Guards the /shop/admin panel — shopkeepers only. Admins/editors are sent to
+// the news admin; unauthenticated visitors to the shop login.
+export default function ShopProtectedRoute({ children }) {
   const { user, loading } = useAuth();
   const location = useLocation();
 
@@ -15,12 +17,11 @@ export default function ProtectedRoute({ children }) {
   }
 
   if (!user) {
-    return <Navigate to="/admin/login" replace state={{ from: location.pathname }} />;
+    return <Navigate to="/shop/admin/login" replace state={{ from: location.pathname }} />;
   }
 
-  // Shopkeepers belong in their own panel, not the news admin.
-  if (user.role === 'shopkeeper') {
-    return <Navigate to="/shop/admin" replace />;
+  if (user.role !== 'shopkeeper') {
+    return <Navigate to="/admin" replace />;
   }
 
   return children;

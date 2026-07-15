@@ -19,7 +19,7 @@ export default function Footer() {
         <div>
           <h3 className="mb-3 text-xl font-bold text-white">{siteName}</h3>
           <p className="text-sm leading-loose text-gray-400">
-            {settings?.tagline || 'آپ کے شہر کی تازہ ترین اور قابلِ اعتماد خبریں۔'}
+            {settings?.tagline || "Your city's all-in-one digital hub."}
           </p>
         </div>
         <div>

@@ -4,9 +4,9 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Narang Mandi | نارنگ منڈی نیوز — تازہ ترین خبریں</title>
-    <meta name="description" content="نارنگ منڈی کی تازہ ترین خبریں، سیاست، کھیل، مقامی واقعات اور بہت کچھ۔ Narang Mandi — latest local news, politics and sports from Narang Mandi." />
-    <meta name="keywords" content="Narang Mandi, Narang Mandi News, نارنگ منڈی, نارنگ منڈی نیوز, Narang Mandi latest news" />
+    <title>Narang Mandi — All-in-One Digital Hub</title>
+    <meta name="description" content="Narang Mandi's all-in-one digital hub — read local news, buy and sell used products, open your own online shop, join the community chat, and more." />
+    <meta name="keywords" content="Narang Mandi, narangmandi, Narang Mandi digital hub, buy and sell Narang Mandi, sell old products, online shop Narang Mandi, Narang Mandi classifieds, Narang Mandi community, Narang Mandi news" />
     <link rel="canonical" href="https://narangmandi.com/" />
     <link rel="alternate" hreflang="ur-PK" href="https://narangmandi.com/" />
 
@@ -14,17 +14,17 @@
          (e.g. for individual articles) before serving. -->
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Narang Mandi" />
-    <meta property="og:title" content="Narang Mandi | نارنگ منڈی نیوز — تازہ ترین خبریں" />
-    <meta property="og:description" content="نارنگ منڈی کی تازہ ترین خبریں، سیاست، کھیل، مقامی واقعات اور بہت کچھ۔ Narang Mandi — latest local news from Narang Mandi." />
+    <meta property="og:title" content="Narang Mandi — All-in-One Digital Hub" />
+    <meta property="og:description" content="Narang Mandi's all-in-one digital hub — read local news, buy and sell used products, open your own online shop, join the community chat, and more." />
     <meta property="og:url" content="https://narangmandi.com/" />
     <meta property="og:image" content="https://narangmandi.com/og-default.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:locale" content="ur_PK" />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Narang Mandi — All-in-One Digital Hub" />
+    <meta name="twitter:description" content="Narang Mandi's all-in-one digital hub — news, buy & sell, online shops and community." />
     <meta name="twitter:image" content="https://narangmandi.com/og-default.png" />
-    <meta name="twitter:title" content="Narang Mandi | نارنگ منڈی نیوز — تازہ ترین خبریں" />
-    <meta name="twitter:description" content="نارنگ منڈی کی تازہ ترین خبریں، سیاست، کھیل، مقامی واقعات اور بہت کچھ۔ Narang Mandi." />
 
     <!-- Site-wide Schema.org structured data (WebSite + Organization) -->
     <script type="application/ld+json">
@@ -36,7 +36,8 @@
             "@id": "https://narangmandi.com/#website",
             "url": "https://narangmandi.com/",
             "name": "Narang Mandi",
-            "alternateName": ["Narang Mandi News", "نارنگ منڈی نیوز", "narangmandi.com"],
+            "alternateName": ["Narang Mandi", "نارنگ منڈی", "narangmandi.com"],
+            "description": "Narang Mandi's all-in-one digital hub — news, buy & sell, online shops and community.",
             "publisher": { "@id": "https://narangmandi.com/#organization" },
             "inLanguage": "ur",
             "potentialAction": {
@@ -46,12 +47,19 @@
             }
           },
           {
-            "@type": "NewsMediaOrganization",
+            "@type": "Organization",
             "@id": "https://narangmandi.com/#organization",
             "name": "Narang Mandi",
-            "alternateName": ["Narang Mandi News", "نارنگ منڈی نیوز", "narangmandi.com"],
+            "alternateName": ["Narang Mandi", "نارنگ منڈی", "narangmandi.com"],
             "url": "https://narangmandi.com/",
-            "logo": { "@type": "ImageObject", "url": "https://narangmandi.com/favicon.svg" }
+            "description": "Narang Mandi's all-in-one digital hub — read local news, buy and sell used products, open your own online shop, and join the community chat.",
+            "logo": { "@type": "ImageObject", "url": "https://narangmandi.com/og-default.png" },
+            "email": "info@narangmandi.com",
+            "sameAs": [
+              "https://www.facebook.com/share/18m364926Z/",
+              "https://youtube.com/@sahibmeo",
+              "https://whatsapp.com/channel/0029VbC8lDy1CYoYV9fI8m45"
+            ]
           }
         ]
       }
@@ -63,9 +71,26 @@
       href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
+
+    <!-- Loading spinner shown until React mounts + hide rule for the crawler-only
+         prerendered fallback (kept visible for non-JS crawlers via <noscript>). -->
+    <style>
+      @keyframes ssr-spin { to { transform: rotate(360deg); } }
+      #ssr-fallback { display: none !important; }
+    </style>
+    <noscript>
+      <style>
+        #ssr-fallback { display: block !important; }
+        #ssr-splash { display: none !important; }
+      </style>
+    </noscript>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <div id="ssr-splash" style="position:fixed;inset:0;z-index:2147483647;display:flex;align-items:center;justify-content:center;background:#ffffff">
+        <div style="width:48px;height:48px;border:5px solid #f3f3f3;border-top-color:#b91c1c;border-radius:50%;animation:ssr-spin .8s linear infinite"></div>
+      </div>
+    </div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

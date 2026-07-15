@@ -28,7 +28,7 @@ function SocialIcons({ links }) {
 export default function Header() {
   const [showSearch, setShowSearch] = useState(false);
   const { data: settings } = useQuery({ queryKey: ['settings'], queryFn: settingsApi.get });
-  const tagline = settings?.tagline || `${SITE_NAME_URDU} — آپ کے شہر کی تازہ ترین خبریں`;
+  const tagline = settings?.tagline || "Your city's all-in-one digital hub";
 
   const today = new Date().toLocaleDateString('ur-PK', {
     weekday: 'long',

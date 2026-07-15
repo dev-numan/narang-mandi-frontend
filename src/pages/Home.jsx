@@ -28,9 +28,9 @@ export default function Home() {
   return (
     <>
       <Seo
-        title={`${SITE_NAME} | ${SITE_NAME_URDU} — تازہ ترین خبریں`}
-        socialTitle={`${SITE_NAME_URDU} — تازہ ترین خبریں`}
-        description="نارنگ منڈی کی تازہ ترین خبریں، سیاست، کھیل، مقامی واقعات اور بہت کچھ۔ Narang Mandi — latest local news, politics and sports."
+        title={`${SITE_NAME} — All-in-One Digital Hub`}
+        socialTitle="Your city's all-in-one digital hub"
+        description="Narang Mandi's all-in-one digital hub — read local news, buy and sell used products, open your own online shop, join the community chat, and more."
         path="/"
       />
 

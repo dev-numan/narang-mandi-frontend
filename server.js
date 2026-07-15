@@ -20,7 +20,13 @@ const PORT = process.env.PORT || 4173;
 // Public canonical origin, used for canonical/og:url and JSON-LD.
 const SITE = (process.env.SITE_URL || 'https://narangmandi.com').replace(/\/$/, '');
 const SITE_NAME = 'Narang Mandi';
-const SITE_NAME_URDU = 'نارنگ منڈی نیوز';
+// All-in-one digital hub positioning (news, buy & sell, online shops, community).
+const HUB_TITLE = 'Narang Mandi — All-in-One Digital Hub';
+const HUB_TAGLINE = "Your city's all-in-one digital hub";
+const HUB_DESC =
+  "Narang Mandi's all-in-one digital hub — read local news, buy and sell used products, open your own online shop, join the community chat, and more.";
+// Default 1200x630 social share image (a real raster — social platforms reject SVG).
+const OG_IMAGE = `${SITE}/og-default.png`;
 // Where to fetch article data from (the backend). Falls back to the build-time
 // API base so a single env var works for both.
 const API_BASE = (process.env.API_URL || process.env.VITE_API_BASE || '').replace(/\/$/, '');
@@ -62,22 +68,24 @@ async function apiJson(pathname) {
 }
 
 // Replaces <title>/description, strips the static default social tags (so they
-// aren't duplicated), then injects fresh per-page canonical + OG/Twitter tags
-// and an optional JSON-LD block.
-function injectMeta(html, { title, description, image, url, type = 'article', ld }) {
+// aren't duplicated), then injects fresh per-page canonical + OG/Twitter tags,
+// a robots directive and an optional JSON-LD block.
+function injectMeta(html, { title, description, image, url, type = 'article', ld, noindex = false }) {
+  const img = image || OG_IMAGE;
   const tags = [
+    `<meta name="robots" content="${noindex ? 'noindex, follow' : 'index, follow'}" />`,
     `<link rel="canonical" href="${esc(url)}" />`,
     `<meta property="og:type" content="${esc(type)}" />`,
     `<meta property="og:site_name" content="${esc(SITE_NAME)}" />`,
     `<meta property="og:title" content="${esc(title)}" />`,
     `<meta property="og:description" content="${esc(description)}" />`,
     `<meta property="og:url" content="${esc(url)}" />`,
-    image && `<meta property="og:image" content="${esc(image)}" />`,
-    image && `<meta property="og:image:secure_url" content="${esc(image)}" />`,
-    `<meta name="twitter:card" content="${image ? 'summary_large_image' : 'summary'}" />`,
+    `<meta property="og:image" content="${esc(img)}" />`,
+    `<meta property="og:image:secure_url" content="${esc(img)}" />`,
+    `<meta name="twitter:card" content="summary_large_image" />`,
     `<meta name="twitter:title" content="${esc(title)}" />`,
     `<meta name="twitter:description" content="${esc(description)}" />`,
-    image && `<meta name="twitter:image" content="${esc(image)}" />`,
+    `<meta name="twitter:image" content="${esc(img)}" />`,
     ld && `<script type="application/ld+json">${ld}</script>`,
   ]
     .filter(Boolean)
@@ -86,15 +94,19 @@ function injectMeta(html, { title, description, image, url, type = 'article', ld
   return html
     .replace(/<title>.*?<\/title>/s, `<title>${esc(title)}</title>`)
     .replace(/<meta name="description"[^>]*>/, `<meta name="description" content="${esc(description)}" />`)
+    .replace(/\s*<meta name="robots"[^>]*>/g, '')
     .replace(/\s*<meta property="og:[^"]*"[^>]*>/g, '')
     .replace(/\s*<meta name="twitter:[^"]*"[^>]*>/g, '')
     .replace(/\s*<link rel="canonical"[^>]*>/g, '')
     .replace('</head>', `    ${tags}\n  </head>`);
 }
 
-// Injects crawlable markup into the empty root element.
+// The loading spinner and the #ssr-fallback hide-rule now live in index.html,
+// so the centered red spinner shows on every route until React mounts. Here we
+// only insert the crawlable fallback as the first child of #root — hidden from
+// JS visitors by CSS, shown to non-JS crawlers via <noscript>.
 const injectBody = (html, content) =>
-  html.replace('<div id="root"></div>', `<div id="root">${content}</div>`);
+  html.replace('<div id="root">', `<div id="root"><div id="ssr-fallback">${content}</div>`);
 
 // Shared crawlable navigation — gives every prerendered page internal links.
 function renderNav(categories = []) {
@@ -143,14 +155,12 @@ app.get('/', async (req, res) => {
   ]);
   const categories = catsJson?.data || [];
   const articles = artsJson?.data || [];
-  const description =
-    'نارنگ منڈی کی تازہ ترین خبریں، سیاست، کھیل، مقامی واقعات اور بہت کچھ۔ Narang Mandi — latest local news from Narang Mandi.';
-  const content = `${renderNav(categories)}<main><h1>${esc(SITE_NAME)}</h1><p>${esc(SITE_NAME_URDU)} — آپ کے شہر کی تازہ ترین خبریں</p>${renderArticleList(articles)}</main>`;
+  const content = `${renderNav(categories)}<main><h1>${esc(SITE_NAME)}</h1><p>${esc(HUB_TAGLINE)} — news, buy &amp; sell, online shops &amp; community</p>${renderArticleList(articles)}</main>`;
   const html = injectBody(
     injectMeta(template, {
-      title: `${SITE_NAME} | ${SITE_NAME_URDU} — تازہ ترین خبریں`,
-      description,
-      image: `${SITE}/favicon.svg`,
+      title: HUB_TITLE,
+      description: HUB_DESC,
+      image: OG_IMAGE,
       url: `${SITE}/`,
       type: 'website',
     }),
@@ -170,19 +180,20 @@ app.get('/category/:slug', async (req, res) => {
   const articles = artsJson?.data || [];
   const cat = categories.find((c) => c.slug === req.params.slug);
   const name = cat?.name || 'زمرہ';
-  const description = `${name} کی تازہ ترین خبریں — ${SITE_NAME}۔`;
+  const description = `Browse ${name} on ${SITE_NAME} — your all-in-one digital hub for news, buy & sell, online shops and community.`;
   const content = `${renderNav(categories)}<main><h1>${esc(name)}</h1>${renderArticleList(articles)}</main>`;
   const html = injectBody(
     injectMeta(template, {
       title: `${name} | ${SITE_NAME}`,
       description,
-      image: `${SITE}/favicon.svg`,
+      image: OG_IMAGE,
       url: `${SITE}/category/${req.params.slug}`,
       type: 'website',
+      noindex: !cat, // unknown category → don't index
     }),
     content,
   );
-  res.set('Cache-Control', 'public, max-age=300');
+  res.status(cat ? 200 : 404).set('Cache-Control', 'public, max-age=300');
   res.send(html);
 });
 
@@ -194,7 +205,8 @@ app.get('/article/:slug', async (req, res) => {
       apiJson('/api/categories'),
     ]);
     const a = artJson?.data?.article;
-    if (!a) return res.send(template);
+    // Real 404 for a missing article (avoids a soft-404 indexed with a stale title).
+    if (!a) return res.status(404).send(template);
     const related = artJson?.data?.related || [];
     const categories = catsJson?.data || [];
     const image = imgUrl(a.coverImage);
@@ -206,7 +218,7 @@ app.get('/article/:slug', async (req, res) => {
       '@type': 'NewsArticle',
       headline: a.title,
       description,
-      image: image ? [image] : undefined,
+      image: image ? [image] : [OG_IMAGE],
       datePublished: a.publishedAt || a.createdAt,
       dateModified: a.updatedAt || a.createdAt,
       author: a.author?.name
@@ -215,7 +227,7 @@ app.get('/article/:slug', async (req, res) => {
       publisher: {
         '@type': 'Organization',
         name: SITE_NAME,
-        logo: { '@type': 'ImageObject', url: `${SITE}/favicon.svg` },
+        logo: { '@type': 'ImageObject', url: OG_IMAGE },
       },
       mainEntityOfPage: { '@type': 'WebPage', '@id': url },
       articleSection: a.category?.name || undefined,
@@ -234,7 +246,7 @@ app.get('/article/:slug', async (req, res) => {
       injectMeta(template, {
         title: `${a.title} | ${SITE_NAME}`,
         description,
-        image,
+        image: image || OG_IMAGE,
         url,
         type: 'article',
         ld,
@@ -257,13 +269,12 @@ app.get(Object.keys(LEGACY_REDIRECTS), (req, res) => {
   res.redirect(301, LEGACY_REDIRECTS[req.path]);
 });
 
-// Sitemap — the dynamic XML lives on the API server (root route, not under
-// /api), so nginx never proxies it to this host. Fetch it from the backend and
-// re-serve it with the correct content type. Without this, the SPA catch-all
-// below returns index.html for /sitemap.xml and Google discards it as non-XML.
-app.get('/sitemap.xml', async (req, res) => {
+// Sitemaps — the dynamic XML lives on the API server (root routes, not under
+// /api), so nginx never proxies them to this host. Fetch from the backend and
+// re-serve with the correct content type.
+async function proxyXml(apiPath, res) {
   try {
-    const r = await fetch(`${API_BASE}/sitemap.xml`);
+    const r = await fetch(`${API_BASE}${apiPath}`);
     if (!r.ok) return res.status(502).type('application/xml').send('');
     const xml = await r.text();
     res.set('Cache-Control', 'public, max-age=3600');
@@ -271,9 +282,13 @@ app.get('/sitemap.xml', async (req, res) => {
   } catch {
     return res.status(502).type('application/xml').send('');
   }
-});
+}
+app.get('/sitemap.xml', (req, res) => proxyXml('/sitemap.xml', res));
+app.get('/news-sitemap.xml', (req, res) => proxyXml('/news-sitemap.xml', res));
 
-// SPA fallback for every other route.
+// SPA fallback for every other route. The client renders <NotFound/> (noindex)
+// for unknown paths, so these are kept out of the index even though we return
+// the shell here.
 app.get('*', (req, res) => res.send(template));
 
 app.listen(PORT, () => {

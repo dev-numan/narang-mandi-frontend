@@ -1,7 +1,7 @@
-import { Helmet } from 'react-helmet-async';
 import { useQuery } from '@tanstack/react-query';
 import { settingsApi } from '../api/index.js';
 import { SITE_NAME } from '../constants/brand.js';
+import Seo from '../components/Seo.jsx';
 
 export default function PrivacyPolicy() {
   const { data: settings } = useQuery({ queryKey: ['settings'], queryFn: settingsApi.get });
@@ -9,14 +9,11 @@ export default function PrivacyPolicy() {
 
   return (
     <>
-      <Helmet>
-        <title>{SITE_NAME} | رازداری کی پالیسی</title>
-        <meta property="og:site_name" content={SITE_NAME} />
-        <meta
-          name="description"
-          content={`${SITE_NAME} کی رازداری کی پالیسی — ہم آپ کی معلومات کیسے جمع، استعمال اور محفوظ کرتے ہیں۔`}
-        />
-      </Helmet>
+      <Seo
+        title={`${SITE_NAME} | رازداری کی پالیسی`}
+        description={`${SITE_NAME} کی رازداری کی پالیسی — ہم آپ کی معلومات کیسے جمع، استعمال اور محفوظ کرتے ہیں۔`}
+        path="/privacy"
+      />
 
       <div className="mx-auto max-w-3xl rounded-xl bg-white p-8 shadow-sm">
         <h1 className="mb-4 border-b-2 border-brand pb-2 text-3xl font-bold text-ink">

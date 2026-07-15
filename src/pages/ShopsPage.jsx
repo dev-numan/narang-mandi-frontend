@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Helmet } from 'react-helmet-async';
 import { useQuery } from '@tanstack/react-query';
 import { shopsApi } from '../api/index.js';
 import { SITE_NAME } from '../constants/brand.js';
+import Seo from '../components/Seo.jsx';
 import Loader, { EmptyState, ErrorState } from '../components/Loader.jsx';
 
 function ShopCard({ shop }) {
@@ -50,11 +50,12 @@ export default function ShopsPage() {
 
   return (
     <>
-      <Helmet>
-        <title>{SITE_NAME} | دکانیں</title>
-        <meta property="og:site_name" content={SITE_NAME} />
-        <meta name="description" content="نارنگ منڈی کی مقامی دکانیں — آن لائن خریداری" />
-      </Helmet>
+      <Seo
+        title={`دکانیں — ${SITE_NAME}`}
+        socialTitle="نارنگ منڈی کی دکانیں"
+        description="نارنگ منڈی کی مقامی دکانیں — آن لائن خریداری اور ڈیلیوری۔"
+        path="/shops"
+      />
 
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3 border-b-2 border-brand pb-3">
         <div>

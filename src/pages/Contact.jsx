@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { Helmet } from 'react-helmet-async';
 import { useQuery } from '@tanstack/react-query';
 import { settingsApi } from '../api/index.js';
 import { SITE_NAME } from '../constants/brand.js';
+import Seo from '../components/Seo.jsx';
 import {
   CONTACT_WHATSAPP_DISPLAY,
   CONTACT_WHATSAPP_URL,
@@ -30,14 +30,11 @@ export default function Contact() {
 
   return (
     <>
-      <Helmet>
-        <title>{SITE_NAME} | رابطہ</title>
-        <meta
-          name="description"
-          content={`${SITE_NAME} سے رابطہ کریں — واٹس ایپ ${CONTACT_WHATSAPP_DISPLAY} یا ای میل ${email}`}
-        />
-        <meta property="og:site_name" content={SITE_NAME} />
-      </Helmet>
+      <Seo
+        title={`${SITE_NAME} | رابطہ`}
+        description={`${SITE_NAME} سے رابطہ کریں — واٹس ایپ ${CONTACT_WHATSAPP_DISPLAY} یا ای میل ${email}`}
+        path="/contact"
+      />
 
       <div className="mx-auto max-w-3xl">
         <div className="mb-8 rounded-xl bg-white p-6 shadow-sm sm:p-8">

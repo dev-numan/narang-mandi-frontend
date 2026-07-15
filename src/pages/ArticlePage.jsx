@@ -1,9 +1,9 @@
 import { useEffect, useMemo } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { Helmet } from 'react-helmet-async';
 import { useQuery } from '@tanstack/react-query';
 import { sanitizeHtml } from '../utils/sanitize.js';
-import { SITE_NAME } from '../constants/brand.js';
+import { SITE_NAME, SITE_URL } from '../constants/brand.js';
+import Seo from '../components/Seo.jsx';
 import { articlesApi } from '../api/index.js';
 import ShareButtons from '../components/ShareButtons.jsx';
 import ArticleCard from '../components/ArticleCard.jsx';
@@ -55,18 +55,66 @@ export default function ArticlePage() {
   }
   if (!article) return <EmptyState label="خبر نہیں ملی" />;
 
+  const description = article.excerpt || article.title;
+  const path = `/article/${article.slug}`;
+  const jsonLd = [
+    {
+      '@context': 'https://schema.org',
+      '@type': 'NewsArticle',
+      headline: article.title,
+      description,
+      image: article.coverImage ? [article.coverImage] : undefined,
+      datePublished: article.publishedAt || article.createdAt,
+      dateModified: article.updatedAt || article.publishedAt || article.createdAt,
+      author: article.author?.name
+        ? { '@type': 'Person', name: article.author.name }
+        : { '@type': 'Organization', name: SITE_NAME },
+      publisher: {
+        '@type': 'NewsMediaOrganization',
+        name: SITE_NAME,
+        logo: { '@type': 'ImageObject', url: `${SITE_URL}/og-default.png` },
+      },
+      mainEntityOfPage: { '@type': 'WebPage', '@id': `${SITE_URL}${path}` },
+      inLanguage: 'ur',
+    },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'صفحۂ اول', item: `${SITE_URL}/` },
+        ...(article.category
+          ? [
+              {
+                '@type': 'ListItem',
+                position: 2,
+                name: article.category.name,
+                item: `${SITE_URL}/category/${article.category.slug}`,
+              },
+            ]
+          : []),
+        {
+          '@type': 'ListItem',
+          position: article.category ? 3 : 2,
+          name: article.title,
+          item: `${SITE_URL}${path}`,
+        },
+      ],
+    },
+  ];
+
   return (
     <>
-      <Helmet>
-        <title>{SITE_NAME} | {article.title}</title>
-        <meta name="description" content={article.excerpt || article.title} />
-        <meta property="og:site_name" content={SITE_NAME} />
-        <meta property="og:type" content="article" />
-        <meta property="og:title" content={article.title} />
-        <meta property="og:description" content={article.excerpt || article.title} />
-        {article.coverImage && <meta property="og:image" content={article.coverImage} />}
-        <meta name="twitter:card" content="summary_large_image" />
-      </Helmet>
+      <Seo
+        title={`${article.title} — ${SITE_NAME}`}
+        socialTitle={article.title}
+        description={description}
+        path={path}
+        type="article"
+        image={article.coverImage || undefined}
+        publishedTime={article.publishedAt || article.createdAt}
+        modifiedTime={article.updatedAt || article.publishedAt || article.createdAt}
+        jsonLd={jsonLd}
+      />
 
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
         <article className="min-w-0 lg:col-span-2">

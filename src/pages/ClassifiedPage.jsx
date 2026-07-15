@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { Helmet } from 'react-helmet-async';
 import { useQuery } from '@tanstack/react-query';
 import { classifiedsApi } from '../api/index.js';
 import { SITE_NAME } from '../constants/brand.js';
+import Seo from '../components/Seo.jsx';
 import { formatPrice, timeAgoUrdu } from '../utils/format.js';
 import Loader from '../components/Loader.jsx';
 import SoldStampOverlay from '../components/SoldStampOverlay.jsx';
@@ -35,10 +35,13 @@ export default function ClassifiedPage() {
 
   return (
     <>
-      <Helmet>
-        <title>{SITE_NAME} | {item.title} — اشتہارات</title>
-        <meta property="og:site_name" content={SITE_NAME} />
-      </Helmet>
+      <Seo
+        title={`${SITE_NAME} | ${item.title} — اشتہارات`}
+        socialTitle={item.title}
+        description={item.description || `${item.title} — نارنگ منڈی کے اشتہارات میں دستیاب`}
+        path={`/classifieds/${slug}`}
+        image={item.images?.[0]}
+      />
 
       <div className="mb-3">
         <Link to="/classifieds" className="urdu text-sm text-brand hover:underline">← تمام اشتہارات</Link>

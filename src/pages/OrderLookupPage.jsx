@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Helmet } from 'react-helmet-async';
 import { useMutation } from '@tanstack/react-query';
 import { shopsApi } from '../api/index.js';
 import { SITE_NAME } from '../constants/brand.js';
+import Seo from '../components/Seo.jsx';
 import { formatPrice, formatUrduDate } from '../utils/format.js';
 
 const STATUS_LABEL = {
@@ -38,7 +38,7 @@ export default function OrderLookupPage() {
 
   return (
     <>
-      <Helmet><title>{SITE_NAME} | آرڈر ٹریک کریں</title></Helmet>
+      <Seo title={`آرڈر ٹریک کریں — ${SITE_NAME}`} path="/orders/track" noindex />
 
       <div className="mb-6 border-b-2 border-brand pb-3">
         <h1 className="urdu text-3xl font-bold text-ink">آرڈر ٹریک کریں</h1>

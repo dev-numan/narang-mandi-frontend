@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { Helmet } from 'react-helmet-async';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { communityApi } from '../api/index.js';
 import { getSocket } from '../api/socket.js';
 import { getClientId } from '../utils/identity.js';
 import { SITE_NAME } from '../constants/brand.js';
+import Seo from '../components/Seo.jsx';
 import { useChatProfile } from '../components/CommunityLayout.jsx';
 import { timeAgoUrdu, toUrduNumber } from '../utils/format.js';
 import Loader from '../components/Loader.jsx';
@@ -270,10 +270,12 @@ export default function ThreadPage() {
 
   return (
     <>
-      <Helmet>
-        <title>{SITE_NAME} | {thread.title} — کمیونٹی چیٹ</title>
-        <meta property="og:site_name" content={SITE_NAME} />
-      </Helmet>
+      <Seo
+        title={`${SITE_NAME} | ${thread.title} — کمیونٹی چیٹ`}
+        socialTitle={thread.title}
+        description={thread.description || `${thread.title} — نارنگ منڈی کمیونٹی چیٹ روم`}
+        path={`/community/${slug}`}
+      />
 
       <div className="mb-3">
         <Link to="/community" className="urdu text-sm text-brand hover:underline">

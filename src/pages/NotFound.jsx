@@ -1,14 +1,12 @@
 import { Link } from 'react-router-dom';
-import { Helmet } from 'react-helmet-async';
+import Seo from '../components/Seo.jsx';
 import { SITE_NAME } from '../constants/brand.js';
 
 export default function NotFound() {
   return (
     <>
-      <Helmet>
-        <title>{SITE_NAME} | صفحہ نہیں ملا</title>
-        <meta property="og:site_name" content={SITE_NAME} />
-      </Helmet>
+      {/* noindex so this "page not found" title can never be indexed for a real URL */}
+      <Seo title={`${SITE_NAME} | صفحہ نہیں ملا`} noindex />
       <div className="flex flex-col items-center justify-center py-24 text-center">
         <h1 className="text-7xl font-bold text-brand">۴۰۴</h1>
         <p className="mt-4 text-2xl font-semibold text-ink">صفحہ نہیں ملا</p>

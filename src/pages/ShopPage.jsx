@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { Helmet } from 'react-helmet-async';
 import { useQuery } from '@tanstack/react-query';
 import { shopsApi } from '../api/index.js';
 import { SITE_NAME } from '../constants/brand.js';
+import Seo from '../components/Seo.jsx';
 import { formatPrice } from '../utils/format.js';
 import { useCart } from '../context/CartContext.jsx';
 import Loader, { EmptyState, ErrorState } from '../components/Loader.jsx';
@@ -97,10 +97,22 @@ export default function ShopPage() {
 
   return (
     <>
-      <Helmet>
-        <title>{SITE_NAME} | {shop.name} — دکان</title>
-        <meta property="og:site_name" content={SITE_NAME} />
-      </Helmet>
+      <Seo
+        title={`${shop.name} — ${SITE_NAME}`}
+        socialTitle={shop.name}
+        description={shop.description || `${shop.name} — نارنگ منڈی کی دکان سے آن لائن خریداری کریں۔`}
+        path={`/shops/${shop.slug}`}
+        image={shop.coverImage || shop.logo || undefined}
+        jsonLd={{
+          '@context': 'https://schema.org',
+          '@type': 'Store',
+          name: shop.name,
+          description: shop.description || undefined,
+          image: shop.logo || shop.coverImage || undefined,
+          telephone: shop.phone || undefined,
+          address: shop.address || undefined,
+        }}
+      />
 
       <div className="mb-3">
         <Link to="/shops" className="urdu text-sm text-brand hover:underline">← تمام دکانیں</Link>

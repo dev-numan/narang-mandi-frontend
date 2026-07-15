@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Helmet } from 'react-helmet-async';
 import { useMutation } from '@tanstack/react-query';
 import { shopsApi } from '../api/index.js';
 import { SITE_NAME } from '../constants/brand.js';
+import Seo from '../components/Seo.jsx';
 import { formatPrice } from '../utils/format.js';
 import { useCart } from '../context/CartContext.jsx';
 
@@ -40,7 +40,7 @@ export default function CartPage() {
   if (placed) {
     return (
       <>
-        <Helmet><title>{SITE_NAME} | آرڈر مکمل</title></Helmet>
+        <Seo title={`آرڈر مکمل — ${SITE_NAME}`} path="/cart" noindex />
         <div className="mx-auto max-w-md rounded-xl border border-gray-200 bg-white p-8 text-center shadow-sm">
           <div className="mb-3 text-5xl">✅</div>
           <h1 className="urdu mb-2 text-xl font-bold text-ink">آپ کا آرڈر موصول ہو گیا!</h1>
@@ -67,7 +67,7 @@ export default function CartPage() {
   if (!cart || cart.items.length === 0) {
     return (
       <>
-        <Helmet><title>{SITE_NAME} | ٹوکری</title></Helmet>
+        <Seo title={`ٹوکری — ${SITE_NAME}`} path="/cart" noindex />
         <div className="rounded-xl bg-white py-16 text-center text-gray-400 shadow-sm">
           <div className="mb-2 text-4xl">🛒</div>
           <p className="urdu">آپ کی ٹوکری خالی ہے</p>

@@ -1,5 +1,11 @@
 User-agent: *
 Allow: /
 Disallow: /admin
+Disallow: /shop/admin
+Disallow: /cart
+Disallow: /orders/track
+Disallow: /search
+Disallow: /api/
 
 Sitemap: https://narangmandi.com/sitemap.xml
+Sitemap: https://narangmandi.com/news-sitemap.xml

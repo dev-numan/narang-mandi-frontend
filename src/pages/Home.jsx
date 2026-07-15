@@ -1,7 +1,7 @@
-import { Helmet } from 'react-helmet-async';
 import { useQuery } from '@tanstack/react-query';
 import { articlesApi, categoriesApi } from '../api/index.js';
 import { SITE_NAME, SITE_NAME_URDU } from '../constants/brand.js';
+import Seo from '../components/Seo.jsx';
 import HeroCarousel from '../components/HeroCarousel.jsx';
 import CategorySection from '../components/CategorySection.jsx';
 import ArticleCard from '../components/ArticleCard.jsx';
@@ -27,10 +27,12 @@ export default function Home() {
 
   return (
     <>
-      <Helmet>
-        <title>{SITE_NAME} | {SITE_NAME_URDU} — تازہ ترین خبریں</title>
-        <meta property="og:site_name" content={SITE_NAME} />
-      </Helmet>
+      <Seo
+        title={`${SITE_NAME} | ${SITE_NAME_URDU} — تازہ ترین خبریں`}
+        socialTitle={`${SITE_NAME_URDU} — تازہ ترین خبریں`}
+        description="نارنگ منڈی کی تازہ ترین خبریں، سیاست، کھیل، مقامی واقعات اور بہت کچھ۔ Narang Mandi — latest local news, politics and sports."
+        path="/"
+      />
 
       <HeroCarousel />
 

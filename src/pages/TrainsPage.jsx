@@ -1,7 +1,7 @@
-import { Helmet } from 'react-helmet-async';
 import { useQuery } from '@tanstack/react-query';
 import { trainsApi } from '../api/index.js';
 import { SITE_NAME } from '../constants/brand.js';
+import Seo from '../components/Seo.jsx';
 import { toAmPm } from '../utils/format.js';
 import Loader, { EmptyState } from '../components/Loader.jsx';
 
@@ -35,11 +35,11 @@ export default function TrainsPage() {
 
   return (
     <>
-      <Helmet>
-        <title>{SITE_NAME} | ٹرین کے اوقات</title>
-        <meta property="og:site_name" content={SITE_NAME} />
-        <meta name="description" content="نارنگ منڈی ریلوے اسٹیشن پر رکنے والی ٹرینوں کے آمد و روانگی کے اوقات" />
-      </Helmet>
+      <Seo
+        title={`${SITE_NAME} | ٹرین کے اوقات`}
+        description="نارنگ منڈی ریلوے اسٹیشن پر رکنے والی ٹرینوں کے آمد و روانگی کے اوقات"
+        path="/trains"
+      />
 
       <div className="mb-6 border-b-2 border-brand pb-3">
         <h1 className="urdu text-3xl font-bold text-ink">🚆 ٹرین کے اوقات</h1>

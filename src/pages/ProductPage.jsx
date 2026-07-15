@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
-import { Helmet } from 'react-helmet-async';
 import { useQuery } from '@tanstack/react-query';
 import { shopsApi } from '../api/index.js';
-import { SITE_NAME } from '../constants/brand.js';
+import { SITE_NAME, SITE_URL } from '../constants/brand.js';
 import { formatPrice } from '../utils/format.js';
+import Seo from '../components/Seo.jsx';
 import { useCart } from '../context/CartContext.jsx';
 import Loader from '../components/Loader.jsx';
 import CartBar from '../components/CartBar.jsx';
@@ -52,10 +52,32 @@ export default function ProductPage() {
 
   return (
     <>
-      <Helmet>
-        <title>{SITE_NAME} | {product.name}</title>
-        <meta property="og:site_name" content={SITE_NAME} />
-      </Helmet>
+      <Seo
+        title={`${product.name} — ${shop?.name || SITE_NAME}`}
+        socialTitle={product.name}
+        description={product.description || `${product.name} — ${formatPrice(product.price)}۔ ${shop?.name || ''} سے آرڈر کریں۔`}
+        path={`/shops/${shopSlug}/product/${product.slug}`}
+        type="product"
+        image={product.images?.[0] || undefined}
+        jsonLd={{
+          '@context': 'https://schema.org',
+          '@type': 'Product',
+          name: product.name,
+          description: product.description || undefined,
+          image: product.images?.length ? product.images : undefined,
+          category: product.category?.name || undefined,
+          offers: {
+            '@type': 'Offer',
+            price: product.price,
+            priceCurrency: 'PKR',
+            availability: outOfStock
+              ? 'https://schema.org/OutOfStock'
+              : 'https://schema.org/InStock',
+            url: `${SITE_URL}/shops/${shopSlug}/product/${product.slug}`,
+            seller: shop?.name ? { '@type': 'Organization', name: shop.name } : undefined,
+          },
+        }}
+      />
 
       <div className="mb-3">
         <Link to={`/shops/${shopSlug}`} className="urdu text-sm text-brand hover:underline">

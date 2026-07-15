@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Helmet } from 'react-helmet-async';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { classifiedsApi } from '../api/index.js';
 import { SITE_NAME } from '../constants/brand.js';
+import Seo from '../components/Seo.jsx';
 import { formatPrice, timeAgoUrdu } from '../utils/format.js';
 import MultiImageUploader from '../components/MultiImageUploader.jsx';
 import SoldStampOverlay from '../components/SoldStampOverlay.jsx';
@@ -311,11 +311,11 @@ export default function ClassifiedsPage() {
 
   return (
     <>
-      <Helmet>
-        <title>{SITE_NAME} | اشتہارات</title>
-        <meta property="og:site_name" content={SITE_NAME} />
-        <meta name="description" content="نارنگ منڈی کے مقامی اشتہارات — خرید و فروخت، نوکریاں، گاڑیاں" />
-      </Helmet>
+      <Seo
+        title={`${SITE_NAME} | اشتہارات`}
+        description="نارنگ منڈی کے مقامی اشتہارات — خرید و فروخت، نوکریاں، گاڑیاں"
+        path="/classifieds"
+      />
 
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3 border-b-2 border-brand pb-3">
         <div>

@@ -28,9 +28,7 @@ export default function ShopAdminLayout() {
         }`}
       >
         <div className="flex h-16 items-center gap-2 border-b border-white/10 px-5">
-          <span className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded bg-brand font-bold text-white">
-            🏪
-          </span>
+          <img src="/logo.png" alt="Narang Mandi" className="h-8 w-8 flex-shrink-0 rounded object-cover" />
           <span className="urdu min-w-0 text-sm font-bold leading-tight text-white">دکاندار پینل</span>
         </div>
         <nav className="p-3">

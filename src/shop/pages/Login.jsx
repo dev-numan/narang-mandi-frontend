@@ -36,9 +36,7 @@ export default function ShopLogin() {
     <div className="admin-root flex min-h-screen items-center justify-center bg-gray-100 p-4">
       <div className="w-full max-w-sm rounded-2xl bg-white p-8 shadow-lg">
         <div className="mb-6 text-center">
-          <span className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-xl bg-brand text-2xl font-bold text-white">
-            🏪
-          </span>
+          <img src="/logo.png" alt="Narang Mandi" className="mx-auto mb-3 h-14 w-14 rounded-xl object-cover" />
           <h1 className="urdu text-xl font-bold text-ink">دکاندار پینل</h1>
           <p className="urdu text-sm text-gray-500">اپنی دکان کا انتظام کریں</p>
         </div>

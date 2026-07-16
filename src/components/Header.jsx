@@ -44,9 +44,7 @@ export default function Header() {
           {settings?.logo ? (
             <img src={settings.logo} alt={SITE_NAME} className="h-10 w-auto flex-shrink-0 sm:h-12" />
           ) : (
-            <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-brand text-lg font-bold leading-none text-white sm:h-12 sm:w-12 sm:text-xl">
-              ن
-            </span>
+            <img src="/logo.png" alt={SITE_NAME} className="h-10 w-10 flex-shrink-0 rounded-lg object-cover sm:h-12 sm:w-12" />
           )}
           <div className="min-w-0">
             <h1 className="whitespace-nowrap pb-1 text-lg font-bold leading-[1.9] text-brand sm:text-2xl">{SITE_NAME}</h1>

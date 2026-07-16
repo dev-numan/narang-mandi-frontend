@@ -47,8 +47,8 @@ export default function Header() {
             <img src="/logo.png" alt={SITE_NAME} className="h-10 w-10 flex-shrink-0 rounded-lg object-cover sm:h-12 sm:w-12" />
           )}
           <div className="min-w-0">
-            <h1 className="whitespace-nowrap pb-1 text-lg font-bold leading-[1.9] text-brand sm:text-2xl">{SITE_NAME}</h1>
-            <p className="mt-1 truncate pb-1 text-xs leading-[1.9] text-gray-500">{tagline}</p>
+            <h1 className="whitespace-nowrap  text-lg font-bold  text-brand sm:text-2xl">{SITE_NAME}</h1>
+            <p className="mt-1 truncate pb-1 text-xs text-gray-500">{tagline}</p>
           </div>
         </Link>
 

@@ -276,6 +276,84 @@ app.get('/article/:slug', async (req, res) => {
   }
 });
 
+// Static pages (about / contact / privacy / terms). These carry no API data,
+// but they are the pages a reviewer or crawler checks first, and without an
+// entry here they fall through to the SPA shell below — which serves the
+// homepage's <title> and an empty #root to anything that doesn't run JS.
+//
+// The summary text below is a crawlable stand-in, not the full page: React
+// re-renders the real content over it on mount. Keep each summary in step with
+// its page in src/pages/ — if the page's facts change, change them here too.
+const STATIC_PAGES = {
+  '/about': {
+    title: `ہمارے بارے میں | ${SITE_NAME}`,
+    description:
+      'نارنگ منڈی ڈاٹ کام کے بارے میں — شہر کی مقامی خبریں، کاروباری معلومات، خرید و فروخت اور کمیونٹی کا آن لائن پلیٹ فارم۔ ادارتی ٹیم، اصول اور رابطہ کی تفصیلات۔',
+    h1: 'ہمارے بارے میں',
+    paras: [
+      'Narang Mandi (narangmandi.com) نارنگ منڈی، پنجاب، پاکستان کا مقامی آن لائن پلیٹ فارم ہے۔ یہاں شہر کے رہائشی اپنے علاقے کی تازہ خبریں پڑھ سکتے ہیں، مقامی کاروبار اور مقامات تلاش کر سکتے ہیں، اپنی چیزیں خرید و فروخت کر سکتے ہیں، اور ایک دوسرے سے جڑے رہ سکتے ہیں۔',
+      'یہ ویب سائٹ جون ۲۰۲۶ میں شروع کی گئی۔ صاحب میو (Sahib Meo) نیوز ایڈیٹر ہیں اور ویب سائٹ پر شائع ہونے والی خبریں یہی رپورٹ اور تحریر کرتے ہیں۔ نعمان قمر (Numan Qamar) ویب سائٹ کے مالک اور ڈویلپر ہیں۔',
+      'ہمارے ادارتی اصول: ہماری تمام خبریں ہماری اپنی رپورٹنگ اور اپنی تحریر ہوتی ہیں — ہم کسی دوسری ویب سائٹ یا اخبار سے خبر نقل نہیں کرتے۔ خبر شائع کرنے سے پہلے ہم معلومات کی تصدیق کرتے ہیں، کسی سیاسی جماعت یا گروہ کے ترجمان نہیں، اور غلطی کی نشاندہی پر اسے درست کرتے ہیں۔',
+      'رابطہ: info@narangmandi.com — واٹس ایپ 03069761224 — مقام: نارنگ منڈی، پنجاب، پاکستان۔',
+    ],
+  },
+  '/contact': {
+    title: `رابطہ | ${SITE_NAME}`,
+    description:
+      'Narang Mandi سے رابطہ کریں — خبر، تجویز، شکایت، تصحیح یا اشتہار کے لیے ای میل info@narangmandi.com یا واٹس ایپ 03069761224۔',
+    h1: 'رابطہ',
+    paras: [
+      'خبریں، اشتہارات، تصحیح یا کسی بھی سوال کے لیے Narang Mandi کی ٹیم سے براہِ راست رابطہ کریں۔',
+      'ای میل: info@narangmandi.com',
+      'واٹس ایپ: 03069761224',
+      'مقام: نارنگ منڈی، پنجاب، پاکستان۔ آپ رابطہ کے صفحے پر موجود فارم سے بھی ہمیں پیغام بھیج سکتے ہیں — ہم ہر پیغام پڑھتے ہیں۔',
+    ],
+  },
+  '/privacy': {
+    title: `رازداری کی پالیسی | ${SITE_NAME}`,
+    description:
+      'Narang Mandi کی رازداری کی پالیسی — ہم آپ کی معلومات کیسے جمع، استعمال اور محفوظ کرتے ہیں، کوکیز، اور گوگل ایڈسینس کے اشتہارات کے بارے میں۔',
+    h1: 'رازداری کی پالیسی',
+    paras: [
+      'Narang Mandi میں آپ کی رازداری ہمارے لیے اہم ہے۔ یہ پالیسی وضاحت کرتی ہے کہ جب آپ ہماری ویب سائٹ استعمال کرتے ہیں تو ہم کونسی معلومات جمع کرتے ہیں، انہیں کیسے استعمال کرتے ہیں، اور آپ کے پاس کیا اختیارات ہیں۔',
+      'کوکیز: یہ ویب سائٹ صارف کے تجربے کو بہتر بنانے کے لیے کوکیز استعمال کرتی ہے۔ آپ اپنے براؤزر کی ترتیبات سے کوکیز بند یا حذف کر سکتے ہیں۔',
+      'گوگل ایڈسینس: ہم اپنی ویب سائٹ پر اشتہارات دکھانے کے لیے گوگل ایڈسینس (Google AdSense) جیسی تیسرے فریق کی اشتہاری خدمات استعمال کرتے ہیں۔ گوگل سمیت تیسرے فریق کے فراہم کنندگان آپ کی اس اور دیگر ویب سائٹس پر پچھلی وزٹ کی بنیاد پر اشتہارات دکھانے کے لیے کوکیز استعمال کرتے ہیں۔ صارفین Google Ads Settings پر جا کر ذاتی نوعیت کے اشتہارات بند کر سکتے ہیں۔',
+      'بچوں کی رازداری: یہ ویب سائٹ ۱۳ سال سے کم عمر بچوں کے لیے نہیں ہے۔ سوالات کے لیے info@narangmandi.com پر رابطہ کریں۔',
+    ],
+  },
+  '/terms': {
+    title: `شرائط و ضوابط | ${SITE_NAME}`,
+    description:
+      'Narang Mandi کی ویب سائٹ استعمال کرنے کی شرائط و ضوابط اور اعلانِ لاتعلقی — خرید و فروخت، صارفین کا مواد، اور ذمہ داری کی حد۔',
+    h1: 'شرائط و ضوابط',
+    paras: [
+      'Narang Mandi کی ویب سائٹ استعمال کرنے سے آپ ان شرائط و ضوابط سے اتفاق کرتے ہیں۔',
+      'خرید و فروخت — اہم اعلانِ لاتعلقی: Narang Mandi صرف ایک پلیٹ فارم فراہم کرتا ہے۔ ہم خریدار اور فروخت کنندہ کے درمیان ہونے والے کسی بھی سودے میں فریق نہیں ہیں۔ ویب سائٹ پر موجود اشتہارات، دکانیں اور مصنوعات صارفین خود شائع کرتے ہیں اور ہم ان کی صداقت یا معیار کی ضمانت نہیں دیتے۔ پیشگی رقم بھیجنے سے پہلے احتیاط کریں۔',
+      'صارفین کا مواد: اشتہارات، کمیونٹی پیغامات اور دکانوں کی تفصیلات کی ذمہ داری متعلقہ صارف پر عائد ہوتی ہے۔ غیر قانونی، فحش، متشدد، نفرت انگیز یا گمراہ کن مواد شائع کرنا سختی سے منع ہے، اور ہم ایسا مواد ہٹانے کا حق محفوظ رکھتے ہیں۔',
+      'ان شرائط پر اسلامی جمہوریہ پاکستان کے قوانین کا اطلاق ہوگا۔ سوالات کے لیے info@narangmandi.com پر رابطہ کریں۔',
+    ],
+  },
+};
+
+app.get(Object.keys(STATIC_PAGES), async (req, res) => {
+  const page = STATIC_PAGES[req.path];
+  const catsJson = await apiJson('/api/categories');
+  const body = page.paras.map((p) => `<p>${esc(p)}</p>`).join('');
+  const content = `${renderNav(catsJson?.data || [])}<main><h1>${esc(page.h1)}</h1>${body}</main>`;
+  const html = injectBody(
+    injectMeta(template, {
+      title: page.title,
+      description: page.description,
+      image: OG_IMAGE,
+      url: `${SITE}${req.path}`,
+      type: 'website',
+    }),
+    content,
+  );
+  res.set('Cache-Control', 'public, max-age=300');
+  res.send(html);
+});
+
 // Legacy static-site URLs (old .html pages) → current routes.
 const LEGACY_REDIRECTS = {
   '/home.html': '/',

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { settingsApi } from '../api/index.js';
-import { SITE_NAME, SITE_NAME_URDU } from '../constants/brand.js';
+import { HOME_H1, SITE_NAME } from '../constants/brand.js';
 import SearchBar from './SearchBar.jsx';
 import WeatherWidget from './WeatherWidget.jsx';
 
@@ -47,7 +47,10 @@ export default function Header() {
             <img src="/logo.png" alt={SITE_NAME} className="h-10 w-10 flex-shrink-0 rounded-lg object-cover sm:h-12 sm:w-12" />
           )}
           <div className="min-w-0">
-            <h1 className="whitespace-nowrap  text-lg font-bold  text-brand sm:text-2xl">{SITE_NAME}</h1>
+            <h1 className="text-sm font-bold leading-snug text-brand sm:text-base">
+              {HOME_H1}
+              <span className="urdu block text-xs font-semibold sm:text-sm">{SITE_NAME} — نارنگ منڈی ڈیجیٹل ہب</span>
+            </h1>
             <p className="mt-1 truncate pb-1 text-xs text-gray-500">{tagline}</p>
           </div>
         </Link>

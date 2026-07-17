@@ -1,8 +1,16 @@
 import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { categoriesApi, settingsApi } from '../api/index.js';
-import { SITE_NAME } from '../constants/brand.js';
+import { HUB_HEADLINE, SITE_NAME } from '../constants/brand.js';
 import { CONTACT_WHATSAPP_DISPLAY, CONTACT_WHATSAPP_URL } from '../constants/contact.js';
+import { mergeSocialLinks } from '../constants/social.js';
+
+const SOCIAL_ITEMS = [
+  ['facebook', 'Facebook', 'فیس بک'],
+  ['youtube', 'YouTube', 'یوٹیوب'],
+  ['whatsapp', 'WhatsApp', 'واٹس ایپ'],
+  ['twitter', 'Twitter', 'ٹوئٹر'],
+];
 
 export default function Footer() {
   const { data: settings } = useQuery({ queryKey: ['settings'], queryFn: settingsApi.get });
@@ -10,16 +18,16 @@ export default function Footer() {
     queryKey: ['categories'],
     queryFn: () => categoriesApi.list(),
   });
-  const siteName = SITE_NAME;
+  const socialLinks = mergeSocialLinks(settings?.socialLinks);
   const year = new Date().getFullYear();
 
   return (
     <footer className="mt-12 bg-ink text-gray-300">
       <div className="mx-auto grid max-w-6xl grid-cols-1 gap-8 px-4 py-10 sm:grid-cols-3">
         <div>
-          <h3 className="mb-3 text-xl font-bold text-white">{siteName}</h3>
+          <h3 className="mb-3 text-xl font-bold text-white">{SITE_NAME}</h3>
           <p className="text-sm leading-loose text-gray-400">
-            {settings?.tagline || "Your city's all-in-one digital hub."}
+            {settings?.tagline || `${SITE_NAME} — ${HUB_HEADLINE}.`}
           </p>
         </div>
         <div>
@@ -51,23 +59,25 @@ export default function Footer() {
               <li className="text-gray-400">{settings.contactEmail}</li>
             )}
           </ul>
-          {settings?.socialLinks && (
-            <div className="mt-3 flex gap-3 text-sm">
-              {settings.socialLinks.facebook && (
-                <a href={settings.socialLinks.facebook} target="_blank" rel="noreferrer" className="hover:text-white">فیس بک</a>
-              )}
-              {settings.socialLinks.youtube && (
-                <a href={settings.socialLinks.youtube} target="_blank" rel="noreferrer" className="hover:text-white">یوٹیوب</a>
-              )}
-              {settings.socialLinks.twitter && (
-                <a href={settings.socialLinks.twitter} target="_blank" rel="noreferrer" className="hover:text-white">ٹوئٹر</a>
-              )}
-            </div>
-          )}
+          <h4 className="mb-2 mt-4 font-bold text-white">سوشل میڈیا</h4>
+          <ul className="space-y-1 text-sm">
+            {SOCIAL_ITEMS.filter(([key]) => socialLinks[key]).map(([key, en, ur]) => (
+              <li key={key}>
+                <a
+                  href={socialLinks[key]}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-white"
+                >
+                  {en} <span className="urdu text-gray-400">({ur})</span>
+                </a>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
       <div className="border-t border-white/10 py-4 text-center text-sm text-gray-400">
-        © {year} {siteName} — جملہ حقوق محفوظ ہیں
+        © {year} {SITE_NAME} — جملہ حقوق محفوظ ہیں
       </div>
     </footer>
   );

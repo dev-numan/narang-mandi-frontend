@@ -10,9 +10,12 @@
 // React uses createRoot (not hydrate), so real users still get the full SPA —
 // it simply re-renders over the injected markup on mount.
 import express from 'express';
+import compression from 'compression';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { readFileSync } from 'fs';
+import { HOME_H1 } from './src/constants/brand.js';
+import { DEFAULT_SOCIAL_LINKS } from './src/constants/social.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const DIST = path.join(__dirname, 'dist');
@@ -32,6 +35,8 @@ const OG_IMAGE = `${SITE}/og-default.png`;
 const API_BASE = (process.env.API_URL || process.env.VITE_API_BASE || '').replace(/\/$/, '');
 
 const app = express();
+app.disable('x-powered-by');
+app.use(compression());
 const template = readFileSync(path.join(DIST, 'index.html'), 'utf-8');
 
 const esc = (s = '') =>
@@ -112,15 +117,26 @@ const injectBody = (html, content) =>
 function renderNav(categories = []) {
   const links = [
     ['/', 'صفحۂ اول'],
-    ['/places', 'مشہور مقامات'],
-    ['/community', 'کمیونٹی چیٹ'],
-    ['/trains', 'ٹرین اوقات'],
+    ['/places', 'مقامات'],
+    ['/community', 'کمیونٹی'],
+    ['/trains', 'ٹرین'],
     ['/classifieds', 'اشتہارات'],
-    ...categories.map((c) => [`/category/${c.slug}`, c.name]),
+    ...categories.map((c) => [`/category/${c.slug}`, c.name.length > 24 ? `${c.name.slice(0, 24)}…` : c.name]),
   ];
   return `<nav aria-label="زمرہ جات"><ul>${links
     .map(([href, label]) => `<li><a href="${esc(href)}">${esc(label)}</a></li>`)
     .join('')}</ul></nav>`;
+}
+
+function renderFooterSocial() {
+  const links = [
+    ['Facebook', DEFAULT_SOCIAL_LINKS.facebook],
+    ['YouTube', DEFAULT_SOCIAL_LINKS.youtube],
+    ['WhatsApp', DEFAULT_SOCIAL_LINKS.whatsapp],
+  ].filter(([, href]) => href);
+  return `<footer><nav aria-label="Social media"><ul>${links
+    .map(([label, href]) => `<li><a href="${esc(href)}" rel="noopener noreferrer">${esc(label)}</a></li>`)
+    .join('')}</ul></nav></footer>`;
 }
 
 // A list of article links (headline + image + excerpt) for crawlers.
@@ -155,7 +171,7 @@ app.get('/', async (req, res) => {
   ]);
   const categories = catsJson?.data || [];
   const articles = artsJson?.data || [];
-  const content = `${renderNav(categories)}<main><h1>${esc(SITE_NAME)}</h1><p>${esc(HUB_TAGLINE)} — news, buy &amp; sell, online shops &amp; community</p>${renderArticleList(articles)}</main>`;
+  const content = `${renderNav(categories)}<main><h1>${esc(HOME_H1)}</h1><p>${esc(HUB_TAGLINE)} — news, buy &amp; sell, online shops &amp; community. ${esc(HOME_H1)}.</p>${renderArticleList(articles)}</main>${renderFooterSocial()}`;
   const html = injectBody(
     injectMeta(template, {
       title: HUB_TITLE,

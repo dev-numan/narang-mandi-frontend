@@ -1,8 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
 import { articlesApi, categoriesApi } from '../api/index.js';
-import { SITE_NAME, SITE_NAME_URDU } from '../constants/brand.js';
+import { SITE_NAME } from '../constants/brand.js';
 import Seo from '../components/Seo.jsx';
-import HeroCarousel from '../components/HeroCarousel.jsx';
+import FeaturesHub from '../components/FeaturesHub.jsx';
+import FeaturedShop from '../components/FeaturedShop.jsx';
 import CategorySection from '../components/CategorySection.jsx';
 import ArticleCard from '../components/ArticleCard.jsx';
 import Sidebar from '../components/Sidebar.jsx';
@@ -34,15 +35,19 @@ export default function Home() {
         path="/"
       />
 
-      <HeroCarousel />
+      {/* Digital-hub front door: all features up top */}
+      <FeaturesHub />
 
-      <div className="mt-8 grid grid-cols-1 gap-8 lg:grid-cols-3">
+      {/* Highlighted shop from the marketplace */}
+      <FeaturedShop />
+
+      {/* News lives below now (we're a full hub, not only news) */}
+      <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
         <div className="lg:col-span-2">
-          {/* Featured block */}
           <section className="mb-10">
             <div className="mb-4 border-b-2 border-brand pb-2">
               <h2 className="text-2xl font-bold text-ink">
-                <span className="border-b-4 border-brand pb-2">نمایاں خبریں</span>
+                <span className="urdu border-b-4 border-brand pb-2">تازہ ترین خبریں</span>
               </h2>
             </div>
             {isLoading ? (

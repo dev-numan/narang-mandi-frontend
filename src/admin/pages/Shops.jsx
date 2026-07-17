@@ -15,6 +15,7 @@ const EMPTY = {
   phone: '',
   whatsapp: '',
   address: '',
+  isFeatured: false,
   ownerName: '',
   ownerEmail: '',
   ownerPassword: '',
@@ -75,6 +76,7 @@ export default function Shops() {
         phone: shop.phone || '',
         whatsapp: shop.whatsapp || '',
         address: shop.address || '',
+        isFeatured: !!shop.isFeatured,
       });
       setModal({ id: shop._id });
     } else {
@@ -163,6 +165,22 @@ export default function Shops() {
               <input dir="rtl" placeholder="پتہ (address)" value={form.address} onChange={(e) => setForm({ ...form, address: e.target.value })} className="urdu w-full rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:border-brand" />
               <ImageUploader value={form.logo} onChange={(logo) => setForm({ ...form, logo })} label="Logo" />
               <ImageUploader value={form.coverImage} onChange={(coverImage) => setForm({ ...form, coverImage })} label="Cover image" />
+
+              <label className="flex items-start gap-2 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-gray-700">
+                <input
+                  type="checkbox"
+                  checked={form.isFeatured}
+                  onChange={(e) => setForm({ ...form, isFeatured: e.target.checked })}
+                  className="mt-0.5 h-4 w-4 accent-brand"
+                />
+                <span>
+                  ⭐ Feature this shop on the home page
+                  <span className="block text-xs text-gray-400">
+                    Shows in the "نمایاں دکان" banner. Only one shop can be featured — turning this
+                    on removes it from any other shop.
+                  </span>
+                </span>
+              </label>
 
               {!isEdit && (
                 <div className="rounded-lg border border-dashed border-gray-300 bg-gray-50 p-3">

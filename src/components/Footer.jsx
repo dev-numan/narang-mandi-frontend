@@ -55,6 +55,7 @@ export default function Footer() {
               </a>
             </li>
             <li><Link to="/privacy" className="hover:text-white">رازداری کی پالیسی</Link></li>
+            <li><Link to="/terms" className="hover:text-white">شرائط و ضوابط</Link></li>
             {settings?.contactEmail && (
               <li className="text-gray-400">{settings.contactEmail}</li>
             )}

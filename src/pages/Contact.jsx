@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
-import { settingsApi } from '../api/index.js';
+import { useQuery, useMutation } from '@tanstack/react-query';
+import { contactApi, settingsApi } from '../api/index.js';
 import { SITE_NAME } from '../constants/brand.js';
 import Seo from '../components/Seo.jsx';
 import {
@@ -26,7 +26,23 @@ function ContactCard({ icon, label, children }) {
 export default function Contact() {
   const { data: settings } = useQuery({ queryKey: ['settings'], queryFn: settingsApi.get });
   const email = settings?.contactEmail || 'info@narangmandi.com';
-  const [sent, setSent] = useState(false);
+  const [form, setForm] = useState({ name: '', email: '', message: '' });
+
+  const { mutate, isPending, isSuccess, error } = useMutation({
+    mutationFn: contactApi.send,
+  });
+
+  const errorText =
+    error?.response?.status === 429
+      ? 'بہت زیادہ پیغامات بھیجے گئے۔ براہِ کرم کچھ دیر بعد کوشش کریں۔'
+      : error
+        ? 'پیغام بھیجنے میں مسئلہ آیا۔ براہِ کرم دوبارہ کوشش کریں یا واٹس ایپ پر رابطہ کریں۔'
+        : '';
+
+  const field = (key) => ({
+    value: form[key],
+    onChange: (e) => setForm((f) => ({ ...f, [key]: e.target.value })),
+  });
 
   return (
     <>
@@ -79,42 +95,55 @@ export default function Contact() {
         <div className="rounded-xl bg-white p-6 shadow-sm sm:p-8">
           <h2 className="mb-4 text-xl font-bold text-ink">پیغام بھیجیں</h2>
 
-          {sent ? (
+          {isSuccess ? (
             <div className="rounded-lg bg-green-50 p-4 text-green-700">
-              آپ کا پیغام موصول ہو گیا۔ شکریہ! فوری رابطے کے لیے واٹس ایپ استعمال کریں۔
+              آپ کا پیغام موصول ہو گیا۔ شکریہ! ہم جلد آپ سے رابطہ کریں گے۔ فوری رابطے کے لیے
+              واٹس ایپ استعمال کریں۔
             </div>
           ) : (
             <form
               onSubmit={(e) => {
                 e.preventDefault();
-                setSent(true);
+                mutate(form);
               }}
               className="space-y-4"
             >
+              {errorText && (
+                <div className="rounded-lg bg-red-50 p-4 text-red-700">{errorText}</div>
+              )}
               <input
                 required
+                minLength={2}
+                maxLength={80}
                 placeholder="آپ کا نام"
                 className="w-full rounded-lg border border-gray-300 px-4 py-2 text-right outline-none focus:border-brand"
+                {...field('name')}
               />
               <input
                 required
                 type="email"
+                maxLength={120}
                 placeholder="ای میل"
                 className="w-full rounded-lg border border-gray-300 px-4 py-2 text-right outline-none focus:border-brand"
                 dir="ltr"
+                {...field('email')}
               />
               <textarea
                 required
                 rows={5}
+                minLength={10}
+                maxLength={4000}
                 placeholder="آپ کا پیغام"
                 className="w-full rounded-lg border border-gray-300 px-4 py-2 text-right outline-none focus:border-brand"
+                {...field('message')}
               />
               <div className="flex flex-wrap gap-3">
                 <button
                   type="submit"
-                  className="rounded-lg bg-brand px-6 py-2 text-white hover:bg-brand-dark"
+                  disabled={isPending}
+                  className="rounded-lg bg-brand px-6 py-2 text-white hover:bg-brand-dark disabled:opacity-60"
                 >
-                  بھیجیں
+                  {isPending ? 'بھیجا جا رہا ہے…' : 'بھیجیں'}
                 </button>
                 <a
                   href={whatsAppMessageUrl('السلام علیکم،')}

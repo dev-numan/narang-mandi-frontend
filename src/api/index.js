@@ -170,6 +170,14 @@ export const settingsApi = {
   update: (payload) => api.put('/settings', payload).then((r) => r.data.data),
 };
 
+// ---- Contact ----
+export const contactApi = {
+  send: (payload) => api.post('/contact', payload).then((r) => r.data),
+  list: (params) => api.get('/contact', { params }).then((r) => r.data),
+  markRead: (id) => api.put(`/contact/${id}/read`).then((r) => r.data.data),
+  remove: (id) => api.delete(`/contact/${id}`).then((r) => r.data),
+};
+
 // ---- Upload ----
 export const uploadApi = {
   image: (file) => {

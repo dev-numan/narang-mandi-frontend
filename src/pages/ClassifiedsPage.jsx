@@ -4,7 +4,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { classifiedsApi } from '../api/index.js';
 import { SITE_NAME } from '../constants/brand.js';
 import Seo from '../components/Seo.jsx';
-import { formatPrice, timeAgoUrdu } from '../utils/format.js';
+import { formatPrice } from '../utils/format.js';
 import MultiImageUploader from '../components/MultiImageUploader.jsx';
 import SoldStampOverlay from '../components/SoldStampOverlay.jsx';
 import Loader, { EmptyState } from '../components/Loader.jsx';
@@ -78,9 +78,8 @@ function ListingCard({ item }) {
             )}
           </div>
         )}
-        <div className="urdu mt-auto flex items-center justify-between text-xs text-gray-400">
+        <div className="urdu mt-auto text-xs text-gray-400">
           <span>{item.category?.name}</span>
-          <span>{timeAgoUrdu(item.createdAt)}</span>
         </div>
         {item.location && <p className="urdu mt-1 text-xs text-gray-400">📍 {item.location}</p>}
       </div>

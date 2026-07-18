@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { HOME_H1 } from '../constants/brand.js';
+import { HUB_HEADLINE } from '../constants/brand.js';
 
 // The digital-hub "front door": prominent cards for every major feature.
 // To use a real photo for a card, put an image URL in its `image` field —
@@ -40,9 +40,9 @@ export default function FeaturesHub() {
   return (
     <section className="mb-8">
       <div className="mb-4 text-center">
-        <h2 className="urdu text-2xl font-bold text-ink sm:text-3xl">سب کچھ ایک ہی جگہ</h2>
+
         <p className="mt-1 text-sm text-gray-500">
-          {HOME_H1} — <span className="urdu">نارنگ منڈی ڈیجیٹل ہب — خبریں، خریداری، اشتہارات اور بہت کچھ</span>
+          {HUB_HEADLINE} — <span className="urdu">نارنگ منڈی ڈیجیٹل ہب — خبریں، خریداری، اشتہارات اور بہت کچھ</span>
         </p>
       </div>
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4">

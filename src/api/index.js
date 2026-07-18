@@ -31,6 +31,8 @@ export const adminApi = {
   createUser: (payload) => api.post('/admin/users', payload).then((r) => r.data.data),
   updateUser: (id, payload) => api.put(`/admin/users/${id}`, payload).then((r) => r.data.data),
   deleteUser: (id) => api.delete(`/admin/users/${id}`).then((r) => r.data),
+  // Returns { user, accessToken } for the target user so an admin can "log in as" them.
+  impersonate: (id) => api.post(`/admin/users/${id}/impersonate`).then((r) => r.data.data),
 };
 
 // ---- Categories ----

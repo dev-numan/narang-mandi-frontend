@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { NavLink, Outlet, useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.jsx';
+import ImpersonationBanner from '../admin/components/ImpersonationBanner.jsx';
 
 const NAV = [
   { to: '/shop/admin', label: 'ڈیش بورڈ', icon: '▦', end: true },
@@ -57,6 +58,7 @@ export default function ShopAdminLayout() {
       {open && <div className="fixed inset-0 z-20 bg-black/40 md:hidden" onClick={() => setOpen(false)} />}
 
       <div className="flex min-w-0 flex-1 flex-col">
+        <ImpersonationBanner />
         <header className="flex h-16 items-center justify-between border-b bg-white px-4 shadow-sm">
           <button className="rounded p-2 text-xl md:hidden" onClick={() => setOpen(true)} aria-label="Menu">☰</button>
           <div className="flex flex-1 items-center justify-end gap-4">

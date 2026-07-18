@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { NavLink, Outlet, useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.jsx';
+import ImpersonationBanner from './components/ImpersonationBanner.jsx';
 
 const NAV = [
   { to: '/admin', label: 'Dashboard', icon: '▦', end: true },
@@ -83,6 +84,7 @@ export default function AdminLayout() {
 
       {/* Main */}
       <div className="flex min-w-0 flex-1 flex-col">
+        <ImpersonationBanner />
         <header className="flex h-16 items-center justify-between border-b bg-white px-4 shadow-sm">
           <button
             className="rounded p-2 text-xl md:hidden"

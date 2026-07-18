@@ -10,7 +10,7 @@ const EMPTY = { name: '', email: '', password: '', role: 'editor', canManageCate
 
 export default function Users() {
   const qc = useQueryClient();
-  const { user: current } = useAuth();
+  const { user: current, impersonate } = useAuth();
   // modal: null | { mode: 'create' } | { mode: 'edit', id }
   const [modal, setModal] = useState(null);
   const [form, setForm] = useState(EMPTY);
@@ -64,6 +64,17 @@ export default function Users() {
     },
   });
 
+  const impersonateMut = useMutation({
+    mutationFn: (u) => adminApi.impersonate(u._id),
+    onSuccess: ({ user: target, accessToken }) => {
+      impersonate(accessToken, target);
+      // Hard redirect so all admin-scoped cached data is dropped and the app
+      // re-initialises cleanly as the target user, in their own panel.
+      window.location.assign(target.role === 'shopkeeper' ? '/shop/admin' : '/admin');
+    },
+    onError: (err) => setActionError(err.message),
+  });
+
   const openCreate = () => {
     setError('');
     setForm(EMPTY);
@@ -102,6 +113,21 @@ export default function Users() {
       header: 'Actions',
       render: (r) => (
         <div className="flex items-center justify-end gap-2">
+          {r._id !== current?._id && r.role !== 'admin' && (
+            <button
+              onClick={() => {
+                setActionError('');
+                impersonateMut.mutate(r);
+              }}
+              disabled={impersonateMut.isPending}
+              title={`Log in as ${r.name}`}
+              className="rounded border border-brand/40 bg-brand/5 px-2 py-1 text-xs font-medium text-brand hover:bg-brand/10 disabled:opacity-60"
+            >
+              {impersonateMut.isPending && impersonateMut.variables?._id === r._id
+                ? 'Logging in…'
+                : 'Log in as'}
+            </button>
+          )}
           <button
             onClick={() => openEdit(r)}
             className="rounded border border-gray-300 px-2 py-1 text-xs hover:bg-gray-50"

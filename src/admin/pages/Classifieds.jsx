@@ -121,6 +121,25 @@ export default function Classifieds() {
   };
 
   const columns = [
+    {
+      key: 'thumb',
+      header: '',
+      className: 'w-14',
+      render: (r) => {
+        const src = r.images?.[0];
+        return src ? (
+          <img
+            src={src}
+            alt=""
+            className="h-12 w-12 rounded-lg object-cover ring-1 ring-gray-200"
+          />
+        ) : (
+          <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-gray-100 text-xs text-gray-400 ring-1 ring-gray-200">
+            —
+          </div>
+        );
+      },
+    },
     { key: 'title', header: 'Title', render: (r) => <span className="urdu font-medium">{r.title}</span> },
     { key: 'category', header: 'Category', render: (r) => <span className="urdu">{r.category?.name || '—'}</span> },
     { key: 'price', header: 'Price', render: (r) => (r.price != null ? formatPrice(r.price) : '—') },

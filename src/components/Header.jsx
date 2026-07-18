@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { settingsApi } from '../api/index.js';
-import { HOME_H1, SITE_NAME } from '../constants/brand.js';
+import { HUB_HEADLINE, SITE_NAME, SITE_NAME_URDU } from '../constants/brand.js';
 import SearchBar from './SearchBar.jsx';
 import WeatherWidget from './WeatherWidget.jsx';
 
@@ -28,7 +28,6 @@ function SocialIcons({ links }) {
 export default function Header() {
   const [showSearch, setShowSearch] = useState(false);
   const { data: settings } = useQuery({ queryKey: ['settings'], queryFn: settingsApi.get });
-  const tagline = settings?.tagline || "Your city's all-in-one digital hub";
 
   const today = new Date().toLocaleDateString('ur-PK', {
     weekday: 'long',
@@ -42,16 +41,16 @@ export default function Header() {
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-2 px-4 py-3 sm:gap-4 sm:py-4">
         <Link to="/" className="flex min-w-0 items-center gap-2 sm:gap-3">
           {settings?.logo ? (
-            <img src={settings.logo} alt={SITE_NAME} className="h-10 w-auto flex-shrink-0 sm:h-12" />
+            <img src={settings.logo} alt={SITE_NAME} className="h-12 w-auto flex-shrink-0 sm:h-16" />
           ) : (
-            <img src="/logo.png" alt={SITE_NAME} className="h-10 w-10 flex-shrink-0 rounded-lg object-cover sm:h-12 sm:w-12" />
+            <img src="/logo.png" alt={SITE_NAME} className="h-12 w-12 flex-shrink-0 rounded-lg object-cover sm:h-16 sm:w-16" />
           )}
           <div className="min-w-0">
-            <h1 className="text-sm font-bold leading-snug text-brand sm:text-base">
-              {HOME_H1}
-              <span className="urdu block text-xs font-semibold sm:text-sm">{SITE_NAME} — نارنگ منڈی ڈیجیٹل ہب</span>
+            <h1 className="leading-tight tracking-tight text-brand">
+              <span className="block text-xl font-extrabold sm:text-2xl lg:text-3xl">{SITE_NAME}</span>
+              <span className="mt-0.5 block text-sm font-semibold sm:text-base lg:text-lg">{HUB_HEADLINE}</span>
             </h1>
-            <p className="mt-1 truncate pb-1 text-xs text-gray-500">{tagline}</p>
+            <p className="urdu mt-2.5 pb-1 pt-1 text-xs leading-[2] text-gray-500 sm:mt-3 sm:text-sm">{SITE_NAME_URDU} ڈیجیٹل ہب</p>
           </div>
         </Link>
 

@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 
 // AdSense publisher ID — matches the loader script in index.html.
-const AD_CLIENT = 'ca-pub-7101610225390728';
+const AD_CLIENT = 'ca-pub-6826960230450611';
 
 /**
  * A single AdSense display unit.

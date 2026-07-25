@@ -32,6 +32,7 @@ const About = lazy(() => import('./pages/About.jsx'));
 const Contact = lazy(() => import('./pages/Contact.jsx'));
 const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy.jsx'));
 const Terms = lazy(() => import('./pages/Terms.jsx'));
+const RegistrationPage = lazy(() => import('./pages/RegistrationPage.jsx'));
 const NotFound = lazy(() => import('./pages/NotFound.jsx'));
 
 // Admin panel (heavy — rich-text editor etc. — split out of the public bundle).
@@ -48,6 +49,7 @@ const SettingsPage = lazy(() => import('./admin/pages/Settings.jsx'));
 const Profile = lazy(() => import('./admin/pages/Profile.jsx'));
 const Users = lazy(() => import('./admin/pages/Users.jsx'));
 const Messages = lazy(() => import('./admin/pages/Messages.jsx'));
+const Registrations = lazy(() => import('./admin/pages/Registrations.jsx'));
 const Shops = lazy(() => import('./admin/pages/Shops.jsx'));
 
 // Shopkeeper panel.
@@ -85,6 +87,7 @@ export default function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/privacy" element={<PrivacyPolicy />} />
           <Route path="/terms" element={<Terms />} />
+          <Route path="/register/:type" element={<RegistrationPage />} />
           <Route path="*" element={<NotFound />} />
         </Route>
 
@@ -116,6 +119,7 @@ export default function App() {
           <Route path="classifieds" element={<RequireAdmin><Classifieds /></RequireAdmin>} />
           <Route path="shops" element={<RequireAdmin><Shops /></RequireAdmin>} />
           <Route path="messages" element={<RequireAdmin><Messages /></RequireAdmin>} />
+          <Route path="registrations" element={<RequireAdmin><Registrations /></RequireAdmin>} />
           <Route path="settings" element={<RequireAdmin><SettingsPage /></RequireAdmin>} />
           <Route path="profile" element={<Profile />} />
           <Route path="users" element={<RequireAdmin><Users /></RequireAdmin>} />

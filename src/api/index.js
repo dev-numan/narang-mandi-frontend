@@ -180,6 +180,23 @@ export const contactApi = {
   remove: (id) => api.delete(`/contact/${id}`).then((r) => r.data),
 };
 
+// ---- Registrations (shop-online / driver lead-capture banners) ----
+export const registrationsApi = {
+  // public
+  submit: (payload) => api.post('/registrations', payload).then((r) => r.data),
+  uploadImage: (file) => {
+    const form = new FormData();
+    form.append('image', file);
+    return api
+      .post('/registrations/upload', form, { headers: { 'Content-Type': 'multipart/form-data' } })
+      .then((r) => r.data.data.url);
+  },
+  // admin
+  list: (params) => api.get('/registrations', { params }).then((r) => r.data),
+  markRead: (id) => api.put(`/registrations/${id}/read`).then((r) => r.data.data),
+  remove: (id) => api.delete(`/registrations/${id}`).then((r) => r.data),
+};
+
 // ---- Upload ----
 export const uploadApi = {
   image: (file) => {

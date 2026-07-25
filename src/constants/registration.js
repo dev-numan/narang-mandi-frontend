@@ -3,7 +3,7 @@ export const REGISTRATION_TYPES = {
   shop: {
     path: '/register/shop',
     gradient: 'from-brand-dark via-brand to-brand-dark',
-    bgImage: '/shop-banner-bg.png',
+    bgImage: '/shop-banner-bg.jpg',
     bgPosition: 'center bottom',
     icon: '🛒',
     badge: 'خوشخبری!',
@@ -21,7 +21,7 @@ export const REGISTRATION_TYPES = {
   driver: {
     path: '/register/driver',
     gradient: 'from-gray-900 via-brand-dark to-black',
-    bgImage: '/driver-banner-bg.png',
+    bgImage: '/driver-banner-bg.jpg',
     bgPosition: 'center',
     icon: '🚕',
     badge: 'ڈرائیور حضرات کے لیے خوشخبری!',

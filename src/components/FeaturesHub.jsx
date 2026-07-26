@@ -1,46 +1,51 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { HUB_HEADLINE } from '../constants/brand.js';
-
-// The digital-hub "front door": prominent cards for every major feature.
-// To use a real photo for a card, put an image URL in its `image` field —
-// it renders as a soft background behind the icon (gradient stays as fallback).
-// Cards with `comingSoon: true` don't navigate yet — they pop a "coming soon"
-// modal so we can showcase the feature before it launches.
-const FEATURES = [
-  { to: '/shops', title: 'دکانیں', subtitle: 'آن لائن خریداری', icon: '🛒', gradient: 'from-brand to-brand-dark', image: '/feature-shops.png', comingSoon: true },
-  { to: '/taxi', title: 'آن لائن ٹیکسی', subtitle: 'شہر تا شہر بکنگ', icon: '🚕', gradient: 'from-yellow-500 to-amber-600', image: '/feature-taxi.png', comingSoon: true },
-  { to: '/classifieds', title: 'خرید و فروخت', subtitle: 'پرانی نئی چیزیں بیچیں', icon: '🏷️', gradient: 'from-amber-500 to-orange-600', image: '/feature-classifieds.png' },
-  { to: '/category/local', title: 'تازہ خبریں', subtitle: 'شہر کی تازہ ترین خبریں', icon: '📰', gradient: 'from-rose-600 to-red-700', image: '/feature-news.png' },
-  { to: '/trains', title: 'ٹرین اوقات', subtitle: 'آمد و رفت کے اوقات', icon: '🚆', gradient: 'from-sky-600 to-blue-700', image: '/feature-trains.png' },
-  { to: '/community', title: 'کمیونٹی چیٹ', subtitle: 'مقامی گفتگو و معلومات', icon: '💬', gradient: 'from-emerald-600 to-green-700', image: '/feature-community.png' },
-  { to: '/places', title: 'مشہور مقامات', subtitle: 'اہم مقامات و خدمات', icon: '📍', gradient: 'from-violet-600 to-purple-700', image: '/feature-places.png' },
-];
+import { FEATURES_LIST } from '../constants/features.js';
 
 function CardInner({ f }) {
+  const cta = f.comingSoon ? 'Jald dekhein' : 'Open';
+
   return (
     <>
       {f.image && (
         <>
-          <img src={f.image} alt="" className="absolute inset-0 h-full w-full object-cover" />
-          <div className="absolute inset-0 bg-black/35" />
+          <img
+            src={f.image}
+            alt=""
+            className="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-105"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20 transition group-hover:from-black/85" />
         </>
       )}
-      <div className="pointer-events-none absolute -left-8 -top-8 h-24 w-24 rounded-full bg-white/10" />
-      <div className="pointer-events-none absolute -bottom-10 right-4 h-20 w-20 rounded-full bg-white/5" />
+      {!f.image && (
+        <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+      )}
       {f.comingSoon && (
-        <span className="urdu absolute left-3 top-3 rounded-full bg-white/25 px-2 py-0.5 text-[10px] font-bold text-white backdrop-blur-sm">
-          جلد آ رہا ہے
+        <span className="absolute left-3 top-3 rounded-full bg-white/25 px-2.5 py-0.5 text-[10px] font-bold text-white backdrop-blur-sm">
+          Jald aa raha hai
         </span>
       )}
-      <div className="relative">
-        <span className="mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-white/20 text-2xl backdrop-blur-sm">
-          {f.icon}
-        </span>
-        <h3 className="urdu text-lg font-bold text-white">{f.title}</h3>
-        <p className="urdu mt-0.5 text-xs text-white/80">{f.subtitle}</p>
-        <span className="urdu mt-3 inline-flex items-center gap-1 text-xs font-semibold text-white/90">
-          {f.comingSoon ? 'بہت جلد' : 'دیکھیں'} <span className="transition group-hover:-translate-x-1">←</span>
+      <span
+        className="absolute right-3 top-3 flex h-9 w-9 items-center justify-center rounded-full bg-white/90 text-lg font-bold text-ink shadow-md transition duration-300 group-hover:scale-110 group-hover:bg-brand group-hover:text-white"
+        aria-hidden
+      >
+        →
+      </span>
+      <div className="relative flex min-h-[9rem] flex-col justify-end gap-1.5 sm:min-h-[10rem]" dir="ltr">
+        <h3 className="typo-feature-card-title font-extrabold leading-tight text-white">
+          {f.title}
+        </h3>
+        {f.description && (
+          <p className="urdu typo-feature-card-desc line-clamp-2 leading-relaxed text-white/90" dir="rtl">
+            {f.description}
+          </p>
+        )}
+        <span className="mt-1 inline-flex w-fit items-center gap-1.5 rounded-full bg-white px-3 py-1 text-xs font-bold text-ink shadow-sm transition group-hover:bg-brand group-hover:text-white sm:text-sm">
+          {cta}
+          <span className="transition group-hover:translate-x-0.5" aria-hidden>
+            →
+          </span>
         </span>
       </div>
     </>
@@ -48,9 +53,9 @@ function CardInner({ f }) {
 }
 
 function FeatureCard({ f, onComingSoon }) {
-  const className = `group relative overflow-hidden rounded-2xl ${
+  const className = `group relative block cursor-pointer overflow-hidden rounded-2xl ${
     f.image ? 'bg-gray-900' : `bg-gradient-to-br ${f.gradient}`
-  } p-4 text-right shadow-sm transition hover:-translate-y-1 hover:shadow-lg sm:p-5`;
+  } p-4 text-left shadow-md ring-1 ring-black/5 transition duration-300 hover:-translate-y-1.5 hover:shadow-xl hover:ring-brand/40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand sm:p-5`;
 
   if (f.comingSoon) {
     return (
@@ -80,13 +85,13 @@ function ComingSoonModal({ feature, onClose }) {
           {feature?.icon || '⏳'}
         </div>
         <h3 className="urdu mb-2 text-2xl font-bold text-ink">بہت جلد آ رہا ہے</h3>
-        <p className="urdu leading-loose text-gray-600">
-          {feature?.title} کی سہولت پر کام جاری ہے — بہت جلد نارنگ منڈی ڈیجیٹل ہب پر دستیاب ہوگی۔ انتظار کریں!
+        <p className="urdu leading-relaxed text-gray-600">
+          {feature?.title} کی سہولت پر کام جاری ہے — جلد نارنگ منڈی ڈیجیٹل ہب پر دستیاب ہوگی۔
         </p>
         <button
           type="button"
           onClick={onClose}
-          className="urdu mt-6 w-full rounded-lg bg-brand px-6 py-2.5 font-semibold text-white transition hover:bg-brand-dark"
+          className="mt-6 w-full rounded-lg bg-brand px-6 py-2.5 font-semibold text-white transition hover:bg-brand-dark"
         >
           ٹھیک ہے
         </button>
@@ -101,12 +106,12 @@ export default function FeaturesHub() {
   return (
     <section className="mb-8">
       <div className="mb-4 text-center">
-        <p className="mt-1 text-sm text-gray-500">
-          {HUB_HEADLINE} — <span className="urdu">نارنگ منڈی ڈیجیٹل ہب — خبریں، خریداری، اشتہارات اور بہت کچھ</span>
+        <p className="mt-1 text-sm text-gray-500" dir="ltr">
+          {HUB_HEADLINE} — Narang Mandi Digital Hub — khabrein, khareedari, ishteharat aur bohat kuch
         </p>
       </div>
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4">
-        {FEATURES.map((f) => (
+      <div dir="ltr" className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4">
+        {FEATURES_LIST.map((f) => (
           <FeatureCard key={f.to} f={f} onComingSoon={() => setComingSoon(f)} />
         ))}
       </div>

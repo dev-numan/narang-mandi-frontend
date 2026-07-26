@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { communityApi } from '../api/index.js';
-import { SITE_NAME } from '../constants/brand.js';
+import { FEATURES, featureSeoTitle } from '../constants/features.js';
 import Seo from '../components/Seo.jsx';
 import { getClientId } from '../utils/identity.js';
 import { useChatProfile } from '../components/CommunityLayout.jsx';
@@ -91,15 +91,15 @@ export default function CommunityPage() {
   return (
     <>
       <Seo
-        title={`${SITE_NAME} | کمیونٹی چیٹ`}
-        description="نارنگ منڈی کمیونٹی چیٹ — چیٹ رومز بنائیں اور براہِ راست گفتگو میں شامل ہوں"
+        title={featureSeoTitle(FEATURES.community)}
+        description={FEATURES.community.description}
         path="/community"
       />
 
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3 border-b-2 border-brand pb-3">
         <div>
-          <h1 className="urdu text-3xl font-bold text-ink">کمیونٹی چیٹ</h1>
-          <p className="urdu mt-1 text-sm text-gray-500">شہر کے چیٹ رومز میں براہِ راست گفتگو کریں</p>
+          <h1 className="text-3xl font-bold text-ink" dir="ltr">{FEATURES.community.title}</h1>
+          <p className="urdu mt-1 text-sm text-gray-500">{FEATURES.community.description}</p>
         </div>
         <div className="flex items-center gap-2">
           <button

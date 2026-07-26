@@ -29,18 +29,18 @@ export default function BreakingTicker() {
 
   return (
     <div className="ticker-hover flex items-stretch overflow-hidden bg-ink text-white">
-      <span className="z-10 flex flex-shrink-0 items-center bg-brand px-4 text-sm font-bold">
+      <span className="typo-ticker-label z-10 flex flex-shrink-0 items-center bg-brand px-4">
         بریکنگ نیوز
       </span>
       {/* dir="ltr" is required: the site is RTL (Urdu), and react-fast-marquee
           miscomputes its transforms under an RTL parent (content ends up
           off-screen). Forcing LTR here keeps the marquee math correct. */}
-      <div dir="ltr" className="relative flex-1 overflow-hidden py-3.5">
+      <div dir="ltr" className="relative flex-1 overflow-hidden py-2">
         {/* autoFill repeats the headlines until the strip is full, so the loop is
             a seamless gap-free chain regardless of how many headlines there are. */}
         <Marquee autoFill speed={SPEED} pauseOnHover direction="right" gradient={false}>
           {items.map((it) => (
-            <span key={it._id} className="mx-6 flex items-center whitespace-nowrap text-sm leading-loose">
+            <span key={it._id} className="typo-ticker mx-6 flex items-center whitespace-nowrap leading-loose">
               {it.slug ? (
                 <Link to={`/article/${it.slug}`} className="hover:underline">
                   {it.title}

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { classifiedsApi } from '../api/index.js';
-import { SITE_NAME } from '../constants/brand.js';
+import { FEATURES, featureSeoTitle } from '../constants/features.js';
 import Seo from '../components/Seo.jsx';
 import { formatPrice } from '../utils/format.js';
 import MultiImageUploader from '../components/MultiImageUploader.jsx';
@@ -11,12 +11,17 @@ import Loader, { EmptyState } from '../components/Loader.jsx';
 
 function PriceTag({ price, negotiable }) {
   if (price == null) {
-    return <span className="urdu text-sm text-gray-500">رابطہ کریں</span>;
+    return <span className="urdu typo-classified-card-price text-gray-500">رابطہ کریں</span>;
   }
   return (
-    <span className="text-sm font-bold text-brand">
+    <span className="typo-classified-card-price font-bold text-brand">
       {formatPrice(price)}
-      {negotiable && <span className="urdu mr-1 text-xs font-normal text-gray-400"> · قابلِ گفتگو</span>}
+      {negotiable && (
+        <span className="urdu typo-classified-card-meta mr-1 font-normal text-gray-400">
+          {' '}
+          · قابلِ گفتگو
+        </span>
+      )}
     </span>
   );
 }
@@ -39,7 +44,9 @@ function ListingCard({ item }) {
           {item.isSold && <SoldStampOverlay />}
         </div>
         <div className="p-3 pb-0">
-          <h3 className="urdu mb-1 line-clamp-1 font-bold text-ink">{item.title}</h3>
+          <h3 className="urdu typo-classified-card-title mb-1 line-clamp-1 font-bold text-ink">
+            {item.title}
+          </h3>
           <div className="mb-2">
             <PriceTag price={item.price} negotiable={item.negotiable} />
           </div>
@@ -49,7 +56,10 @@ function ListingCard({ item }) {
         {item.phone && (
           <div className="mb-2 flex items-center justify-between gap-2 border-t border-gray-100 pt-2">
             {item.isSold ? (
-              <span dir="ltr" className="select-none text-sm font-semibold text-gray-400 blur-[4px]">
+              <span
+                dir="ltr"
+                className="typo-classified-card-meta select-none font-semibold text-gray-400 blur-[4px]"
+              >
                 📞 {item.phone}
               </span>
             ) : (
@@ -57,7 +67,7 @@ function ListingCard({ item }) {
                 <a
                   href={`tel:${item.phone}`}
                   dir="ltr"
-                  className="text-sm font-semibold text-ink hover:text-brand"
+                  className="typo-classified-card-meta font-semibold text-ink hover:text-brand"
                 >
                   📞 {item.phone}
                 </a>
@@ -78,10 +88,12 @@ function ListingCard({ item }) {
             )}
           </div>
         )}
-        <div className="urdu mt-auto text-xs text-gray-400">
+        <div className="urdu typo-classified-card-meta mt-auto text-gray-400">
           <span>{item.category?.name}</span>
         </div>
-        {item.location && <p className="urdu mt-1 text-xs text-gray-400">📍 {item.location}</p>}
+        {item.location && (
+          <p className="urdu typo-classified-card-meta mt-1 text-gray-400">📍 {item.location}</p>
+        )}
       </div>
     </div>
   );
@@ -247,8 +259,10 @@ function MarkSoldCard({ onSuccess }) {
 
   return (
     <div className="mt-4 rounded-xl border border-gray-200 bg-white p-4">
-      <h2 className="urdu mb-1 text-lg font-bold text-ink">چیز فروخت ہو گئی؟</h2>
-      <p className="urdu mb-3 text-xs text-gray-500">
+      <h2 className="urdu typo-classified-sidebar-heading mb-1 font-bold text-ink">
+        چیز فروخت ہو گئی؟
+      </h2>
+      <p className="urdu typo-classified-sidebar-desc mb-3 text-gray-500">
         اشتہار دیتے وقت ملنے والا کوڈ اور وہی فون نمبر درج کریں — اشتہار فروخت شدہ ہو جائے گا۔
       </p>
       <form onSubmit={submit} className="space-y-2">
@@ -259,7 +273,7 @@ function MarkSoldCard({ onSuccess }) {
           placeholder="کوڈ"
           value={code}
           onChange={(e) => setCode(e.target.value.replace(/\D/g, '').slice(0, 8))}
-          className="w-full rounded-lg border border-gray-300 px-3 py-2 text-center font-mono text-lg tracking-widest outline-none focus:border-brand"
+          className="typo-classified-sidebar-action w-full rounded-lg border border-gray-300 px-3 py-2 text-center font-mono tracking-widest outline-none focus:border-brand"
         />
         <input
           dir="ltr"
@@ -267,14 +281,14 @@ function MarkSoldCard({ onSuccess }) {
           placeholder="فون نمبر (اشتہار والا)"
           value={phone}
           onChange={(e) => setPhone(e.target.value)}
-          className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:border-brand"
+          className="typo-classified-sidebar-action w-full rounded-lg border border-gray-300 px-3 py-2 outline-none focus:border-brand"
         />
-        {error && <p className="urdu text-xs text-red-600">{error}</p>}
-        {message && <p className="urdu text-xs text-green-700">{message}</p>}
+        {error && <p className="urdu typo-classified-sidebar-desc text-red-600">{error}</p>}
+        {message && <p className="urdu typo-classified-sidebar-desc text-green-700">{message}</p>}
         <button
           type="submit"
           disabled={mut.isPending || code.length < 6 || !phone.trim()}
-          className="urdu w-full rounded-lg bg-gray-800 px-3 py-2 text-sm font-semibold text-white hover:bg-gray-900 disabled:opacity-60"
+          className="urdu typo-classified-sidebar-action w-full rounded-lg bg-gray-800 px-3 py-2 font-semibold text-white hover:bg-gray-900 disabled:opacity-60"
         >
           {mut.isPending ? 'تصدیق ہو رہی ہے…' : 'فروخت شدہ قرار دیں'}
         </button>
@@ -311,15 +325,19 @@ export default function ClassifiedsPage() {
   return (
     <>
       <Seo
-        title={`${SITE_NAME} | اشتہارات`}
-        description="نارنگ منڈی کے مقامی اشتہارات — خرید و فروخت، نوکریاں، گاڑیاں"
+        title={featureSeoTitle(FEATURES.classifieds)}
+        description={FEATURES.classifieds.description}
         path="/classifieds"
       />
 
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3 border-b-2 border-brand pb-3">
         <div>
-          <h1 className="urdu text-3xl font-bold text-ink">اشتہارات</h1>
-          <p className="urdu mt-1 text-sm text-gray-500">خرید و فروخت، نوکریاں اور گاڑیاں — نارنگ منڈی</p>
+          <h1 className="typo-classified-page-title font-bold text-ink" dir="ltr">
+            {FEATURES.classifieds.title}
+          </h1>
+          <p className="urdu typo-classified-page-desc mt-1 text-gray-500">
+            {FEATURES.classifieds.description}
+          </p>
         </div>
         <button onClick={() => setShowAdd(true)} className="urdu rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-white hover:bg-brand-dark">
           + نیا اشتہار دیں
@@ -350,18 +368,32 @@ export default function ClassifiedsPage() {
 
         <aside className="lg:col-span-1 lg:order-first">
           <div className="rounded-xl border border-gray-200 bg-white p-4">
-            <h2 className="urdu mb-3 border-b pb-2 text-lg font-bold text-ink">زمرہ جات</h2>
+            <h2 className="urdu typo-classified-sidebar-heading mb-3 border-b pb-2 font-bold text-ink">
+              زمرہ جات
+            </h2>
             <ul className="space-y-1">
               <li>
-                <button onClick={() => setActiveCat('')} className={`urdu w-full rounded-lg px-3 py-2 text-right text-sm transition ${activeCat === '' ? 'bg-brand text-white' : 'hover:bg-gray-100'}`}>
+                <button
+                  onClick={() => setActiveCat('')}
+                  className={`urdu typo-classified-sidebar-item w-full rounded-lg px-3 py-2 text-right transition ${activeCat === '' ? 'bg-brand text-white' : 'hover:bg-gray-100'}`}
+                >
                   تمام اشتہارات
                 </button>
               </li>
               {categories.map((c) => (
                 <li key={c._id}>
-                  <button onClick={() => setActiveCat(c.slug)} className={`urdu flex w-full items-center justify-between rounded-lg px-3 py-2 text-sm transition ${activeCat === c.slug ? 'bg-brand text-white' : 'hover:bg-gray-100'}`}>
-                    <span>{c.icon} {c.name}</span>
-                    <span className={`rounded-full px-1.5 text-xs ${activeCat === c.slug ? 'bg-white/20' : 'bg-gray-100 text-gray-500'}`}>{c.listingCount}</span>
+                  <button
+                    onClick={() => setActiveCat(c.slug)}
+                    className={`urdu typo-classified-sidebar-item flex w-full items-center justify-between rounded-lg px-3 py-2 transition ${activeCat === c.slug ? 'bg-brand text-white' : 'hover:bg-gray-100'}`}
+                  >
+                    <span>
+                      {c.icon} {c.name}
+                    </span>
+                    <span
+                      className={`rounded-full px-1.5 text-[0.85em] ${activeCat === c.slug ? 'bg-white/20' : 'bg-gray-100 text-gray-500'}`}
+                    >
+                      {c.listingCount}
+                    </span>
                   </button>
                 </li>
               ))}

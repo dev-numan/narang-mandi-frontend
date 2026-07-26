@@ -1,58 +1,52 @@
 import { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
 import { NavLink } from 'react-router-dom';
-import { categoriesApi } from '../api/index.js';
 
-// How many links to show inline on desktop before collapsing the rest into a
-// "مزید" (More) dropdown. Keeps the bar on one tidy row instead of scrolling.
-const VISIBLE_COUNT = 7;
+/** Top nav — only these live features (nothing else). */
+const NAV_ITEMS = [
+  { to: '/', label: 'Home', end: true },
+  { to: '/places', label: 'Mashhoor Maqamat' },
+  { to: '/community', label: 'Community Chat' },
+  { to: '/trains', label: 'Train Auqaat' },
+  { to: '/classifieds', label: 'Narang OLX' },
+  { to: '/category/local', label: 'News' },
+];
 
 export default function CategoryNav() {
-  const [open, setOpen] = useState(false); // mobile hamburger menu
-  const [moreOpen, setMoreOpen] = useState(false); // desktop "more" dropdown
-  const { data: categories = [] } = useQuery({
-    queryKey: ['categories'],
-    queryFn: () => categoriesApi.list(),
-  });
+  const [open, setOpen] = useState(false);
 
-  const items = [
-    { to: '/', label: 'صفحۂ اول', end: true },
-    { to: '/places', label: 'مشہور مقامات' },
-    { to: '/community', label: 'کمیونٹی چیٹ' },
-    { to: '/trains', label: 'ٹرین اوقات' },
-    { to: '/classifieds', label: 'اشتہارات' },
-    { to: '/shops', label: 'دکانیں' },
-    ...categories.map((c) => ({ to: `/category/${c.slug}`, label: c.name, key: c._id })),
-  ];
-
-  const visibleItems = items.slice(0, VISIBLE_COUNT);
-  const overflowItems = items.slice(VISIBLE_COUNT);
-
-  const linkClass = ({ isActive }) =>
-    `block rounded px-3 py-2 transition hover:bg-gray-100 ${
-      isActive ? 'font-bold text-brand' : 'text-ink'
-    }`;
+  const pillClass = ({ isActive }) =>
+    [
+      'block rounded-full px-3.5 py-1.5 font-semibold transition-all duration-150',
+      isActive
+        ? 'bg-brand text-white shadow-sm hover:bg-brand-dark'
+        : 'bg-gray-100 text-ink hover:bg-gray-200',
+    ].join(' ');
 
   return (
-    <nav className="border-b border-gray-200 bg-white">
+    <nav className="border-b border-gray-200/80 bg-gradient-to-b from-gray-50 to-white">
       <div className="mx-auto max-w-6xl px-4">
-        {/* Mobile: hamburger toggle */}
         <button
           onClick={() => setOpen((o) => !o)}
-          aria-label="مینو"
+          aria-label="Menu"
           aria-expanded={open}
-          className="flex w-full items-center justify-between py-3 text-base font-bold text-ink md:hidden"
+          className="typo-nav flex w-full items-center justify-between py-3 font-semibold text-ink md:hidden"
         >
-          <span>زمرہ جات</span>
-          <span className="text-2xl leading-none">{open ? '✕' : '☰'}</span>
+          <span className="rounded-full bg-brand/10 px-3.5 py-1.5 text-brand">Menu</span>
+          <span className="flex h-9 w-9 items-center justify-center rounded-full bg-gray-100 text-xl leading-none text-ink">
+            {open ? '✕' : '☰'}
+          </span>
         </button>
 
-        {/* Mobile: collapsible vertical menu (shows every item) */}
         {open && (
-          <ul className="flex flex-col gap-1 pb-3 text-base md:hidden">
-            {items.map((it) => (
-              <li key={it.key || it.to}>
-                <NavLink to={it.to} end={it.end} onClick={() => setOpen(false)} className={linkClass}>
+          <ul className="typo-nav flex flex-col gap-2 pb-4 md:hidden">
+            {NAV_ITEMS.map((it) => (
+              <li key={it.to}>
+                <NavLink
+                  to={it.to}
+                  end={it.end}
+                  onClick={() => setOpen(false)}
+                  className={pillClass}
+                >
                   {it.label}
                 </NavLink>
               </li>
@@ -60,58 +54,15 @@ export default function CategoryNav() {
           </ul>
         )}
 
-        {/* Desktop: first N items inline, the rest under a "مزید" dropdown */}
         <div className="hidden md:block">
-          <ul className="flex items-center gap-1 whitespace-nowrap py-1 text-base">
-            {visibleItems.map((it) => (
-              <li key={it.key || it.to}>
-                <NavLink to={it.to} end={it.end} className={linkClass}>
+          <ul className="typo-nav flex items-center justify-center gap-2 overflow-x-auto whitespace-nowrap py-2.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            {NAV_ITEMS.map((it) => (
+              <li key={it.to}>
+                <NavLink to={it.to} end={it.end} className={pillClass}>
                   {it.label}
                 </NavLink>
               </li>
             ))}
-
-            {overflowItems.length > 0 && (
-              <li className="relative">
-                <button
-                  onClick={() => setMoreOpen((o) => !o)}
-                  aria-haspopup="true"
-                  aria-expanded={moreOpen}
-                  className={`flex items-center gap-1 rounded px-3 py-2 transition hover:bg-gray-100 ${
-                    moreOpen ? 'bg-gray-100 font-bold text-brand' : 'text-ink'
-                  }`}
-                >
-                  <span>مزید</span>
-                  <span className="text-xs leading-none">▾</span>
-                </button>
-
-                {moreOpen && (
-                  <>
-                    {/* Invisible backdrop so clicking anywhere closes the menu */}
-                    <button
-                      aria-hidden="true"
-                      tabIndex={-1}
-                      onClick={() => setMoreOpen(false)}
-                      className="fixed inset-0 z-10 cursor-default"
-                    />
-                    <ul className="absolute right-0 top-full z-20 mt-1 max-h-96 w-56 overflow-y-auto rounded-lg border border-gray-200 bg-white py-1 shadow-lg">
-                      {overflowItems.map((it) => (
-                        <li key={it.key || it.to}>
-                          <NavLink
-                            to={it.to}
-                            end={it.end}
-                            onClick={() => setMoreOpen(false)}
-                            className={linkClass}
-                          >
-                            {it.label}
-                          </NavLink>
-                        </li>
-                      ))}
-                    </ul>
-                  </>
-                )}
-              </li>
-            )}
           </ul>
         </div>
       </div>

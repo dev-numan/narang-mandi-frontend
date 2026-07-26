@@ -86,7 +86,7 @@ export default function RegistrationPage() {
           }
         >
           <div className="relative">
-            <span className="urdu mb-2 inline-block rounded-full bg-yellow-400 px-3 py-0.5 text-xs font-extrabold text-brand-dark">
+            <span className="urdu mb-2 inline-block text-xs font-extrabold text-yellow-300">
               {meta.badge}
             </span>
             <h1 className="urdu text-2xl font-bold leading-snug sm:text-3xl">{meta.title}</h1>

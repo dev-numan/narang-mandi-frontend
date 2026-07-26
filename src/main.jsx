@@ -8,6 +8,9 @@ import { AuthProvider } from './context/AuthContext.jsx';
 import { CartProvider } from './context/CartContext.jsx';
 import 'react-quill-new/dist/quill.snow.css';
 import './index.css';
+import { applyTypography } from './constants/typography.js';
+
+applyTypography();
 
 const queryClient = new QueryClient({
   defaultOptions: {

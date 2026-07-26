@@ -126,7 +126,7 @@ export default function ArticlePage() {
               {article.category.name}
             </Link>
           )}
-          <h1 className="mb-3 text-3xl font-bold leading-[2.2] text-ink sm:text-4xl sm:leading-[2.3]">
+          <h1 className="typo-article-page-title mb-3 font-bold leading-[2.2] text-ink">
             {article.title}
           </h1>
 
@@ -144,7 +144,7 @@ export default function ArticlePage() {
           )}
 
           {article.excerpt && (
-            <p className="mb-6 border-r-4 border-brand bg-white p-4 text-lg font-semibold leading-loose text-gray-700 shadow-sm">
+            <p className="typo-article-page-excerpt mb-6 border-r-4 border-brand bg-white p-4 font-semibold leading-loose text-gray-700 shadow-sm">
               {article.excerpt}
             </p>
           )}

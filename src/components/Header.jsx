@@ -15,7 +15,7 @@ function SocialIcons({ links }) {
     ['whatsapp', 'واٹس ایپ', links.whatsapp],
   ].filter(([, , url]) => url);
   return (
-    <div className="hidden items-center gap-3 text-sm text-gray-500 md:flex">
+    <div className="typo-header-meta hidden items-center gap-3 text-gray-500 md:flex">
       {items.map(([key, label, url]) => (
         <a key={key} href={url} target="_blank" rel="noreferrer" className="hover:text-brand">
           {label}
@@ -54,14 +54,14 @@ export default function Header() {
           </div>
         </Link>
 
-        <div className="flex flex-shrink-0 items-center gap-2 sm:gap-4">
+        <div className="typo-header-meta flex flex-shrink-0 items-center gap-2 sm:gap-4">
           <WeatherWidget variant="compact" />
           <SocialIcons links={settings?.socialLinks} />
-          <span className="hidden text-xs text-gray-400 lg:block">{today}</span>
+          <span className="hidden text-gray-400 lg:block">{today}</span>
           <button
             onClick={() => setShowSearch((s) => !s)}
             aria-label="تلاش"
-            className="flex-shrink-0 whitespace-nowrap rounded-full border border-gray-300 px-5 py-2 text-sm hover:bg-gray-50 sm:px-6"
+            className="flex-shrink-0 whitespace-nowrap rounded-full border border-gray-300 px-5 py-2 hover:bg-gray-50 sm:px-6"
           >
             🔍 تلاش
           </button>

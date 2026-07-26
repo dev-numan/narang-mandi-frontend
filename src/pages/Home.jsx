@@ -3,7 +3,7 @@ import { articlesApi, categoriesApi } from '../api/index.js';
 import { SITE_NAME } from '../constants/brand.js';
 import Seo from '../components/Seo.jsx';
 import FeaturesHub from '../components/FeaturesHub.jsx';
-import RegistrationBanners from '../components/RegistrationBanners.jsx';
+import { RegistrationBannersMobile } from '../components/RegistrationBanners.jsx';
 import CategorySection from '../components/CategorySection.jsx';
 import ArticleCard from '../components/ArticleCard.jsx';
 import Sidebar from '../components/Sidebar.jsx';
@@ -35,8 +35,8 @@ export default function Home() {
         path="/"
       />
 
-      {/* Lead-capture banners: move your shop online / register as a driver */}
-      <RegistrationBanners />
+      {/* Mobile/tablet: tall register cards; desktop uses left/right side rails */}
+      <RegistrationBannersMobile />
 
       {/* Digital-hub front door: all features */}
       <FeaturesHub />

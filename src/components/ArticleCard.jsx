@@ -24,10 +24,10 @@ export default function ArticleCard({ article, variant = 'default' }) {
           className="h-20 w-24 flex-shrink-0 rounded-md object-cover"
         />
         <div className="min-w-0">
-          <h3 className="clamp-2 text-base font-semibold leading-loose text-ink group-hover:text-brand">
+          <h3 className="typo-article-card-title clamp-2 font-semibold leading-loose text-ink group-hover:text-brand">
             {article.title}
           </h3>
-          <p className="mt-1 text-xs text-gray-500">{formatUrduDate(article.publishedAt)}</p>
+          <p className="typo-article-card-meta mt-1 text-gray-500">{formatUrduDate(article.publishedAt)}</p>
         </div>
       </Link>
     );
@@ -48,15 +48,15 @@ export default function ArticleCard({ article, variant = 'default' }) {
       </div>
       <div className="flex flex-1 flex-col p-3">
         {article.category?.name && (
-          <span className="mb-1 text-xs font-semibold text-brand">{article.category.name}</span>
+          <span className="typo-article-card-meta mb-1 font-semibold text-brand">{article.category.name}</span>
         )}
-        <h3 className="clamp-2 text-lg font-bold leading-loose text-ink group-hover:text-brand">
+        <h3 className="typo-article-card-title clamp-2 font-bold leading-loose text-ink group-hover:text-brand">
           {article.title}
         </h3>
         {article.excerpt && (
-          <p className="clamp-2 mt-1 text-sm leading-loose text-gray-600">{article.excerpt}</p>
+          <p className="typo-article-card-excerpt clamp-2 mt-1 leading-loose text-gray-600">{article.excerpt}</p>
         )}
-        <div className="mt-auto flex items-center justify-between pt-2 text-xs text-gray-400">
+        <div className="typo-article-card-meta mt-auto flex items-center justify-between pt-2 text-gray-400">
           <span>{formatUrduDate(article.publishedAt)}</span>
         </div>
       </div>

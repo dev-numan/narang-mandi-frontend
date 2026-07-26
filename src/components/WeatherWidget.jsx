@@ -40,10 +40,10 @@ export default function WeatherWidget({ variant = 'card' }) {
     if (isLoading || temp === null) return null;
     return (
       <span
-        className="hidden items-center gap-1 rounded-full bg-gray-100 px-3 py-1 text-sm text-ink sm:inline-flex"
+        className="typo-header-meta hidden items-center gap-1 rounded-full bg-gray-100 px-3 py-1 text-ink sm:inline-flex"
         title="نارنگ منڈی"
       >
-        <span className="text-base leading-none">{icon}</span>
+        <span className="leading-none" style={{ fontSize: '1.15em' }}>{icon}</span>
         <span className="font-semibold">{temp}°</span>
       </span>
     );

@@ -1,14 +1,14 @@
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { placesApi } from '../api/index.js';
-import { SITE_NAME } from '../constants/brand.js';
+import { FEATURES, featureSeoTitle } from '../constants/features.js';
 import Seo from '../components/Seo.jsx';
 import Loader, { EmptyState } from '../components/Loader.jsx';
 
 function Stars({ rating, count }) {
   if (rating == null) return null;
   return (
-    <span className="inline-flex items-center gap-1 text-xs text-amber-600">
+    <span className="typo-place-card-meta inline-flex items-center gap-1 text-amber-600">
       <span>★ {rating.toFixed(1)}</span>
       {count != null && <span className="text-gray-400">({count})</span>}
     </span>
@@ -17,18 +17,18 @@ function Stars({ rating, count }) {
 
 function PlaceCard({ place }) {
   return (
-    <div className="flex flex-col rounded-xl border border-gray-200 bg-white p-4 shadow-sm transition hover:shadow-md">
-      <div className="mb-1 flex items-start justify-between gap-2">
-        <h3 className="urdu text-lg font-bold leading-tight text-ink">{place.name}</h3>
-        {place.category?.icon && <span className="text-xl">{place.category.icon}</span>}
+    <div className="flex flex-col rounded-xl border border-gray-200 bg-white p-5 shadow-sm transition hover:shadow-md">
+      <div className="mb-2 flex items-start justify-between gap-2">
+        <h3 className="urdu typo-place-card-name font-bold leading-snug text-ink">{place.name}</h3>
+        {place.category?.icon && <span className="text-2xl">{place.category.icon}</span>}
       </div>
       {place.category && (
-        <span className="urdu mb-2 inline-block w-fit rounded-full bg-brand/10 px-2 py-0.5 text-xs text-brand">
+        <span className="urdu typo-place-card-category mb-3 inline-block w-fit rounded-full bg-brand/10 px-2.5 py-1 text-brand">
           {place.category.name}
         </span>
       )}
-      {place.address && <p className="mb-1 text-sm text-gray-600">{place.address}</p>}
-      <div className="mb-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-gray-500">
+      {place.address && <p className="typo-place-card-meta mb-2 text-gray-600">{place.address}</p>}
+      <div className="typo-place-card-meta mb-3 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-gray-500">
         {place.phone && (
           <a href={`tel:${place.phone}`} dir="ltr" className="hover:text-brand">
             📞 {place.phone}
@@ -36,14 +36,14 @@ function PlaceCard({ place }) {
         )}
         <Stars rating={place.rating} count={place.ratingCount} />
       </div>
-      {place.hours && <p className="mb-3 text-xs text-gray-400">🕒 {place.hours}</p>}
+      {place.hours && <p className="typo-place-card-meta mb-4 text-gray-400">🕒 {place.hours}</p>}
       <div className="mt-auto">
         {place.googleMapsUrl && (
           <a
             href={place.googleMapsUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1 rounded-lg bg-brand px-3 py-1.5 text-sm font-semibold text-white hover:bg-brand-dark"
+            className="typo-place-card-cta inline-flex w-full items-center justify-center gap-1 rounded-lg bg-brand px-3 py-2.5 font-semibold text-white hover:bg-brand-dark"
           >
             📍 گوگل میپ پر دیکھیں
           </a>
@@ -195,19 +195,21 @@ export default function PlacesPage() {
   return (
     <>
       <Seo
-        title={`${SITE_NAME} | مشہور مقامات`}
-        description="نارنگ منڈی کے مشہور مقامات، بازار، دکانیں اور خدمات کی فہرست"
+        title={featureSeoTitle(FEATURES.places)}
+        description={FEATURES.places.description}
         path="/places"
       />
 
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3 border-b-2 border-brand pb-3">
         <div>
-          <h1 className="urdu text-3xl font-bold text-ink">مشہور مقامات</h1>
-          <p className="urdu mt-1 text-sm text-gray-500">نارنگ منڈی کے بازار، دکانیں اور خدمات</p>
+          <h1 className="typo-place-page-title font-bold text-ink" dir="ltr">
+            {FEATURES.places.title}
+          </h1>
+          <p className="urdu typo-place-page-desc mt-1 text-gray-500">{FEATURES.places.description}</p>
         </div>
         <button
           onClick={() => setShowAdd(true)}
-          className="urdu rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-white hover:bg-brand-dark"
+          className="urdu typo-place-card-cta rounded-lg bg-brand px-4 py-2.5 font-semibold text-white hover:bg-brand-dark"
         >
           + نیا مقام شامل کریں
         </button>
@@ -232,7 +234,7 @@ export default function PlacesPage() {
             <EmptyState label="کوئی جگہ دستیاب نہیں" />
           ) : (
             <>
-              <p className="urdu mb-3 text-sm text-gray-500">{places.length} مقامات</p>
+              <p className="urdu typo-place-card-meta mb-3 text-gray-500">{places.length} مقامات</p>
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
                 {places.map((p) => (
                   <PlaceCard key={p._id} place={p} />
@@ -245,12 +247,14 @@ export default function PlacesPage() {
         {/* Categories sidebar */}
         <aside className="lg:col-span-1 lg:order-first">
           <div className="rounded-xl border border-gray-200 bg-white p-4">
-            <h2 className="urdu mb-3 border-b pb-2 text-lg font-bold text-ink">زمرہ جات</h2>
-            <ul className="space-y-1">
+            <h2 className="urdu typo-place-sidebar-heading mb-3 border-b pb-2 font-bold text-ink">
+              زمرہ جات
+            </h2>
+            <ul className="space-y-1.5">
               <li>
                 <button
                   onClick={() => setActiveCat('')}
-                  className={`urdu flex w-full items-center justify-between rounded-lg px-3 py-2 text-sm transition ${
+                  className={`urdu typo-place-sidebar-item flex w-full items-center justify-between rounded-lg px-3 py-2.5 transition ${
                     activeCat === '' ? 'bg-brand text-white' : 'hover:bg-gray-100'
                   }`}
                 >
@@ -261,7 +265,7 @@ export default function PlacesPage() {
                 <li key={c._id}>
                   <button
                     onClick={() => setActiveCat(c.slug)}
-                    className={`urdu flex w-full items-center justify-between rounded-lg px-3 py-2 text-sm transition ${
+                    className={`urdu typo-place-sidebar-item flex w-full items-center justify-between rounded-lg px-3 py-2.5 transition ${
                       activeCat === c.slug ? 'bg-brand text-white' : 'hover:bg-gray-100'
                     }`}
                   >
@@ -269,7 +273,7 @@ export default function PlacesPage() {
                       {c.icon} {c.name}
                     </span>
                     <span
-                      className={`rounded-full px-1.5 text-xs ${
+                      className={`rounded-full px-1.5 text-[0.85em] ${
                         activeCat === c.slug ? 'bg-white/20' : 'bg-gray-100 text-gray-500'
                       }`}
                     >

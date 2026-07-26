@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { classifiedsApi } from '../api/index.js';
 import { SITE_NAME } from '../constants/brand.js';
+import { FEATURES } from '../constants/features.js';
 import Seo from '../components/Seo.jsx';
 import { formatPrice, timeAgoUrdu } from '../utils/format.js';
 import Loader from '../components/Loader.jsx';
@@ -22,8 +23,8 @@ export default function ClassifiedPage() {
     return (
       <div className="rounded-xl bg-white py-16 text-center text-gray-400 shadow-sm">
         <p className="urdu">یہ اشتہار موجود نہیں</p>
-        <Link to="/classifieds" className="urdu mt-2 inline-block text-brand hover:underline">
-          ← تمام اشتہارات
+        <Link to="/classifieds" className="mt-2 inline-block text-brand hover:underline" dir="ltr">
+          ← {FEATURES.classifieds.title}
         </Link>
       </div>
     );
@@ -36,15 +37,17 @@ export default function ClassifiedPage() {
   return (
     <>
       <Seo
-        title={`${SITE_NAME} | ${item.title} — اشتہارات`}
+        title={`${SITE_NAME} | ${item.title} — ${FEATURES.classifieds.title}`}
         socialTitle={item.title}
-        description={item.description || `${item.title} — نارنگ منڈی کے اشتہارات میں دستیاب`}
+        description={item.description || `${item.title} — ${FEATURES.classifieds.description}`}
         path={`/classifieds/${slug}`}
         image={item.images?.[0]}
       />
 
       <div className="mb-3">
-        <Link to="/classifieds" className="urdu text-sm text-brand hover:underline">← تمام اشتہارات</Link>
+        <Link to="/classifieds" className="text-sm text-brand hover:underline" dir="ltr">
+          ← {FEATURES.classifieds.title}
+        </Link>
       </div>
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">

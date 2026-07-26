@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { shopsApi } from '../api/index.js';
-import { SITE_NAME } from '../constants/brand.js';
+import { FEATURES, featureSeoTitle } from '../constants/features.js';
 import Seo from '../components/Seo.jsx';
 import Loader, { EmptyState, ErrorState } from '../components/Loader.jsx';
 
@@ -51,16 +51,16 @@ export default function ShopsPage() {
   return (
     <>
       <Seo
-        title={`دکانیں — ${SITE_NAME}`}
-        socialTitle="نارنگ منڈی کی دکانیں"
-        description="نارنگ منڈی کی مقامی دکانیں — آن لائن خریداری اور ڈیلیوری۔"
+        title={featureSeoTitle(FEATURES.shops)}
+        socialTitle={FEATURES.shops.title}
+        description={FEATURES.shops.description}
         path="/shops"
       />
 
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3 border-b-2 border-brand pb-3">
         <div>
-          <h1 className="urdu text-3xl font-bold text-ink">دکانیں</h1>
-          <p className="urdu mt-1 text-sm text-gray-500">اپنی پسندیدہ دکان منتخب کریں اور آرڈر کریں</p>
+          <h1 className="text-3xl font-bold text-ink" dir="ltr">{FEATURES.shops.title}</h1>
+          <p className="urdu mt-1 text-sm text-gray-500">{FEATURES.shops.description}</p>
         </div>
         <Link
           to="/orders/track"

@@ -2,8 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Jameel Noori Nastaleeq — self-hosted (real Noori Nastaleeq for Urdu). */
+@font-face {
+  font-family: 'Jameel Noori Nastaleeq';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/JameelNooriNastaleeq.woff2') format('woff2'),
+       url('/fonts/JameelNooriNastaleeq.ttf') format('truetype');
+}
+
 /* Poppins — self-hosted (files in /public/fonts/poppins). Latin + latin-ext
-   subsets for weights 400/500/600/700. Urdu text falls back to Nastaliq. */
+   subsets for weights 400/500/600/700. Urdu text falls back to Nastaleeq. */
 @font-face {
   font-family: 'Poppins';
   font-style: normal;
@@ -71,6 +81,89 @@
 
 :root {
   --brand: #b91c1c;
+
+  /* Typography fallbacks (overridden by applyTypography() from constants/typography.js) */
+  --typo-font-body: 'Poppins', 'Jameel Noori Nastaleeq', system-ui, sans-serif;
+  --typo-font-urdu: 'Poppins', 'Jameel Noori Nastaleeq', serif;
+  --typo-font-nastaleeq: 'Jameel Noori Nastaleeq', serif;
+  --typo-font-admin: 'Poppins', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  --typo-size-xs: 0.75rem;
+  --typo-size-sm: 0.875rem;
+  --typo-size-base: 1rem;
+  --typo-size-lg: 1.125rem;
+  --typo-size-xl: 1.25rem;
+  --typo-size-2xl: 1.5rem;
+  --typo-size-3xl: 1.875rem;
+  --typo-size-4xl: 2.25rem;
+  --typo-size-h1: 1.9rem;
+  --typo-size-h2: 1.6rem;
+  --typo-size-h3: 1.35rem;
+  --typo-size-h4: 1.15rem;
+  --typo-size-article: 1rem;
+  --typo-size-editor: 1rem;
+  --typo-size-ticker: 1rem;
+  --typo-size-ticker-label: 1rem;
+  --typo-size-header-meta: 0.875rem;
+  --typo-size-nav: 1rem;
+  --typo-size-feature-card-title: 1.5rem;
+  --typo-size-feature-card-desc: 0.875rem;
+  --typo-size-article-card-title: 1.25rem;
+  --typo-size-article-card-excerpt: 0.875rem;
+  --typo-size-article-card-meta: 0.75rem;
+  --typo-size-article-page-title: 2.25rem;
+  --typo-size-article-page-excerpt: 1.25rem;
+  --typo-size-sidebar-heading: 1.125rem;
+  --typo-size-sidebar-item: 0.875rem;
+  --typo-size-classified-page-title: 1.875rem;
+  --typo-size-classified-page-desc: 0.875rem;
+  --typo-size-classified-card-title: 1rem;
+  --typo-size-classified-card-price: 0.875rem;
+  --typo-size-classified-card-meta: 0.75rem;
+  --typo-size-classified-sidebar-heading: 1.125rem;
+  --typo-size-classified-sidebar-item: 0.875rem;
+  --typo-size-classified-sidebar-desc: 0.75rem;
+  --typo-size-classified-sidebar-action: 0.875rem;
+  --typo-size-train-page-title: 1.875rem;
+  --typo-size-train-page-desc: 1.2rem;
+  --typo-size-train-name: 1.5rem;
+  --typo-size-train-name-en: 1rem;
+  --typo-size-train-direction: 1.15rem;
+  --typo-size-train-badge: 0.9rem;
+  --typo-size-train-route: 1rem;
+  --typo-size-train-time-label: 0.9rem;
+  --typo-size-train-time: 1.5rem;
+  --typo-size-train-note: 1rem;
+  --typo-size-place-page-title: 1.875rem;
+  --typo-size-place-page-desc: 1.2rem;
+  --typo-size-place-card-name: 1.35rem;
+  --typo-size-place-card-category: 0.95rem;
+  --typo-size-place-card-meta: 1.05rem;
+  --typo-size-place-card-cta: 1.05rem;
+  --typo-size-place-sidebar-heading: 1.5rem;
+  --typo-size-place-sidebar-item: 1.1rem;
+  --typo-size-banner-title: 1.25rem;
+  --typo-size-banner-subtitle: 0.875rem;
+  --typo-size-banner-highlight: 2.5rem;
+  --typo-size-banner-perk: 0.75rem;
+  --typo-size-banner-cta: 1rem;
+  --typo-size-banner-badge: 0.75rem;
+
+  --typo-weight-normal: 400;
+  --typo-weight-medium: 500;
+  --typo-weight-semibold: 600;
+  --typo-weight-bold: 700;
+  --typo-weight-extrabold: 800;
+
+  --typo-lh-body: 2.1;
+  --typo-lh-tight: 1.4;
+  --typo-lh-snug: 1.6;
+  --typo-lh-heading: 1.8;
+  --typo-lh-article: 2.3;
+  --typo-lh-article-heading: 1.8;
+  --typo-lh-input: 2.2;
+  --typo-lh-editor: 2.2;
+  --typo-lh-admin: 1.5;
 }
 
 html {
@@ -79,11 +172,12 @@ html {
 
 body {
   margin: 0;
-  /* Poppins renders Latin/English & numbers; Urdu glyphs fall back to Nastaliq. */
-  font-family: 'Poppins', 'Noto Nastaliq Urdu', system-ui, sans-serif;
+  font-family: var(--typo-font-body);
+  font-size: var(--typo-size-base);
+  font-weight: var(--typo-weight-normal);
   background: #f8f7f5;
   color: #1f2937;
-  line-height: 2.1; /* Nastaliq needs generous line-height */
+  line-height: var(--typo-lh-body);
   -webkit-font-smoothing: antialiased;
 }
 
@@ -91,29 +185,196 @@ body {
 .admin-root {
   direction: ltr;
   text-align: left;
-  font-family: 'Poppins', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  line-height: 1.5;
+  font-family: var(--typo-font-admin);
+  font-size: var(--typo-size-base);
+  line-height: var(--typo-lh-admin);
 }
 
-/* Urdu content typed in the editor keeps RTL Nastaliq even inside admin. */
+/* Urdu content typed in the editor keeps RTL Nastaleeq even inside admin. */
 .urdu {
   direction: rtl;
   text-align: right;
-  /* Poppins for Latin/English & numbers; Urdu glyphs fall back to Nastaliq. */
-  font-family: 'Poppins', 'Noto Nastaliq Urdu', serif;
+  font-family: var(--typo-font-urdu);
 }
 
-/* Nastaliq has deep descenders — single-line form fields clip them with the
+/* Nastaleeq has deep descenders — single-line form fields clip them with the
    default line-height. Give Urdu inputs/textareas extra vertical room. */
 input.urdu,
 textarea.urdu {
-  line-height: 2.2;
+  line-height: var(--typo-lh-input);
   padding-top: 0.6rem;
   padding-bottom: 0.7rem;
   height: auto;
 }
 input.urdu {
   min-height: 3.2rem;
+}
+
+/* Breaking ticker — sizes from constants/typography.js (size.ticker / tickerLabel) */
+.typo-ticker {
+  font-size: var(--typo-size-ticker);
+  font-weight: var(--typo-weight-normal);
+}
+.typo-ticker-label {
+  font-size: var(--typo-size-ticker-label);
+  font-weight: var(--typo-weight-bold);
+}
+
+/* Header weather / social / date / search — size.headerMeta */
+.typo-header-meta {
+  font-size: var(--typo-size-header-meta);
+}
+
+/* Category nav pills — size.nav */
+.typo-nav {
+  font-size: var(--typo-size-nav);
+}
+
+/* Home feature cards — size.featureCardTitle / featureCardDesc */
+.typo-feature-card-title {
+  font-size: var(--typo-size-feature-card-title);
+}
+.typo-feature-card-desc {
+  font-size: var(--typo-size-feature-card-desc);
+}
+
+/* News article cards — size.articleCardTitle / excerpt / meta */
+.typo-article-card-title {
+  font-size: var(--typo-size-article-card-title);
+}
+.typo-article-card-excerpt {
+  font-size: var(--typo-size-article-card-excerpt);
+}
+.typo-article-card-meta {
+  font-size: var(--typo-size-article-card-meta);
+}
+
+/* Full article page */
+.typo-article-page-title {
+  font-size: var(--typo-size-article-page-title);
+}
+.typo-article-page-excerpt {
+  font-size: var(--typo-size-article-page-excerpt);
+}
+
+/* Sidebar — مقبول خبریں / زمرہ جات */
+.typo-sidebar-heading {
+  font-size: var(--typo-size-sidebar-heading);
+}
+.typo-sidebar-item {
+  font-size: var(--typo-size-sidebar-item);
+}
+
+/* Narang OLX / classifieds */
+.typo-classified-page-title {
+  font-size: var(--typo-size-classified-page-title);
+}
+.typo-classified-page-desc {
+  font-size: var(--typo-size-classified-page-desc);
+}
+.typo-classified-card-title {
+  font-size: var(--typo-size-classified-card-title);
+}
+.typo-classified-card-price {
+  font-size: var(--typo-size-classified-card-price);
+}
+.typo-classified-card-meta {
+  font-size: var(--typo-size-classified-card-meta);
+}
+.typo-classified-sidebar-heading {
+  font-size: var(--typo-size-classified-sidebar-heading);
+}
+.typo-classified-sidebar-item {
+  font-size: var(--typo-size-classified-sidebar-item);
+}
+.typo-classified-sidebar-desc {
+  font-size: var(--typo-size-classified-sidebar-desc);
+}
+.typo-classified-sidebar-action {
+  font-size: var(--typo-size-classified-sidebar-action);
+}
+
+/* Train Auqaat */
+.typo-train-page-title {
+  font-size: var(--typo-size-train-page-title);
+}
+.typo-train-page-desc {
+  font-size: var(--typo-size-train-page-desc);
+}
+.typo-train-name {
+  font-size: var(--typo-size-train-name);
+}
+.typo-train-name-en {
+  font-size: var(--typo-size-train-name-en);
+}
+.typo-train-direction {
+  font-size: var(--typo-size-train-direction);
+}
+.typo-train-badge {
+  font-size: var(--typo-size-train-badge);
+}
+.typo-train-route {
+  font-size: var(--typo-size-train-route);
+}
+.typo-train-time-label {
+  font-size: var(--typo-size-train-time-label);
+}
+.typo-train-time {
+  font-size: var(--typo-size-train-time);
+}
+.typo-train-note {
+  font-size: var(--typo-size-train-note);
+}
+
+/* Mashhoor Maqamat / places */
+.typo-place-page-title {
+  font-size: var(--typo-size-place-page-title);
+}
+.typo-place-page-desc {
+  font-size: var(--typo-size-place-page-desc);
+}
+.typo-place-card-name {
+  font-size: var(--typo-size-place-card-name);
+}
+.typo-place-card-category {
+  font-size: var(--typo-size-place-card-category);
+}
+.typo-place-card-meta {
+  font-size: var(--typo-size-place-card-meta);
+}
+.typo-place-card-cta {
+  font-size: var(--typo-size-place-card-cta);
+}
+.typo-place-sidebar-heading {
+  font-size: var(--typo-size-place-sidebar-heading);
+}
+.typo-place-sidebar-item {
+  font-size: var(--typo-size-place-sidebar-item);
+}
+
+/* Registration banners — size.banner* */
+.typo-banner-title {
+  font-size: var(--typo-size-banner-title);
+}
+.typo-banner-subtitle {
+  font-size: var(--typo-size-banner-subtitle);
+}
+.typo-banner-highlight {
+  font-size: var(--typo-size-banner-highlight);
+  font-weight: var(--typo-weight-extrabold);
+  text-shadow: 0 0 0.6px currentColor, 0 2px 8px rgba(0, 0, 0, 0.45);
+}
+.typo-banner-perk {
+  font-size: var(--typo-size-banner-perk);
+}
+.typo-banner-cta {
+  font-size: var(--typo-size-banner-cta);
+}
+.typo-banner-badge {
+  font-size: var(--typo-size-banner-badge);
+  font-weight: var(--typo-weight-extrabold);
+  /* Nastaleeq is often a single cut — shadow helps it read as bold */
+  text-shadow: 0 0 0.6px currentColor, 0 1px 2px rgba(0, 0, 0, 0.35);
 }
 
 /* Breaking-news marquee — two identical groups; the track sits at -50% and
@@ -163,8 +424,9 @@ input.urdu {
 
 /* ---- Rendered article HTML (from rich text editor) ---- */
 .article-content {
-  font-size: 1rem;
-  line-height: 2.3;
+  font-size: var(--typo-size-article);
+  font-weight: var(--typo-weight-normal);
+  line-height: var(--typo-lh-article);
   /* Urdu words are connected ligatures — never split a word across lines.
      Wrap only at spaces (word boundaries), like a whole word should. */
   word-break: keep-all;
@@ -176,13 +438,14 @@ input.urdu {
 .article-content h2,
 .article-content h3,
 .article-content h4 {
-  font-weight: 700;
+  font-weight: var(--typo-weight-bold);
   margin: 1.4rem 0 0.8rem;
-  line-height: 1.8;
+  line-height: var(--typo-lh-article-heading);
 }
-.article-content h1 { font-size: 1.9rem; }
-.article-content h2 { font-size: 1.6rem; }
-.article-content h3 { font-size: 1.35rem; }
+.article-content h1 { font-size: var(--typo-size-h1); }
+.article-content h2 { font-size: var(--typo-size-h2); }
+.article-content h3 { font-size: var(--typo-size-h3); }
+.article-content h4 { font-size: var(--typo-size-h4); }
 .article-content p { margin: 0 0 1.1rem; }
 .article-content ul,
 .article-content ol {
@@ -210,16 +473,17 @@ input.urdu {
   border-radius: 0.6rem;
   margin: 1rem 0;
 }
-.article-content strong { font-weight: 700; }
+.article-content strong { font-weight: var(--typo-weight-bold); }
 
 /* Quill editor RTL */
 .ql-editor {
   direction: rtl;
   text-align: right;
-  font-family: 'Noto Nastaliq Urdu', serif;
+  font-family: var(--typo-font-nastaleeq);
   min-height: 320px;
-  font-size: 1rem;
-  line-height: 2.2;
+  font-size: var(--typo-size-editor);
+  font-weight: var(--typo-weight-normal);
+  line-height: var(--typo-lh-editor);
 }
 .ql-container,
 .ql-toolbar {

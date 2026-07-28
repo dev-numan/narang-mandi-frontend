@@ -1,6 +1,7 @@
 import { lazy, Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Loader from './components/Loader.jsx';
+import GoogleAnalytics from './components/GoogleAnalytics.jsx';
 
 // Layout + guard shells stay eager (small, wrap <Outlet/>).
 import PublicLayout from './components/PublicLayout.jsx';
@@ -63,6 +64,7 @@ const ShopProfile = lazy(() => import('./shop/pages/ShopProfile.jsx'));
 export default function App() {
   return (
     <Suspense fallback={<Loader />}>
+      <GoogleAnalytics />
       <Routes>
         {/* Public site (RTL) */}
         <Route element={<PublicLayout />}>

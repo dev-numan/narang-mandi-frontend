@@ -119,7 +119,7 @@ export default function App() {
           <Route path="classifieds" element={<RequireAdmin><Classifieds /></RequireAdmin>} />
           <Route path="shops" element={<RequireAdmin><Shops /></RequireAdmin>} />
           <Route path="messages" element={<RequireAdmin><Messages /></RequireAdmin>} />
-          <Route path="registrations" element={<RequireAdmin><Registrations /></RequireAdmin>} />
+          <Route path="registrations" element={<Registrations />} />
           <Route path="settings" element={<RequireAdmin><SettingsPage /></RequireAdmin>} />
           <Route path="profile" element={<Profile />} />
           <Route path="users" element={<RequireAdmin><Users /></RequireAdmin>} />

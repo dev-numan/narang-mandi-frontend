@@ -6,6 +6,7 @@ export const authApi = {
   logout: () => api.post('/auth/logout').then((r) => r.data),
   me: () => api.get('/auth/me').then((r) => r.data.data),
   updateMe: (payload) => api.put('/auth/me', payload).then((r) => r.data.data),
+  changePassword: (payload) => api.put('/auth/me/password', payload).then((r) => r.data),
 };
 
 // ---- Articles (public) ----

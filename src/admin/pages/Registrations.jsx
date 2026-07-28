@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { registrationsApi } from '../../api/index.js';
+import { useAuth } from '../../context/AuthContext.jsx';
 import Pagination from '../../components/Pagination.jsx';
 import ConfirmDialog from '../components/ConfirmDialog.jsx';
 
@@ -26,6 +27,8 @@ const TYPE_META = {
 };
 
 export default function Registrations() {
+  const { user } = useAuth();
+  const isAdmin = user?.role === 'admin';
   const qc = useQueryClient();
   const [page, setPage] = useState(1);
   const [type, setType] = useState('');
@@ -52,7 +55,12 @@ export default function Registrations() {
   return (
     <div>
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
-        <h1 className="text-2xl font-bold text-gray-800">Registrations</h1>
+        <div>
+          <h1 className="text-2xl font-bold text-gray-800">Registrations</h1>
+          {!isAdmin && (
+            <p className="mt-1 text-sm text-gray-500">View only — editing is limited to admins.</p>
+          )}
+        </div>
         {data?.unread > 0 && (
           <span className="rounded-full bg-red-100 px-3 py-1 text-sm font-semibold text-red-700">
             {data.unread} new
@@ -118,7 +126,9 @@ export default function Registrations() {
                   {r.businessName && (
                     <div>
                       <dt className="text-xs text-gray-400">{meta.business}</dt>
-                      <dd className="font-medium" dir="auto">{r.businessName}</dd>
+                      <dd className="font-medium" dir="auto">
+                        {r.businessName}
+                      </dd>
                     </div>
                   )}
                   {r.type === 'driver' && (
@@ -151,7 +161,7 @@ export default function Registrations() {
                   >
                     WhatsApp
                   </a>
-                  {!r.isRead && (
+                  {isAdmin && !r.isRead && (
                     <button
                       onClick={() => markRead.mutate(r._id)}
                       className="text-gray-500 hover:text-gray-800"
@@ -159,9 +169,14 @@ export default function Registrations() {
                       Mark as read
                     </button>
                   )}
-                  <button onClick={() => setToDelete(r)} className="mr-auto text-red-600 hover:underline">
-                    Delete
-                  </button>
+                  {isAdmin && (
+                    <button
+                      onClick={() => setToDelete(r)}
+                      className="mr-auto text-red-600 hover:underline"
+                    >
+                      Delete
+                    </button>
+                  )}
                 </footer>
               </article>
             );
@@ -184,14 +199,16 @@ export default function Registrations() {
         </div>
       )}
 
-      <ConfirmDialog
-        open={!!toDelete}
-        title="Delete registration?"
-        message={toDelete ? `The registration from “${toDelete.name}” will be removed.` : ''}
-        loading={remove.isPending}
-        onConfirm={() => remove.mutate(toDelete._id)}
-        onCancel={() => setToDelete(null)}
-      />
+      {isAdmin && (
+        <ConfirmDialog
+          open={!!toDelete}
+          title="Delete registration?"
+          message={toDelete ? `The registration from “${toDelete.name}” will be removed.` : ''}
+          loading={remove.isPending}
+          onConfirm={() => remove.mutate(toDelete._id)}
+          onCancel={() => setToDelete(null)}
+        />
+      )}
     </div>
   );
 }

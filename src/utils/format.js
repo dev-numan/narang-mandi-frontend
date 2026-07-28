@@ -11,12 +11,29 @@ export function formatUrduDate(value) {
   return `${d.getDate()} ${URDU_MONTHS[d.getMonth()]} ${d.getFullYear()}`;
 }
 
+/** Numeric date as DD/MM/YYYY, e.g. 28/07/2026. */
+export function formatDateNumeric(value) {
+  if (!value) return '';
+  const d = new Date(value);
+  if (Number.isNaN(d.getTime())) return '';
+  const dd = String(d.getDate()).padStart(2, '0');
+  const mm = String(d.getMonth() + 1).padStart(2, '0');
+  return `${dd}/${mm}/${d.getFullYear()}`;
+}
+
 // Format a classifieds price in Rupees, e.g. 50000 → "Rs 50,000".
 export function formatPrice(price) {
   if (price == null || price === '') return '';
   const n = Number(price);
   if (Number.isNaN(n)) return '';
   return `Rs ${n.toLocaleString('en-US')}`;
+}
+
+/** Truncate text with … when over max characters. */
+export function truncateText(value, max = 36) {
+  const s = String(value ?? '').trim();
+  if (!s || s.length <= max) return s;
+  return `${s.slice(0, Math.max(0, max - 1)).trimEnd()}…`;
 }
 
 // Convert a stored "HH:MM" 24-hour time to a 12-hour AM/PM label.

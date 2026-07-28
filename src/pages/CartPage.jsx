@@ -4,8 +4,9 @@ import { useMutation } from '@tanstack/react-query';
 import { shopsApi } from '../api/index.js';
 import { SITE_NAME } from '../constants/brand.js';
 import Seo from '../components/Seo.jsx';
-import { formatPrice } from '../utils/format.js';
+import { formatPrice, truncateText } from '../utils/format.js';
 import { useCart } from '../context/CartContext.jsx';
+import { PRODUCT_NAME_DISPLAY_MAX } from '../constants/products.js';
 
 const EMPTY = { customerName: '', customerPhone: '', address: '', note: '' };
 
@@ -102,7 +103,9 @@ export default function CartPage() {
                   )}
                 </div>
                 <div className="min-w-0 flex-1">
-                  <p className="urdu line-clamp-1 font-semibold text-ink">{i.name}</p>
+                  <p className="urdu line-clamp-1 font-semibold text-ink" title={i.name}>
+                    {truncateText(i.name, PRODUCT_NAME_DISPLAY_MAX)}
+                  </p>
                   <p className="text-sm font-bold text-brand">{formatPrice(i.price)}</p>
                 </div>
                 <div className="flex items-center gap-1">

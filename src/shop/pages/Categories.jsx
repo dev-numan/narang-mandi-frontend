@@ -4,10 +4,16 @@ import { shopAdminApi } from '../../api/index.js';
 import DataTable from '../../admin/components/DataTable.jsx';
 import ConfirmDialog from '../../admin/components/ConfirmDialog.jsx';
 import Loader, { ErrorState } from '../../components/Loader.jsx';
+import { useShopLang } from '../ShopLangContext.jsx';
+import { SHOP_TABLE_TYPO } from '../shopTypo.js';
+import { CATEGORY_NAME_MAX, CATEGORY_NAME_DISPLAY_MAX } from '../../constants/products.js';
+import { truncateText } from '../../utils/format.js';
 
-const EMPTY = { name: '', nameEn: '', order: 0, isActive: true };
+const EMPTY = { name: '', order: 0, isActive: true };
 
 export default function ShopCategories() {
+  const { t, textClass, isUrdu, dir } = useShopLang();
+  const fieldClass = isUrdu ? 'urdu-content' : '';
   const qc = useQueryClient();
   const [modal, setModal] = useState(null);
   const [form, setForm] = useState(EMPTY);
@@ -45,7 +51,7 @@ export default function ShopCategories() {
   const open = (c) => {
     setError('');
     if (c) {
-      setForm({ name: c.name, nameEn: c.nameEn || '', order: c.order || 0, isActive: c.isActive });
+      setForm({ name: c.name, order: c.order || 0, isActive: c.isActive });
       setModal({ id: c._id });
     } else {
       setForm(EMPTY);
@@ -57,21 +63,36 @@ export default function ShopCategories() {
   const submit = (e) => {
     e.preventDefault();
     setError('');
-    saveMut.mutate({ id: modal.id, payload: { ...form, order: Number(form.order) || 0 } });
+    const name = String(form.name || '').trim();
+    if (name.length > CATEGORY_NAME_MAX) {
+      setError(t('categoryNameTooLong'));
+      return;
+    }
+    saveMut.mutate({
+      id: modal.id,
+      payload: { ...form, name, nameEn: '', order: Number(form.order) || 0 },
+    });
   };
 
   const columns = [
-    { key: 'name', header: 'نام', render: (r) => <span className="urdu font-medium">{r.name}</span> },
-    { key: 'nameEn', header: 'English' },
-    { key: 'productCount', header: 'پروڈکٹس', render: (r) => r.productCount ?? 0 },
+    {
+      key: 'name',
+      header: t('colName'),
+      render: (r) => (
+        <span className="urdu-content font-medium" title={r.name} dir="auto">
+          {truncateText(r.name, CATEGORY_NAME_DISPLAY_MAX)}
+        </span>
+      ),
+    },
+    { key: 'productCount', header: t('colProducts'), render: (r) => r.productCount ?? 0 },
     {
       key: 'isActive',
-      header: 'فعال',
+      header: t('colActive'),
       render: (r) =>
         r.isActive ? (
-          <span className="rounded-full bg-green-100 px-2 py-0.5 text-xs text-green-700">Yes</span>
+          <span className="typo-shop-meta rounded-full bg-green-100 px-2 py-0.5 text-green-700">Yes</span>
         ) : (
-          <span className="rounded-full bg-gray-100 px-2 py-0.5 text-xs text-gray-500">No</span>
+          <span className="typo-shop-meta rounded-full bg-gray-100 px-2 py-0.5 text-gray-500">No</span>
         ),
     },
     {
@@ -79,8 +100,12 @@ export default function ShopCategories() {
       header: '',
       render: (r) => (
         <div className="flex gap-2">
-          <button onClick={() => open(r)} className="rounded border border-gray-300 px-2 py-1 text-xs hover:bg-gray-50">ترمیم</button>
-          <button onClick={() => setToDelete(r)} className="rounded border border-red-300 px-2 py-1 text-xs text-red-600 hover:bg-red-50">حذف</button>
+          <button onClick={() => open(r)} className="typo-shop-button-sm rounded-lg border border-gray-300 px-3.5 py-2 hover:bg-gray-50">
+            {t('edit')}
+          </button>
+          <button onClick={() => setToDelete(r)} className="typo-shop-button-sm rounded-lg border border-red-300 px-3.5 py-2 text-red-600 hover:bg-red-50">
+            {t('delete')}
+          </button>
         </div>
       ),
     },
@@ -89,45 +114,82 @@ export default function ShopCategories() {
   return (
     <div>
       <div className="mb-6 flex items-center justify-between">
-        <h1 className="urdu text-2xl font-bold text-ink">زمرہ جات</h1>
-        <button onClick={() => open(null)} className="urdu rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-white hover:bg-brand-dark">
-          + نیا زمرہ
+        <h1 className={`${textClass} typo-shop-page-title font-bold text-ink`}>{t('categoriesTitle')}</h1>
+        <button onClick={() => open(null)} className={`${textClass} typo-shop-button rounded-lg bg-brand px-4 py-2 font-semibold text-white hover:bg-brand-dark`}>
+          {t('addCategory')}
         </button>
       </div>
 
-      {actionError && <div className="urdu mb-4 rounded-lg bg-red-50 px-4 py-2 text-sm text-red-700">{actionError}</div>}
+      {actionError && <div className={`${textClass} typo-shop-alert mb-4 rounded-lg bg-red-50 px-4 py-2 text-red-700`}>{actionError}</div>}
 
       {isLoading ? (
         <Loader label="Loading…" />
       ) : isError ? (
         <ErrorState error={queryError} onRetry={refetch} />
       ) : (
-        <DataTable columns={columns} rows={categories} empty="ابھی کوئی زمرہ نہیں" />
+        <DataTable
+          columns={columns}
+          rows={categories}
+          empty={t('emptyCategories')}
+          pageSize={10}
+          typo={SHOP_TABLE_TYPO}
+          labels={{
+            prev: t('pagePrev'),
+            next: t('pageNext'),
+            showing: (from, to, total) => t('pageShowing', from, to, total),
+          }}
+        />
       )}
 
       {modal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-          <form onSubmit={submit} className="w-full max-w-md rounded-xl bg-white p-6 shadow-xl">
-            <h3 className="urdu mb-4 text-lg font-bold text-ink">{modal.id ? 'زمرہ ترمیم کریں' : 'نیا زمرہ'}</h3>
-            {error && <div className="urdu mb-3 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">{error}</div>}
+          <form onSubmit={submit} dir={dir} className="w-full max-w-md rounded-xl bg-white p-6 shadow-xl">
+            <h3 className={`${textClass} typo-shop-modal-title mb-4 font-bold text-ink`}>{modal.id ? t('editCategory') : t('newCategory')}</h3>
+            {error && <div className={`${textClass} typo-shop-alert mb-3 rounded-lg bg-red-50 px-3 py-2 text-red-700`}>{error}</div>}
             <div className="space-y-3">
-              <input dir="rtl" required placeholder="نام (اردو)" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="urdu w-full rounded-lg border border-gray-300 px-3 py-2 outline-none focus:border-brand" />
-              <input placeholder="English name (optional)" value={form.nameEn} onChange={(e) => setForm({ ...form, nameEn: e.target.value })} className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:border-brand" />
+              <input
+                dir={dir}
+                required
+                maxLength={CATEGORY_NAME_MAX}
+                placeholder={t('namePlaceholder')}
+                value={form.name}
+                onChange={(e) => setForm({ ...form, name: e.target.value })}
+                className={`${fieldClass} typo-shop-input w-full rounded-lg border border-gray-300 px-3 py-2 outline-none focus:border-brand`}
+              />
+              <p className={`typo-shop-meta text-gray-400 ${isUrdu ? 'text-right' : 'text-left'}`} dir="ltr">
+                {String(form.name || '').length}/{CATEGORY_NAME_MAX}
+              </p>
               <div className="flex items-center gap-4">
-                <label className="urdu text-sm">
-                  ترتیب:
-                  <input type="number" value={form.order} onChange={(e) => setForm({ ...form, order: e.target.value })} className="ml-2 w-20 rounded-lg border border-gray-300 px-2 py-1 text-sm" />
+                <label className={`${textClass} typo-shop-label`}>
+                  {t('order')}:
+                  <input
+                    type="number"
+                    value={form.order}
+                    onChange={(e) => setForm({ ...form, order: e.target.value })}
+                    className="typo-shop-input ml-2 w-20 rounded-lg border border-gray-300 px-2 py-1"
+                  />
                 </label>
-                <label className="urdu flex items-center gap-2 text-sm">
-                  <input type="checkbox" checked={form.isActive} onChange={(e) => setForm({ ...form, isActive: e.target.checked })} className="h-4 w-4 accent-brand" />
-                  فعال
+                <label className={`${textClass} typo-shop-label flex items-center gap-2`}>
+                  <input
+                    type="checkbox"
+                    checked={form.isActive}
+                    onChange={(e) => setForm({ ...form, isActive: e.target.checked })}
+                    className="h-4 w-4 accent-brand"
+                  />
+                  {t('active')}
                 </label>
               </div>
             </div>
             <div className="mt-6 flex justify-end gap-3">
-              <button type="button" onClick={close} className="urdu rounded-lg border border-gray-300 px-4 py-2 text-sm hover:bg-gray-50">منسوخ</button>
-              <button type="submit" disabled={saveMut.isPending} className="urdu rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-white hover:bg-brand-dark disabled:opacity-60">
-                {saveMut.isPending ? 'محفوظ…' : 'محفوظ کریں'}
+              <button type="button" onClick={close} className={`${textClass} typo-shop-button rounded-lg border border-gray-300 px-4 py-2 hover:bg-gray-50`}>
+                {t('cancel')}
+              </button>
+              <button
+                type="submit"
+                disabled={saveMut.isPending}
+                className={`${textClass} typo-shop-button rounded-lg bg-brand px-4 py-2 font-semibold text-white hover:bg-brand-dark disabled:opacity-60`}
+              >
+                {saveMut.isPending ? t('saving') : t('save')}
               </button>
             </div>
           </form>
@@ -136,10 +198,10 @@ export default function ShopCategories() {
 
       <ConfirmDialog
         open={!!toDelete}
-        title="زمرہ حذف کریں؟"
-        message={toDelete ? `"${toDelete.name}" حذف ہو جائے گا۔` : ''}
-        confirmLabel="حذف کریں"
-        cancelLabel="منسوخ"
+        title={t('deleteCategoryTitle')}
+        message={toDelete ? t('deleteCategoryMsg', toDelete.name) : ''}
+        confirmLabel={t('confirmDelete')}
+        cancelLabel={t('cancel')}
         loading={removeMut.isPending}
         onConfirm={() => removeMut.mutate(toDelete._id)}
         onCancel={() => setToDelete(null)}

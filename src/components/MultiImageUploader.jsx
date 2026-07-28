@@ -1,5 +1,8 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 
+export const IMAGE_MAX_SIZE_MB = 8;
+export const IMAGE_MAX_BYTES = IMAGE_MAX_SIZE_MB * 1024 * 1024;
+
 // Multi-image uploader. Uploads each picked file via `uploadFn(file) => Promise<url>`
 // and stores an array of URLs. Supports click-to-pick and Ctrl+V / Cmd+V paste.
 export default function MultiImageUploader({
@@ -7,13 +10,14 @@ export default function MultiImageUploader({
   onChange,
   uploadFn,
   max = 5,
-  label = 'تصاویر',
+  label = 'Images',
+  labelClassName = '',
+  addLabel = 'Image',
+  dir = 'ltr',
 }) {
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState('');
-  const [pasteHint, setPasteHint] = useState(false);
   const inputRef = useRef(null);
-  const zoneRef = useRef(null);
   const valueRef = useRef(value);
   const uploadingRef = useRef(uploading);
 
@@ -31,6 +35,12 @@ export default function MultiImageUploader({
       if (uploadingRef.current) return;
 
       setError('');
+      const tooBig = files.find((f) => f.size > IMAGE_MAX_BYTES);
+      if (tooBig) {
+        setError(`Max image size is ${IMAGE_MAX_SIZE_MB} MB`);
+        return;
+      }
+
       const current = valueRef.current;
       const room = max - current.length;
       if (room <= 0) {
@@ -77,25 +87,19 @@ export default function MultiImageUploader({
   const removeAt = (i) => onChange(value.filter((_, idx) => idx !== i));
 
   return (
-    <div
-      ref={zoneRef}
-      tabIndex={0}
-      onFocus={() => setPasteHint(true)}
-      onBlur={() => setPasteHint(false)}
-      onClick={() => zoneRef.current?.focus()}
-      className="rounded-lg outline-none focus-within:ring-2 focus-within:ring-brand/30"
-    >
-      {label && <label className="urdu mb-1 block text-sm font-medium text-gray-700">{label}</label>}
+    <div dir={dir}>
+      {label && (
+        <label className={`${labelClassName} mb-1 block text-sm font-medium text-gray-700 ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>
+          {label}
+        </label>
+      )}
       <div className="flex flex-wrap gap-2">
         {value.map((url, i) => (
           <div key={url + i} className="relative h-20 w-20 overflow-hidden rounded-lg border border-gray-200">
             <img src={url} alt="" className="h-full w-full object-cover" />
             <button
               type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                removeAt(i);
-              }}
+              onClick={() => removeAt(i)}
               className="absolute right-0 top-0 flex h-5 w-5 items-center justify-center bg-black/60 text-xs text-white hover:bg-red-600"
               aria-label="remove"
             >
@@ -106,10 +110,7 @@ export default function MultiImageUploader({
         {value.length < max && (
           <button
             type="button"
-            onClick={(e) => {
-              e.stopPropagation();
-              inputRef.current?.click();
-            }}
+            onClick={() => inputRef.current?.click()}
             disabled={uploading}
             className="flex h-20 w-20 flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 text-gray-400 hover:border-brand hover:text-brand disabled:opacity-60"
           >
@@ -121,7 +122,7 @@ export default function MultiImageUploader({
             ) : (
               <>
                 <span className="text-xl leading-none">+</span>
-                <span className="text-[10px]">تصویر</span>
+                <span className="text-[10px]">{addLabel}</span>
               </>
             )}
           </button>
@@ -135,10 +136,10 @@ export default function MultiImageUploader({
         onChange={handleFiles}
         className="hidden"
       />
-      <p className="urdu mt-1 text-xs text-gray-400">
-        {value.length}/{max} تصاویر
+      <p className="mt-1 text-xs text-gray-400">
+        {value.length}/{max} images
         <span className="mx-1 text-gray-300">·</span>
-        <span className={pasteHint ? 'text-brand' : ''}>Ctrl+V سے پیسٹ کریں</span>
+        Max size: {IMAGE_MAX_SIZE_MB} MB
       </p>
       {error && <p className="mt-1 text-xs text-red-600">{error}</p>}
     </div>

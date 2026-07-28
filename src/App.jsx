@@ -59,6 +59,7 @@ const ShopDashboard = lazy(() => import('./shop/pages/Dashboard.jsx'));
 const ShopProducts = lazy(() => import('./shop/pages/Products.jsx'));
 const ShopCategories = lazy(() => import('./shop/pages/Categories.jsx'));
 const ShopOrders = lazy(() => import('./shop/pages/Orders.jsx'));
+const ShopOrderDetail = lazy(() => import('./shop/pages/OrderDetail.jsx'));
 const ShopProfile = lazy(() => import('./shop/pages/ShopProfile.jsx'));
 
 export default function App() {
@@ -141,6 +142,7 @@ export default function App() {
           <Route path="products" element={<ShopProducts />} />
           <Route path="categories" element={<ShopCategories />} />
           <Route path="orders" element={<ShopOrders />} />
+          <Route path="orders/:id" element={<ShopOrderDetail />} />
           <Route path="profile" element={<ShopProfile />} />
         </Route>
       </Routes>

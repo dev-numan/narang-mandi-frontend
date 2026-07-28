@@ -197,17 +197,35 @@ body {
   font-family: var(--typo-font-urdu);
 }
 
+/* Urdu data (shop names, product titles…) — always Nastaleeq, even when UI is English. */
+.urdu-content {
+  direction: rtl;
+  text-align: right;
+  font-family: var(--typo-font-nastaleeq);
+}
+
+/* Nastaleeq font only — use in LTR UI when showing Urdu strings without flipping layout. */
+.font-nastaleeq {
+  font-family: var(--typo-font-nastaleeq);
+}
+
 /* Nastaleeq has deep descenders — single-line form fields clip them with the
    default line-height. Give Urdu inputs/textareas extra vertical room. */
 input.urdu,
-textarea.urdu {
+textarea.urdu,
+input.urdu-content,
+textarea.urdu-content,
+input.font-nastaleeq,
+textarea.font-nastaleeq {
   line-height: var(--typo-lh-input);
-  padding-top: 0.6rem;
-  padding-bottom: 0.7rem;
+  padding-top: 1rem;
+  padding-bottom: 0.85rem;
   height: auto;
 }
-input.urdu {
-  min-height: 3.2rem;
+input.urdu,
+input.urdu-content,
+input.font-nastaleeq {
+  min-height: 3.4rem;
 }
 
 /* Breaking ticker — sizes from constants/typography.js (size.ticker / tickerLabel) */
@@ -375,6 +393,117 @@ input.urdu {
   font-weight: var(--typo-weight-extrabold);
   /* Nastaleeq is often a single cut — shadow helps it read as bold */
   text-shadow: 0 0 0.6px currentColor, 0 1px 2px rgba(0, 0, 0, 0.35);
+}
+
+/* Shop admin login — size.shopLogin* */
+.typo-shop-login-title {
+  font-size: var(--typo-size-shop-login-title);
+}
+.typo-shop-login-subtitle {
+  font-size: var(--typo-size-shop-login-subtitle);
+}
+.typo-shop-login-label {
+  font-size: var(--typo-size-shop-login-label);
+}
+.typo-shop-login-input {
+  font-size: var(--typo-size-shop-login-input);
+}
+.typo-shop-login-button {
+  font-size: var(--typo-size-shop-login-button);
+}
+.typo-shop-login-error {
+  font-size: var(--typo-size-shop-login-error);
+}
+
+/* Shop admin sidebar + header — size.shopAdmin* / shopHeader* */
+.typo-shop-admin-brand {
+  font-size: var(--typo-size-shop-admin-brand);
+}
+.typo-shop-admin-nav-item {
+  font-size: var(--typo-size-shop-admin-nav-item);
+}
+.typo-shop-admin-nav-footer {
+  font-size: var(--typo-size-shop-admin-nav-footer);
+}
+.typo-shop-header-name {
+  font-size: var(--typo-size-shop-header-name);
+}
+.typo-shop-header-role {
+  font-size: var(--typo-size-shop-header-role);
+}
+.typo-shop-header-logout {
+  font-size: var(--typo-size-shop-header-logout);
+}
+
+/* Shared shop admin pages */
+.typo-shop-page-title {
+  font-size: var(--typo-size-shop-page-title);
+}
+.typo-shop-page-subtitle {
+  font-size: var(--typo-size-shop-page-subtitle);
+}
+.typo-shop-section-title {
+  font-size: var(--typo-size-shop-section-title);
+}
+.typo-shop-body {
+  font-size: var(--typo-size-shop-body);
+}
+.typo-shop-meta {
+  font-size: var(--typo-size-shop-meta);
+}
+.typo-shop-label {
+  font-size: var(--typo-size-shop-label);
+}
+.typo-shop-input {
+  font-size: var(--typo-size-shop-input);
+}
+.typo-shop-button {
+  font-size: var(--typo-size-shop-button);
+}
+.typo-shop-button-sm {
+  font-size: var(--typo-size-shop-button-sm);
+}
+.typo-shop-hint {
+  font-size: var(--typo-size-shop-hint);
+}
+.typo-shop-alert {
+  font-size: var(--typo-size-shop-alert);
+}
+.typo-shop-modal-title {
+  font-size: var(--typo-size-shop-modal-title);
+}
+.typo-shop-tab {
+  font-size: var(--typo-size-shop-tab);
+}
+.typo-shop-stat-value {
+  font-size: var(--typo-size-shop-stat-value);
+}
+.typo-shop-stat-label {
+  font-size: var(--typo-size-shop-stat-label);
+}
+.typo-shop-order-badge {
+  font-size: var(--typo-size-shop-order-badge);
+}
+.typo-shop-order-meta {
+  font-size: var(--typo-size-shop-order-meta);
+}
+.typo-shop-order-body {
+  font-size: var(--typo-size-shop-order-body);
+}
+.typo-shop-order-total {
+  font-size: var(--typo-size-shop-order-total);
+}
+.typo-shop-dropdown {
+  font-size: var(--typo-size-shop-dropdown);
+}
+.typo-shop-table-header {
+  font-size: var(--typo-size-shop-table-header);
+}
+.typo-shop-table-cell {
+  font-size: var(--typo-size-shop-table-cell);
+}
+.typo-shop-pagination {
+  font-size: var(--typo-size-shop-pagination);
 }
 
 /* Breaking-news marquee — two identical groups; the track sits at -50% and

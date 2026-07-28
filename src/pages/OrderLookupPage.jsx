@@ -4,7 +4,8 @@ import { useMutation } from '@tanstack/react-query';
 import { shopsApi } from '../api/index.js';
 import { SITE_NAME } from '../constants/brand.js';
 import Seo from '../components/Seo.jsx';
-import { formatPrice, formatUrduDate } from '../utils/format.js';
+import { formatPrice, formatUrduDate, truncateText } from '../utils/format.js';
+import { PRODUCT_NAME_DISPLAY_MAX } from '../constants/products.js';
 
 const STATUS_LABEL = {
   pending: { label: 'زیرِ التوا', cls: 'bg-yellow-100 text-yellow-800' },
@@ -71,7 +72,9 @@ export default function OrderLookupPage() {
           <ul className="mb-3 space-y-1">
             {order.items?.map((it) => (
               <li key={it._id} className="urdu flex items-center justify-between text-sm">
-                <span className="line-clamp-1">{it.productName} × {it.quantity}</span>
+                <span className="line-clamp-1" title={it.productName}>
+                  {truncateText(it.productName, PRODUCT_NAME_DISPLAY_MAX)} × {it.quantity}
+                </span>
                 <span className="shrink-0 text-gray-600">{formatPrice(it.lineTotal)}</span>
               </li>
             ))}

@@ -4,10 +4,11 @@ import { useQuery } from '@tanstack/react-query';
 import { shopsApi } from '../api/index.js';
 import { SITE_NAME } from '../constants/brand.js';
 import Seo from '../components/Seo.jsx';
-import { formatPrice } from '../utils/format.js';
+import { formatPrice, truncateText } from '../utils/format.js';
 import { useCart } from '../context/CartContext.jsx';
 import Loader, { EmptyState, ErrorState } from '../components/Loader.jsx';
 import CartBar from '../components/CartBar.jsx';
+import { PRODUCT_NAME_DISPLAY_MAX } from '../constants/products.js';
 
 function ProductCard({ shop, product }) {
   const { add, replaceShop } = useCart();
@@ -41,7 +42,9 @@ function ProductCard({ shop, product }) {
           )}
         </div>
         <div className="p-3 pb-0">
-          <h3 className="urdu mb-1 line-clamp-2 font-bold text-ink">{product.name}</h3>
+          <h3 className="urdu mb-1 font-bold text-ink" title={product.name}>
+            {truncateText(product.name, PRODUCT_NAME_DISPLAY_MAX)}
+          </h3>
           <div className="mb-1 text-sm font-bold text-brand">{formatPrice(product.price)}</div>
         </div>
       </Link>

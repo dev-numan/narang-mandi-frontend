@@ -14,6 +14,7 @@
  * Classifieds: size.classifiedPageTitle / classifiedCardTitle / …
  * Trains: size.trainPageTitle / trainName / trainTime / …
  * Places: size.placePageTitle / placeCardName / …
+ * Shop admin: size.shopPageTitle / shopLoginTitle / shopStatValue / …
  */
 
 export const TYPOGRAPHY = {
@@ -25,7 +26,7 @@ export const TYPOGRAPHY = {
 
   fontFamily: {
     body: "'Poppins', 'Jameel Noori Nastaleeq', system-ui, sans-serif",
-    urdu: "'Poppins', 'Jameel Noori Nastaleeq', serif",
+    urdu: "'Jameel Noori Nastaleeq', 'Poppins', serif",
     nastaleeq: "'Jameel Noori Nastaleeq', serif",
     admin: "'Poppins', system-ui, -apple-system, 'Segoe UI', sans-serif",
   },
@@ -109,6 +110,47 @@ export const TYPOGRAPHY = {
     bannerPerk: '1.1rem',
     bannerCta: '1.5rem', // ابھی رجسٹر کریں
     bannerBadge: '2rem', // ڈرائیور / کاروباری حضرات کے لیے خوشخبری
+
+    /** Shop admin login (/shop/admin/login) */
+    shopLoginTitle: '2rem',
+    shopLoginSubtitle: '0.875rem',
+    shopLoginLabel: '1rem',
+    shopLoginInput: '1rem',
+    shopLoginButton: '1.2rem',
+    shopLoginError: '0.875rem',
+
+    /** Shop admin sidebar + top header */
+    shopAdminBrand: '1rem',
+    shopAdminNavItem: '1rem',
+    shopAdminNavFooter: '0.875rem',
+    shopHeaderName: '0.875rem', // user name in top bar
+    shopHeaderRole: '0.75rem', // Shopkeeper
+    shopHeaderLogout: '0.875rem',
+
+    /** Shared across shop admin pages */
+    shopPageTitle: '1.5rem', // Dashboard, Products, Orders… H1
+    shopPageSubtitle: '1.125rem', // shop name under dashboard title
+    shopSectionTitle: '1.25rem', // Language / Change password
+    shopBody: '0.875rem', // general body / tabs / buttons
+    shopMeta: '0.75rem', // badges, dates, small actions
+    shopLabel: '0.875rem', // form labels
+    shopInput: '1rem', // form inputs / textareas
+    shopButton: '0.875rem', // primary / secondary buttons
+    shopButtonSm: '0.875rem', // Edit / Delete in tables
+    shopHint: '0.875rem', // helper text under section titles
+    shopAlert: '0.875rem', // error / success banners
+    shopModalTitle: '1.125rem', // product / category modal H3
+    shopTab: '0.875rem', // order status filter pills
+    shopStatValue: '1.5rem', // dashboard big numbers
+    shopStatLabel: '0.875rem', // dashboard card labels
+    shopOrderBadge: '0.75rem',
+    shopOrderMeta: '1.1rem', // address / note / date
+    shopOrderBody: '1.05rem', // customer + line items
+    shopOrderTotal: '0.875rem',
+    shopDropdown: '0.875rem', // status dropdown
+    shopTableHeader: '0.75rem',
+    shopTableCell: '1.1rem',
+    shopPagination: '0.875rem',
   },
 
   weight: {
@@ -208,6 +250,41 @@ const CSS_VAR_MAP = {
   '--typo-size-banner-perk': () => scaleSize(TYPOGRAPHY.size.bannerPerk),
   '--typo-size-banner-cta': () => scaleSize(TYPOGRAPHY.size.bannerCta),
   '--typo-size-banner-badge': () => scaleSize(TYPOGRAPHY.size.bannerBadge),
+  '--typo-size-shop-login-title': () => scaleSize(TYPOGRAPHY.size.shopLoginTitle),
+  '--typo-size-shop-login-subtitle': () => scaleSize(TYPOGRAPHY.size.shopLoginSubtitle),
+  '--typo-size-shop-login-label': () => scaleSize(TYPOGRAPHY.size.shopLoginLabel),
+  '--typo-size-shop-login-input': () => scaleSize(TYPOGRAPHY.size.shopLoginInput),
+  '--typo-size-shop-login-button': () => scaleSize(TYPOGRAPHY.size.shopLoginButton),
+  '--typo-size-shop-login-error': () => scaleSize(TYPOGRAPHY.size.shopLoginError),
+  '--typo-size-shop-admin-brand': () => scaleSize(TYPOGRAPHY.size.shopAdminBrand),
+  '--typo-size-shop-admin-nav-item': () => scaleSize(TYPOGRAPHY.size.shopAdminNavItem),
+  '--typo-size-shop-admin-nav-footer': () => scaleSize(TYPOGRAPHY.size.shopAdminNavFooter),
+  '--typo-size-shop-header-name': () => scaleSize(TYPOGRAPHY.size.shopHeaderName),
+  '--typo-size-shop-header-role': () => scaleSize(TYPOGRAPHY.size.shopHeaderRole),
+  '--typo-size-shop-header-logout': () => scaleSize(TYPOGRAPHY.size.shopHeaderLogout),
+  '--typo-size-shop-page-title': () => scaleSize(TYPOGRAPHY.size.shopPageTitle),
+  '--typo-size-shop-page-subtitle': () => scaleSize(TYPOGRAPHY.size.shopPageSubtitle),
+  '--typo-size-shop-section-title': () => scaleSize(TYPOGRAPHY.size.shopSectionTitle),
+  '--typo-size-shop-body': () => scaleSize(TYPOGRAPHY.size.shopBody),
+  '--typo-size-shop-meta': () => scaleSize(TYPOGRAPHY.size.shopMeta),
+  '--typo-size-shop-label': () => scaleSize(TYPOGRAPHY.size.shopLabel),
+  '--typo-size-shop-input': () => scaleSize(TYPOGRAPHY.size.shopInput),
+  '--typo-size-shop-button': () => scaleSize(TYPOGRAPHY.size.shopButton),
+  '--typo-size-shop-button-sm': () => scaleSize(TYPOGRAPHY.size.shopButtonSm),
+  '--typo-size-shop-hint': () => scaleSize(TYPOGRAPHY.size.shopHint),
+  '--typo-size-shop-alert': () => scaleSize(TYPOGRAPHY.size.shopAlert),
+  '--typo-size-shop-modal-title': () => scaleSize(TYPOGRAPHY.size.shopModalTitle),
+  '--typo-size-shop-tab': () => scaleSize(TYPOGRAPHY.size.shopTab),
+  '--typo-size-shop-stat-value': () => scaleSize(TYPOGRAPHY.size.shopStatValue),
+  '--typo-size-shop-stat-label': () => scaleSize(TYPOGRAPHY.size.shopStatLabel),
+  '--typo-size-shop-order-badge': () => scaleSize(TYPOGRAPHY.size.shopOrderBadge),
+  '--typo-size-shop-order-meta': () => scaleSize(TYPOGRAPHY.size.shopOrderMeta),
+  '--typo-size-shop-order-body': () => scaleSize(TYPOGRAPHY.size.shopOrderBody),
+  '--typo-size-shop-order-total': () => scaleSize(TYPOGRAPHY.size.shopOrderTotal),
+  '--typo-size-shop-dropdown': () => scaleSize(TYPOGRAPHY.size.shopDropdown),
+  '--typo-size-shop-table-header': () => scaleSize(TYPOGRAPHY.size.shopTableHeader),
+  '--typo-size-shop-table-cell': () => scaleSize(TYPOGRAPHY.size.shopTableCell),
+  '--typo-size-shop-pagination': () => scaleSize(TYPOGRAPHY.size.shopPagination),
 
   '--typo-weight-normal': () => TYPOGRAPHY.weight.normal,
   '--typo-weight-medium': () => TYPOGRAPHY.weight.medium,

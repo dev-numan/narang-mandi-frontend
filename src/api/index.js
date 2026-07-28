@@ -153,6 +153,7 @@ export const shopAdminApi = {
   removeProduct: (id) => api.delete(`/shop-admin/products/${id}`).then((r) => r.data),
   // orders
   orders: (params) => api.get('/shop-admin/orders', { params }).then((r) => r.data.data),
+  order: (id) => api.get(`/shop-admin/orders/${id}`).then((r) => r.data.data),
   setOrderStatus: (id, status) =>
     api.patch(`/shop-admin/orders/${id}/status`, { status }).then((r) => r.data.data),
 };

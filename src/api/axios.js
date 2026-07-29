@@ -25,13 +25,17 @@ function friendlyMessage(error) {
   if (axios.isCancel?.(error) || error.code === 'ERR_CANCELED') {
     return 'Request cancelled.';
   }
-  // Timed out.
+  // Browser reports offline before the request is sent.
+  if (error.code === 'ERR_OFFLINE') {
+    return 'Network error. Please check your internet connection and try again.';
+  }
+  // Timed out / hung request.
   if (error.code === 'ECONNABORTED' || /timeout/i.test(error.message || '')) {
-    return 'The request timed out. Please check your connection and try again.';
+    return 'Network error. Please check your internet connection and try again.';
   }
   // No response at all → network/server-unreachable.
   if (error.code === 'ERR_NETWORK' || !error.response) {
-    return 'Unable to reach the server. Please check your internet connection and try again.';
+    return 'Network error. Please check your internet connection and try again.';
   }
   const { status, data } = error.response;
   // Prefer a meaningful message from the API when present.
@@ -40,8 +44,14 @@ function friendlyMessage(error) {
   return STATUS_MESSAGES[status] || 'Something went wrong. Please try again.';
 }
 
-// Attach bearer token (fallback to cookie auth too).
+// Fail immediately when the browser is offline (don't hang on "Saving…").
 api.interceptors.request.use((config) => {
+  if (typeof navigator !== 'undefined' && navigator.onLine === false) {
+    const err = new Error('Network error. Please check your internet connection and try again.');
+    err.code = 'ERR_OFFLINE';
+    err.isNetworkError = true;
+    return Promise.reject(err);
+  }
   const token = localStorage.getItem('accessToken');
   if (token) config.headers.Authorization = `Bearer ${token}`;
   return config;
@@ -52,9 +62,14 @@ api.interceptors.request.use((config) => {
 api.interceptors.response.use(
   (res) => res,
   (error) => {
+    // Already normalized by the offline request interceptor.
+    if (error?.code === 'ERR_OFFLINE' && error.message) {
+      return Promise.reject(error);
+    }
     const err = new Error(friendlyMessage(error));
     err.status = error.response?.status ?? null;
     err.isNetworkError = !error.response && error.code !== 'ERR_CANCELED';
+    err.code = error.code;
     return Promise.reject(err);
   }
 );

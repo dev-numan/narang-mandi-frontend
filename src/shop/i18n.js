@@ -108,6 +108,7 @@ export const STRINGS = {
     langEnglish: 'English',
     langUrdu: 'Urdu',
 
+    offlineError: 'Network error. Please check your internet connection and try again.',
     pagePrev: 'Previous',
     pageNext: 'Next',
     pageShowing: (from, to, total) => `Showing ${from}–${to} of ${total}`,
@@ -219,6 +220,7 @@ export const STRINGS = {
     langEnglish: 'English',
     langUrdu: 'اردو',
 
+    offlineError: 'نیٹ ورک خرابی۔ اپنا انٹرنیٹ کنکشن چیک کر کے دوبارہ کوشش کریں۔',
     pagePrev: 'پچھلا',
     pageNext: 'اگلا',
     pageShowing: (from, to, total) => `${total} میں سے ${from}–${to}`,

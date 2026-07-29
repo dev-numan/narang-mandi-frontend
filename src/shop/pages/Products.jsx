@@ -85,6 +85,10 @@ export default function ShopProducts() {
   const submit = (e) => {
     e.preventDefault();
     setError('');
+    if (typeof navigator !== 'undefined' && navigator.onLine === false) {
+      setError(t('offlineError'));
+      return;
+    }
     const name = String(form.name || '').trim();
     if (name.length > PRODUCT_NAME_MAX) {
       setError(t('productNameTooLong'));

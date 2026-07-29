@@ -14,7 +14,17 @@ applyTypography();
 
 const queryClient = new QueryClient({
   defaultOptions: {
-    queries: { staleTime: 60_000, refetchOnWindowFocus: false, retry: 1 },
+    queries: {
+      staleTime: 60_000,
+      refetchOnWindowFocus: false,
+      retry: 1,
+      // Don't pause forever when the browser is offline — fail so UI can show an error.
+      networkMode: 'always',
+    },
+    mutations: {
+      retry: 0,
+      networkMode: 'always',
+    },
   },
 });
 

@@ -92,14 +92,24 @@ export default function Dashboard() {
 
   return (
     <div>
-      <div className="mb-6 flex items-center justify-between">
+      <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
         <h1 className="text-2xl font-bold text-ink">Dashboard</h1>
-        <Link
-          to="/admin/articles/new"
-          className="rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-white hover:bg-brand-dark"
-        >
-          + New Article
-        </Link>
+        <div className="flex flex-wrap items-center gap-2">
+          <Link
+            to="/shop/admin/login"
+            target="_blank"
+            rel="noreferrer"
+            className="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-semibold text-ink hover:bg-gray-50"
+          >
+            🏪 Shop Admin Panel
+          </Link>
+          <Link
+            to="/admin/articles/new"
+            className="rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-white hover:bg-brand-dark"
+          >
+            + New Article
+          </Link>
+        </div>
       </div>
 
       {loading ? (

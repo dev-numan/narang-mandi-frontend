@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 
 /** Top nav — only these live features (nothing else). */
 const NAV_ITEMS = [
@@ -25,17 +25,34 @@ export default function CategoryNav() {
   return (
     <nav className="border-b border-gray-200/80 bg-gradient-to-b from-gray-50 to-white">
       <div className="mx-auto max-w-6xl px-4">
-        <button
-          onClick={() => setOpen((o) => !o)}
-          aria-label="Menu"
-          aria-expanded={open}
-          className="typo-nav flex w-full items-center justify-between py-3 font-semibold text-ink md:hidden"
-        >
-          <span className="rounded-full bg-brand/10 px-3.5 py-1.5 text-brand">Menu</span>
-          <span className="flex h-9 w-9 items-center justify-center rounded-full bg-gray-100 text-xl leading-none text-ink">
+        <div className="typo-nav flex w-full items-center justify-between gap-2 py-3 font-semibold text-ink md:hidden">
+          <button
+            type="button"
+            onClick={() => setOpen((o) => !o)}
+            aria-label="Menu"
+            aria-expanded={open}
+            className="rounded-full bg-brand/10 px-3.5 py-1.5 text-brand"
+          >
+            Menu
+          </button>
+
+          <Link
+            to="/shop/admin"
+            className="rounded-full bg-brand px-3 py-1.5 text-center text-xs font-bold text-white shadow-sm hover:bg-brand-dark sm:text-sm"
+          >
+            Shop Admin Panel
+          </Link>
+
+          <button
+            type="button"
+            onClick={() => setOpen((o) => !o)}
+            aria-label={open ? 'Close menu' : 'Open menu'}
+            aria-expanded={open}
+            className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-gray-100 text-xl leading-none text-ink"
+          >
             {open ? '✕' : '☰'}
-          </span>
-        </button>
+          </button>
+        </div>
 
         {open && (
           <ul className="typo-nav flex flex-col gap-2 pb-4 md:hidden">
@@ -51,6 +68,11 @@ export default function CategoryNav() {
                 </NavLink>
               </li>
             ))}
+            <li>
+              <NavLink to="/shop/admin" onClick={() => setOpen(false)} className={pillClass}>
+                Shop Admin Panel
+              </NavLink>
+            </li>
           </ul>
         )}
 
@@ -63,6 +85,11 @@ export default function CategoryNav() {
                 </NavLink>
               </li>
             ))}
+            <li>
+              <NavLink to="/shop/admin" className={pillClass}>
+                Shop Admin Panel
+              </NavLink>
+            </li>
           </ul>
         </div>
       </div>

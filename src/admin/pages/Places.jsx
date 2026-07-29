@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { placesApi } from '../../api/index.js';
 import DataTable from '../components/DataTable.jsx';
@@ -31,6 +31,7 @@ const STATUS_BADGE = {
 export default function Places() {
   const qc = useQueryClient();
   const [tab, setTab] = useState('pending');
+  const [search, setSearch] = useState('');
   const [modal, setModal] = useState(null); // null | { id }
   const [form, setForm] = useState(EMPTY);
   const [toDelete, setToDelete] = useState(null);
@@ -52,6 +53,18 @@ export default function Places() {
     queryKey: ['admin-places', tab],
     queryFn: () => placesApi.adminList(tab ? { status: tab } : {}),
   });
+
+  const filteredPlaces = useMemo(() => {
+    const q = search.trim().toLowerCase();
+    if (!q) return places;
+    return places.filter((p) =>
+      [p.name, p.address, p.phone, p.category?.name, p.category?.nameEn, p.status]
+        .filter(Boolean)
+        .join(' ')
+        .toLowerCase()
+        .includes(q),
+    );
+  }, [places, search]);
 
   const invalidate = () => {
     qc.invalidateQueries({ queryKey: ['admin-places'] });
@@ -186,18 +199,27 @@ export default function Places() {
         </button>
       </div>
 
-      <div className="mb-4 flex gap-2">
-        {TABS.map((t) => (
-          <button
-            key={t.key}
-            onClick={() => setTab(t.key)}
-            className={`rounded-lg px-3 py-1.5 text-sm font-medium transition ${
-              tab === t.key ? 'bg-brand text-white' : 'border border-gray-300 text-gray-600 hover:bg-gray-50'
-            }`}
-          >
-            {t.label}
-          </button>
-        ))}
+      <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+        <div className="flex flex-wrap gap-2">
+          {TABS.map((t) => (
+            <button
+              key={t.key}
+              onClick={() => setTab(t.key)}
+              className={`rounded-lg px-3 py-1.5 text-sm font-medium transition ${
+                tab === t.key ? 'bg-brand text-white' : 'border border-gray-300 text-gray-600 hover:bg-gray-50'
+              }`}
+            >
+              {t.label}
+            </button>
+          ))}
+        </div>
+        <input
+          type="search"
+          placeholder="Search name, address, phone…"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="w-full min-w-[14rem] max-w-xs rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:border-brand sm:w-auto"
+        />
       </div>
 
       {actionError && (
@@ -209,7 +231,11 @@ export default function Places() {
       ) : isError ? (
         <ErrorState error={queryError} onRetry={refetch} />
       ) : (
-        <DataTable columns={columns} rows={places} empty="No places in this view" />
+        <DataTable
+          columns={columns}
+          rows={filteredPlaces}
+          empty={search.trim() ? 'No places match your search' : 'No places in this view'}
+        />
       )}
 
       {modal && (

@@ -146,7 +146,11 @@ export default function Shops() {
       ) : isError ? (
         <ErrorState error={queryError} onRetry={refetch} />
       ) : (
-        <DataTable columns={columns} rows={shops} empty="No shops yet" />
+        <DataTable
+          columns={columns}
+          rows={[...shops].sort((a, b) => (b.productCount ?? 0) - (a.productCount ?? 0))}
+          empty="No shops yet"
+        />
       )}
 
       {modal && (

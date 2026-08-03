@@ -15,6 +15,23 @@ function toEmbedUrl(raw) {
   return url;
 }
 
+// Pasting from Word inserts a non-breaking space between every word. Stored, they
+// stop Urdu wrapping on narrow screens and read as one unbroken token to search
+// crawlers — the defect that put 6,204 of them into the existing articles. Fix
+// the paste at source: rewrite the text inserts of the incoming delta, leaving
+// attributes (bold, links) and the shaping-significant ZWNJ/ZWJ/RLM intact.
+const NBSP_CHARS = /[\u00A0\u202F]/g;
+
+function normalizePastedText(node, delta) {
+  delta.ops.forEach((op) => {
+    if (typeof op.insert === 'string') {
+      // Newlines are Quill's block separators — collapse spaces, not those.
+      op.insert = op.insert.replace(NBSP_CHARS, ' ').replace(/[ \t]{2,}/g, ' ');
+    }
+  });
+  return delta;
+}
+
 export default function RichTextEditor({ value, onChange }) {
   const quillRef = useRef(null);
 
@@ -71,7 +88,16 @@ export default function RichTextEditor({ value, onChange }) {
         ],
         handlers: { image: imageHandler, video: videoHandler },
       },
-      clipboard: { matchVisual: false },
+      clipboard: {
+        matchVisual: false,
+        // Quill appends these to its built-in matchers, so listing only ours is
+        // correct — the defaults still handle bold/lists/links.
+        matchers: [
+          [Node.TEXT_NODE, normalizePastedText],
+          // Word's own shim elements carry no content worth keeping.
+          ['[style*="mso-"], o\\:p, .MsoNormal', (node, delta) => delta],
+        ],
+      },
     }),
     [imageHandler, videoHandler]
   );

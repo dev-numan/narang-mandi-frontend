@@ -2,6 +2,7 @@ import { useEffect, useState, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { sanitizeHtml } from '../../utils/sanitize.js';
+import { normalizeNbsp } from '../../utils/htmlText.js';
 import { adminApi, articlesApi, categoriesApi } from '../../api/index.js';
 import RichTextEditor from '../components/RichTextEditor.jsx';
 import ImageUploader from '../components/ImageUploader.jsx';
@@ -121,6 +122,9 @@ export default function ArticleForm() {
       .filter(Boolean);
     const payload = {
       ...form,
+      // Belt and braces alongside the Quill paste matcher: catches non-breaking
+      // spaces that arrive by any other route (programmatic set, drag-and-drop).
+      content: normalizeNbsp(form.content || ''),
       tags,
       category: form.category || null,
       status,

@@ -7,5 +7,13 @@ Disallow: /orders/track
 Disallow: /search
 Disallow: /api/
 
+# Routes below are not prerendered by client/server.js — they return the bare SPA
+# shell to crawlers. Remove these lines once they render real content server-side.
+Disallow: /shops
+Disallow: /classifieds
+Disallow: /places
+Disallow: /trains
+Disallow: /community
+
 Sitemap: https://narangmandi.com/sitemap.xml
 Sitemap: https://narangmandi.com/news-sitemap.xml

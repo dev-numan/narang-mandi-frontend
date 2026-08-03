@@ -16,6 +16,7 @@ import { fileURLToPath } from 'url';
 import { readFileSync } from 'fs';
 import { HOME_H1 } from './src/constants/brand.js';
 import { DEFAULT_SOCIAL_LINKS } from './src/constants/social.js';
+import { stripTags, isExcerptDuplicated, capDescription } from './src/utils/htmlText.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const DIST = path.join(__dirname, 'dist');
@@ -46,12 +47,14 @@ const esc = (s = '') =>
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;');
 
-// Strip HTML tags and collapse whitespace → plain text for excerpts/body.
-const stripTags = (s = '') =>
-  String(s)
-    .replace(/<[^>]*>/g, ' ')
-    .replace(/\s+/g, ' ')
-    .trim();
+// stripTags decodes the entities that survive tag-stripping: content pasted from
+// Word arrives with &nbsp; between every word, and left encoded, esc() below turns
+// the "&" into "&amp;" so the crawler reads the literal text "&nbsp;".
+//
+// These come from the same module the React app uses (src/utils/htmlText.js) so
+// the prerendered page and the client-rendered page make identical decisions —
+// in particular about whether to show the excerpt as a standfirst.
+const metaDesc = (s) => capDescription(s, 200);
 
 // Absolute URL for an image that may be stored as a relative /uploads path.
 const imgUrl = (src = '') => {
@@ -227,7 +230,12 @@ app.get('/article/:slug', async (req, res) => {
     const categories = catsJson?.data || [];
     const image = imgUrl(a.coverImage);
     const url = `${SITE}/article/${req.params.slug}`;
-    const description = a.excerpt || stripTags(a.content).slice(0, 200) || a.title;
+    const description = metaDesc(a.excerpt || a.content) || a.title;
+    // The excerpt is usually the opening paragraph pasted into a second field —
+    // printing both puts the same text on the page twice. Show it only when it
+    // genuinely differs from the body: a real standfirst, or one of the articles
+    // whose whole story was filed under excerpt by mistake.
+    const lead = isExcerptDuplicated(a.excerpt, a.content, a.title) ? '' : stripTags(a.excerpt);
 
     const ld = jsonLd({
       '@context': 'https://schema.org',
@@ -252,7 +260,7 @@ app.get('/article/:slug', async (req, res) => {
     const content = `${renderNav(categories)}<main><article>
       <h1>${esc(a.title)}</h1>
       ${image ? `<img src="${esc(image)}" alt="${esc(a.title)}" />` : ''}
-      <p>${esc(description)}</p>
+      ${lead ? `<p>${esc(lead)}</p>` : ''}
       <div>${esc(stripTags(a.content))}</div>
     </article>${
       related.length ? `<aside><h2>متعلقہ خبریں</h2>${renderArticleList(related)}</aside>` : ''

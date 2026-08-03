@@ -2,6 +2,7 @@ import { useEffect, useMemo } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { sanitizeHtml } from '../utils/sanitize.js';
+import { normalizeNbsp, isExcerptDuplicated, capDescription } from '../utils/htmlText.js';
 import { SITE_NAME, SITE_URL } from '../constants/brand.js';
 import Seo from '../components/Seo.jsx';
 import { articlesApi } from '../api/index.js';
@@ -35,8 +36,19 @@ export default function ArticlePage() {
     articlesApi.recordView(slug).catch(() => {});
   }, [slug]);
 
+  // normalizeNbsp runs before sanitizing so legacy bodies (pasted from Word, with
+  // &nbsp; between every word) wrap normally on a phone even before the database
+  // cleanup has run. Normalising belongs upstream of DOMPurify, not inside it.
   const safeHtml = useMemo(
-    () => (article ? sanitizeHtml(article.content || '') : ''),
+    () => (article ? sanitizeHtml(normalizeNbsp(article.content || '')) : ''),
+    [article]
+  );
+
+  // The excerpt is usually the opening paragraph copied into a second field.
+  // Showing both prints the same text twice — same rule the prerenderer applies
+  // in client/server.js, so readers and crawlers see the same page.
+  const showExcerpt = useMemo(
+    () => Boolean(article?.excerpt) && !isExcerptDuplicated(article.excerpt, article.content, article.title),
     [article]
   );
 
@@ -55,7 +67,9 @@ export default function ArticlePage() {
   }
   if (!article) return <EmptyState label="خبر نہیں ملی" />;
 
-  const description = article.excerpt || article.title;
+  // Capped so this matches the prerendered meta/JSON-LD in client/server.js —
+  // a few articles have their whole body in the excerpt field.
+  const description = capDescription(article.excerpt) || article.title;
   const path = `/article/${article.slug}`;
   const jsonLd = [
     {
@@ -143,7 +157,7 @@ export default function ArticlePage() {
             />
           )}
 
-          {article.excerpt && (
+          {showExcerpt && (
             <p className="typo-article-page-excerpt mb-6 border-r-4 border-brand bg-white p-4 font-semibold leading-loose text-gray-700 shadow-sm">
               {article.excerpt}
             </p>

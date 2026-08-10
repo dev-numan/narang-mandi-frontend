@@ -209,3 +209,42 @@ export const uploadApi = {
       .then((r) => r.data.data.url);
   },
 };
+
+// ---- Taxi (guest ride requests) ----
+export const taxiApi = {
+  request: (payload) => api.post('/rides', payload).then((r) => r.data),
+  lookup: (rideCode, phone) => api.post('/rides/lookup', { rideCode, phone }).then((r) => r.data.data),
+  accept: (rideCode, phone, bidId) =>
+    api.post(`/rides/${rideCode}/accept`, { phone, bidId }).then((r) => r.data.data),
+  cancel: (rideCode, phone, reason = '') =>
+    api.post(`/rides/${rideCode}/cancel`, { phone, reason }).then((r) => r.data.data),
+  /** Drivers to ring directly. 425 until the bidding window has passed. */
+  drivers: (rideCode, phone) =>
+    api.post(`/rides/${rideCode}/drivers`, { phone }).then((r) => r.data.data),
+};
+
+// ---- Driver panel ----
+export const driverApi = {
+  me: () => api.get('/driver/me').then((r) => r.data.data),
+  updateMe: (payload) => api.put('/driver/me', payload).then((r) => r.data.data),
+  stats: () => api.get('/driver/stats').then((r) => r.data.data),
+  openRides: () => api.get('/driver/rides/open').then((r) => r.data.data),
+  myRides: (status) => api.get('/driver/rides/mine', { params: { status } }).then((r) => r.data.data),
+  ride: (id) => api.get(`/driver/rides/${id}`).then((r) => r.data.data),
+  bid: (id, payload) => api.post(`/driver/rides/${id}/bid`, payload).then((r) => r.data.data),
+  withdraw: (id) => api.delete(`/driver/rides/${id}/bid`).then((r) => r.data),
+  complete: (id) => api.post(`/driver/rides/${id}/complete`).then((r) => r.data.data),
+};
+
+// ---- Taxi admin ----
+export const adminTaxiApi = {
+  drivers: (params) => api.get('/admin/drivers', { params }).then((r) => r.data.data),
+  createDriver: (payload) => api.post('/admin/drivers', payload).then((r) => r.data.data),
+  updateDriver: (id, payload) => api.put(`/admin/drivers/${id}`, payload).then((r) => r.data.data),
+  setDriverStatus: (id, isActive) =>
+    api.patch(`/admin/drivers/${id}/status`, { isActive }).then((r) => r.data.data),
+  rides: (params) => api.get('/admin/rides', { params }).then((r) => r.data),
+  ride: (id) => api.get(`/admin/rides/${id}`).then((r) => r.data.data),
+  setRideStatus: (id, status) =>
+    api.patch(`/admin/rides/${id}/status`, { status }).then((r) => r.data.data),
+};

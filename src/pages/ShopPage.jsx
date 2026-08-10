@@ -12,11 +12,9 @@ import { PRODUCT_NAME_DISPLAY_MAX } from '../constants/products.js';
 
 function ProductCard({ shop, product }) {
   const { add, replaceShop } = useCart();
-  const outOfStock = product.stock <= 0;
 
   const handleAdd = (e) => {
     e.preventDefault();
-    if (outOfStock) return;
     const ok = add(shop, product, 1);
     if (!ok) {
       const move = window.confirm(
@@ -35,11 +33,6 @@ function ProductCard({ shop, product }) {
           ) : (
             <div className="flex h-full items-center justify-center text-4xl text-gray-300">📦</div>
           )}
-          {outOfStock && (
-            <span className="urdu absolute inset-x-0 bottom-0 bg-black/60 py-1 text-center text-xs text-white">
-              اسٹاک ختم
-            </span>
-          )}
         </div>
         <div className="p-3 pb-0">
           <h3 className="urdu mb-1 font-bold text-ink" title={product.name}>
@@ -49,13 +42,9 @@ function ProductCard({ shop, product }) {
         </div>
       </Link>
       <div className="flex flex-1 flex-col justify-end p-3 pt-1">
-        <div className="urdu mb-2 text-xs text-gray-400">
-          {outOfStock ? 'دستیاب نہیں' : `اسٹاک: ${product.stock}`}
-        </div>
         <button
           onClick={handleAdd}
-          disabled={outOfStock}
-          className="urdu w-full rounded-lg bg-brand px-3 py-2 text-sm font-semibold text-white hover:bg-brand-dark disabled:opacity-50"
+          className="urdu w-full rounded-lg bg-brand px-3 py-2 text-sm font-semibold text-white hover:bg-brand-dark"
         >
           ٹوکری میں ڈالیں
         </button>

@@ -8,6 +8,7 @@ import Seo from '../components/Seo.jsx';
 import { useCart } from '../context/CartContext.jsx';
 import Loader from '../components/Loader.jsx';
 import CartBar from '../components/CartBar.jsx';
+import QuantityStepper from '../components/QuantityStepper.jsx';
 
 export default function ProductPage() {
   const { shopSlug, productSlug } = useParams();
@@ -35,10 +36,8 @@ export default function ProductPage() {
 
   const shop = product.shop;
   const images = product.images?.length ? product.images : [];
-  const outOfStock = product.stock <= 0;
 
   const doAdd = (goToCart) => {
-    if (outOfStock) return;
     const ok = add(shop, product, qty);
     if (!ok) {
       const move = window.confirm(
@@ -70,9 +69,8 @@ export default function ProductPage() {
             '@type': 'Offer',
             price: product.price,
             priceCurrency: 'PKR',
-            availability: outOfStock
-              ? 'https://schema.org/OutOfStock'
-              : 'https://schema.org/InStock',
+            // Inventory is not tracked, so a listed product is always orderable.
+            availability: 'https://schema.org/InStock',
             url: `${SITE_URL}/shops/${shopSlug}/product/${product.slug}`,
             seller: shop?.name ? { '@type': 'Organization', name: shop.name } : undefined,
           },
@@ -120,50 +118,30 @@ export default function ProductPage() {
           <h1 className="urdu mb-2 text-2xl font-bold text-ink">{product.name}</h1>
           <div className="mb-3 text-2xl font-bold text-brand">{formatPrice(product.price)}</div>
 
-          <p className={`urdu mb-4 text-sm ${outOfStock ? 'text-red-600' : 'text-gray-500'}`}>
-            {outOfStock ? 'اسٹاک ختم ہو گیا ہے' : `اسٹاک میں دستیاب: ${product.stock}`}
-          </p>
-
           {product.description && (
             <p className="urdu mb-4 whitespace-pre-wrap leading-relaxed text-gray-700">{product.description}</p>
           )}
 
-          {!outOfStock && (
-            <div className="rounded-xl border border-gray-200 bg-white p-4">
-              <div className="mb-3 flex items-center gap-3">
-                <span className="urdu text-sm text-gray-600">تعداد:</span>
-                <div className="flex items-center gap-2">
-                  <button
-                    onClick={() => setQty((q) => Math.max(1, q - 1))}
-                    className="h-8 w-8 rounded-lg border border-gray-300 text-lg font-bold hover:bg-gray-50"
-                  >
-                    −
-                  </button>
-                  <span dir="ltr" className="w-10 text-center font-semibold">{qty}</span>
-                  <button
-                    onClick={() => setQty((q) => Math.min(product.stock, q + 1))}
-                    className="h-8 w-8 rounded-lg border border-gray-300 text-lg font-bold hover:bg-gray-50"
-                  >
-                    +
-                  </button>
-                </div>
-              </div>
-              <div className="flex flex-wrap gap-2">
-                <button
-                  onClick={() => doAdd(false)}
-                  className="urdu flex-1 rounded-lg border border-brand px-4 py-2 text-sm font-semibold text-brand hover:bg-brand/10"
-                >
-                  ٹوکری میں ڈالیں
-                </button>
-                <button
-                  onClick={() => doAdd(true)}
-                  className="urdu flex-1 rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-white hover:bg-brand-dark"
-                >
-                  ابھی آرڈر کریں
-                </button>
-              </div>
+          <div className="rounded-xl border border-gray-200 bg-white p-4">
+            <div className="mb-3 flex items-center gap-3">
+              <span className="urdu text-sm text-gray-600">تعداد:</span>
+              <QuantityStepper value={qty} onChange={setQty} />
             </div>
-          )}
+            <div className="flex flex-wrap gap-2">
+              <button
+                onClick={() => doAdd(false)}
+                className="urdu flex-1 rounded-lg border border-brand px-4 py-2 text-sm font-semibold text-brand hover:bg-brand/10"
+              >
+                ٹوکری میں ڈالیں
+              </button>
+              <button
+                onClick={() => doAdd(true)}
+                className="urdu flex-1 rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-white hover:bg-brand-dark"
+              >
+                ابھی آرڈر کریں
+              </button>
+            </div>
+          </div>
         </div>
       </div>
 

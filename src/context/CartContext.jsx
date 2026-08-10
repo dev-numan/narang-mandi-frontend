@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useMemo, useState, useCallback } from 'react';
+import { MAX_ORDER_QUANTITY } from '../constants/products.js';
 
 // One cart per shop: an order belongs to exactly one shop. Adding a product
 // from a different shop replaces the cart (after a confirm in the UI).
@@ -20,7 +21,9 @@ function loadCart() {
 }
 
 export function CartProvider({ children }) {
-  // cart = { shopId, shopSlug, shopName, items: [{ productId, name, price, qty, stock, image, slug }] }
+  // cart = { shopId, shopSlug, shopName, items: [{ productId, name, price, qty, image, slug }] }
+  // Carts persisted before inventory tracking was removed still carry a `stock`
+  // key on each item. It is simply ignored — nothing reads it any more.
   const [cart, setCart] = useState(loadCart);
 
   useEffect(() => {
@@ -48,10 +51,10 @@ export function CartProvider({ children }) {
         };
         const items = [...base.items];
         const idx = items.findIndex((i) => i.productId === product._id);
-        const capped = Math.max(1, Math.min(qty, product.stock || qty));
+        const capped = Math.min(Math.max(1, qty), MAX_ORDER_QUANTITY);
         if (idx >= 0) {
-          const nextQty = Math.min(items[idx].qty + qty, product.stock || items[idx].qty + qty);
-          items[idx] = { ...items[idx], qty: Math.max(1, nextQty), stock: product.stock };
+          const nextQty = Math.min(items[idx].qty + qty, MAX_ORDER_QUANTITY);
+          items[idx] = { ...items[idx], qty: Math.max(1, nextQty) };
         } else {
           items.push({
             productId: product._id,
@@ -59,7 +62,6 @@ export function CartProvider({ children }) {
             slug: product.slug,
             price: product.price,
             qty: capped,
-            stock: product.stock,
             image: product.images?.[0] || '',
           });
         }
@@ -72,7 +74,7 @@ export function CartProvider({ children }) {
 
   // Replace the cart with a fresh one for a new shop.
   const replaceShop = useCallback((shop, product, qty = 1) => {
-    const capped = Math.max(1, Math.min(qty, product.stock || qty));
+    const capped = Math.min(Math.max(1, qty), MAX_ORDER_QUANTITY);
     setCart({
       shopId: shop._id,
       shopSlug: shop.slug,
@@ -84,7 +86,6 @@ export function CartProvider({ children }) {
           slug: product.slug,
           price: product.price,
           qty: capped,
-          stock: product.stock,
           image: product.images?.[0] || '',
         },
       ],
@@ -97,7 +98,7 @@ export function CartProvider({ children }) {
       const items = prev.items
         .map((i) =>
           i.productId === productId
-            ? { ...i, qty: Math.max(1, Math.min(qty, i.stock || qty)) }
+            ? { ...i, qty: Math.min(Math.max(1, qty), MAX_ORDER_QUANTITY) }
             : i
         )
         .filter((i) => i.qty > 0);

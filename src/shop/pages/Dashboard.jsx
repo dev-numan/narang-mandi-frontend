@@ -29,7 +29,6 @@ export default function ShopDashboard() {
         <StatCard label={t('processing')} value={stats.processing} icon="🔧" accent="bg-blue-500" {...statTypo} />
         <StatCard label={t('fulfilled')} value={stats.fulfilled} icon="✅" accent="bg-green-600" {...statTypo} />
         <StatCard label={t('products')} value={stats.productCount} icon="📦" accent="bg-ink" {...statTypo} />
-        <StatCard label={t('lowStock')} value={stats.lowStock} icon="⚠️" accent="bg-orange-500" {...statTypo} />
         <StatCard label={t('revenue')} value={formatPrice(stats.revenue)} icon="💰" accent="bg-green-700" {...statTypo} />
         <StatCard label={t('cancelled')} value={stats.cancelled} icon="✖️" accent="bg-red-500" {...statTypo} />
       </div>

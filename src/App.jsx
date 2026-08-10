@@ -10,7 +10,9 @@ import ProtectedRoute from './admin/ProtectedRoute.jsx';
 import { RequireAdmin, RequireCategoryAccess } from './admin/RoleGate.jsx';
 import AdminLayout from './admin/AdminLayout.jsx';
 import ShopProtectedRoute from './shop/ShopProtectedRoute.jsx';
+import DriverProtectedRoute from './driver/DriverProtectedRoute.jsx';
 import ShopAdminLayout from './shop/ShopAdminLayout.jsx';
+import DriverLayout from './driver/DriverLayout.jsx';
 
 // Public pages (code-split — each becomes its own chunk, kept out of the
 // initial bundle so first paint on mobile stays fast).
@@ -29,6 +31,7 @@ const ShopPage = lazy(() => import('./pages/ShopPage.jsx'));
 const ProductPage = lazy(() => import('./pages/ProductPage.jsx'));
 const CartPage = lazy(() => import('./pages/CartPage.jsx'));
 const OrderLookupPage = lazy(() => import('./pages/OrderLookupPage.jsx'));
+const TaxiPage = lazy(() => import('./pages/TaxiPage.jsx'));
 const About = lazy(() => import('./pages/About.jsx'));
 const Contact = lazy(() => import('./pages/Contact.jsx'));
 const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy.jsx'));
@@ -62,6 +65,12 @@ const ShopOrders = lazy(() => import('./shop/pages/Orders.jsx'));
 const ShopOrderDetail = lazy(() => import('./shop/pages/OrderDetail.jsx'));
 const ShopProfile = lazy(() => import('./shop/pages/ShopProfile.jsx'));
 
+// Driver panel
+const DriverLogin = lazy(() => import('./driver/pages/Login.jsx'));
+const DriverOpenRides = lazy(() => import('./driver/pages/OpenRides.jsx'));
+const DriverMyRides = lazy(() => import('./driver/pages/MyRides.jsx'));
+const DriverProfile = lazy(() => import('./driver/pages/Profile.jsx'));
+
 export default function App() {
   return (
     <Suspense fallback={<Loader />}>
@@ -86,6 +95,7 @@ export default function App() {
           <Route path="/shops/:shopSlug/product/:productSlug" element={<ProductPage />} />
           <Route path="/cart" element={<CartPage />} />
           <Route path="/orders/track" element={<OrderLookupPage />} />
+          <Route path="/taxi" element={<TaxiPage />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/privacy" element={<PrivacyPolicy />} />
@@ -144,6 +154,21 @@ export default function App() {
           <Route path="orders" element={<ShopOrders />} />
           <Route path="orders/:id" element={<ShopOrderDetail />} />
           <Route path="profile" element={<ShopProfile />} />
+        </Route>
+
+        {/* Driver panel (LTR shell, RTL content) */}
+        <Route path="/driver/login" element={<DriverLogin />} />
+        <Route
+          path="/driver"
+          element={
+            <DriverProtectedRoute>
+              <DriverLayout />
+            </DriverProtectedRoute>
+          }
+        >
+          <Route index element={<DriverOpenRides />} />
+          <Route path="mine" element={<DriverMyRides />} />
+          <Route path="profile" element={<DriverProfile />} />
         </Route>
       </Routes>
     </Suspense>

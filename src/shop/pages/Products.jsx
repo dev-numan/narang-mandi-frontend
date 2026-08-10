@@ -11,7 +11,10 @@ import { SHOP_TABLE_TYPO } from '../shopTypo.js';
 import { PRODUCT_NAME_DISPLAY_MAX, PRODUCT_NAME_MAX, CATEGORY_NAME_DISPLAY_MAX } from '../../constants/products.js';
 import CustomSelect from '../components/CustomSelect.jsx';
 
-const EMPTY = { name: '', categoryId: '', description: '', price: 0, stock: 0, images: [], isActive: true };
+// Price starts blank rather than at 0 so the shopkeeper can type a number
+// straight away instead of first deleting a pre-filled digit. `submit` coerces
+// an empty field back to 0, so the saved value is unchanged.
+const EMPTY = { name: '', categoryId: '', description: '', price: '', images: [], isActive: true };
 
 export default function ShopProducts() {
   const { t, textClass, isUrdu, dir } = useShopLang();
@@ -69,8 +72,7 @@ export default function ShopProducts() {
         name: p.name,
         categoryId: p.category?._id || '',
         description: p.description || '',
-        price: p.price || 0,
-        stock: p.stock || 0,
+        price: p.price || '',
         images: p.images || [],
         isActive: p.isActive,
       });
@@ -101,7 +103,6 @@ export default function ShopProducts() {
         name,
         categoryId: form.categoryId || null,
         price: Number(form.price) || 0,
-        stock: Number(form.stock) || 0,
       },
     });
   };
@@ -135,11 +136,6 @@ export default function ShopProducts() {
       ),
     },
     { key: 'price', header: t('colPrice'), render: (r) => formatPrice(r.price) },
-    {
-      key: 'stock',
-      header: t('colStock'),
-      render: (r) => <span className={r.stock <= 3 ? 'font-semibold text-orange-600' : ''}>{r.stock}</span>,
-    },
     {
       key: 'isActive',
       header: t('colActive'),
@@ -231,30 +227,18 @@ export default function ShopProducts() {
                   ...categories.map((c) => ({ value: c._id, label: c.name })),
                 ]}
               />
-              <div className="flex gap-3">
-                <label className={`${textClass} typo-shop-label flex-1 text-gray-600`}>
-                  {t('priceRs')}
-                  <input
-                    type="number"
-                    min="0"
-                    dir="ltr"
-                    value={form.price}
-                    onChange={(e) => setForm({ ...form, price: e.target.value })}
-                    className="typo-shop-input mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 outline-none focus:border-brand"
-                  />
-                </label>
-                <label className={`${textClass} typo-shop-label flex-1 text-gray-600`}>
-                  {t('stockQty')}
-                  <input
-                    type="number"
-                    min="0"
-                    dir="ltr"
-                    value={form.stock}
-                    onChange={(e) => setForm({ ...form, stock: e.target.value })}
-                    className="typo-shop-input mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 outline-none focus:border-brand"
-                  />
-                </label>
-              </div>
+              <label className={`${textClass} typo-shop-label block text-gray-600`}>
+                {t('priceRs')}
+                <input
+                  type="number"
+                  min="0"
+                  dir="ltr"
+                  placeholder="0"
+                  value={form.price}
+                  onChange={(e) => setForm({ ...form, price: e.target.value })}
+                  className="typo-shop-input mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 outline-none focus:border-brand"
+                />
+              </label>
               <textarea
                 dir={dir}
                 rows={3}

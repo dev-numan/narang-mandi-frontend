@@ -7,6 +7,7 @@ import Seo from '../components/Seo.jsx';
 import { formatPrice, truncateText } from '../utils/format.js';
 import { useCart } from '../context/CartContext.jsx';
 import { PRODUCT_NAME_DISPLAY_MAX } from '../constants/products.js';
+import QuantityStepper from '../components/QuantityStepper.jsx';
 
 const EMPTY = { customerName: '', customerPhone: '', address: '', note: '' };
 
@@ -80,7 +81,7 @@ export default function CartPage() {
 
   return (
     <>
-      <Helmet><title>{SITE_NAME} | ٹوکری</title></Helmet>
+      <Seo title={`ٹوکری — ${SITE_NAME}`} path="/cart" noindex />
 
       <div className="mb-6 border-b-2 border-brand pb-3">
         <h1 className="urdu text-3xl font-bold text-ink">ٹوکری</h1>
@@ -108,11 +109,11 @@ export default function CartPage() {
                   </p>
                   <p className="text-sm font-bold text-brand">{formatPrice(i.price)}</p>
                 </div>
-                <div className="flex items-center gap-1">
-                  <button onClick={() => setQty(i.productId, i.qty - 1)} className="h-7 w-7 rounded-lg border border-gray-300 font-bold hover:bg-gray-50">−</button>
-                  <span dir="ltr" className="w-8 text-center text-sm font-semibold">{i.qty}</span>
-                  <button onClick={() => setQty(i.productId, i.qty + 1)} disabled={i.qty >= i.stock} className="h-7 w-7 rounded-lg border border-gray-300 font-bold hover:bg-gray-50 disabled:opacity-40">+</button>
-                </div>
+                <QuantityStepper
+                  value={i.qty}
+                  onChange={(next) => setQty(i.productId, next)}
+                  compact
+                />
                 <button onClick={() => remove(i.productId)} className="urdu shrink-0 text-xs text-red-500 hover:underline">
                   ہٹائیں
                 </button>

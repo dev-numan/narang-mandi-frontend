@@ -7,6 +7,7 @@ const NAV_ITEMS = [
   { to: '/places', label: 'Mashhoor Maqamat' },
   { to: '/community', label: 'Community Chat' },
   { to: '/trains', label: 'Train Auqaat' },
+  { to: '/shops', label: 'Narang Bazaar' },
   { to: '/classifieds', label: 'Narang OLX' },
   { to: '/category/local', label: 'News' },
 ];

@@ -142,6 +142,19 @@
   --typo-size-place-card-cta: 1.05rem;
   --typo-size-place-sidebar-heading: 1.5rem;
   --typo-size-place-sidebar-item: 1.1rem;
+  --typo-size-taxi-page-title: 1.875rem;
+  --typo-size-taxi-page-desc: 1.2rem;
+  --typo-size-taxi-label: 1.15rem;
+  --typo-size-taxi-input: 1.15rem;
+  --typo-size-taxi-hint: 1.05rem;
+  --typo-size-taxi-button: 1.25rem;
+  --typo-size-taxi-error: 1.05rem;
+  --typo-size-taxi-section-title: 1.2rem;
+  --typo-size-taxi-code: 1.5rem;
+  --typo-size-taxi-badge: 1rem;
+  --typo-size-taxi-card-title: 1.2rem;
+  --typo-size-taxi-card-meta: 1.05rem;
+  --typo-size-taxi-price: 1.35rem;
   --typo-size-banner-title: 1.25rem;
   --typo-size-banner-subtitle: 0.875rem;
   --typo-size-banner-highlight: 2.5rem;
@@ -368,6 +381,50 @@ input.font-nastaleeq {
 }
 .typo-place-sidebar-item {
   font-size: var(--typo-size-place-sidebar-item);
+}
+
+/* Online Taxi — size.taxi* */
+.typo-taxi-page-title {
+  font-size: var(--typo-size-taxi-page-title);
+}
+.typo-taxi-page-desc {
+  font-size: var(--typo-size-taxi-page-desc);
+}
+.typo-taxi-label {
+  font-size: var(--typo-size-taxi-label);
+}
+/* Floored at 16px: below that, iOS Safari zooms into the focused field on tap
+   and leaves the page zoomed once the field blurs. The floor lives here rather
+   than in the token so that lowering TYPOGRAPHY.scale cannot reintroduce it. */
+.typo-taxi-input {
+  font-size: max(16px, var(--typo-size-taxi-input));
+}
+.typo-taxi-hint {
+  font-size: var(--typo-size-taxi-hint);
+}
+.typo-taxi-button {
+  font-size: var(--typo-size-taxi-button);
+}
+.typo-taxi-error {
+  font-size: var(--typo-size-taxi-error);
+}
+.typo-taxi-section-title {
+  font-size: var(--typo-size-taxi-section-title);
+}
+.typo-taxi-code {
+  font-size: var(--typo-size-taxi-code);
+}
+.typo-taxi-badge {
+  font-size: var(--typo-size-taxi-badge);
+}
+.typo-taxi-card-title {
+  font-size: var(--typo-size-taxi-card-title);
+}
+.typo-taxi-card-meta {
+  font-size: var(--typo-size-taxi-card-meta);
+}
+.typo-taxi-price {
+  font-size: var(--typo-size-taxi-price);
 }
 
 /* Registration banners — size.banner* */

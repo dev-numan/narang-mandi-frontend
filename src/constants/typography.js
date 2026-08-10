@@ -103,6 +103,27 @@ export const TYPOGRAPHY = {
     placeSidebarHeading: '1.5rem', // زمرہ جات
     placeSidebarItem: '1.1rem', // تمام مقامات + categories
 
+    /**
+     * Online Taxi page (/taxi)
+     *
+     * taxiInput is floored at 16px in index.css rather than here: Safari on iOS
+     * zooms into any focused input rendering below 16px and never zooms back
+     * out, and `scale` above could otherwise drag this under that line.
+     */
+    taxiPageTitle: '1.875rem', // Online Taxi H1
+    taxiPageDesc: '1.2rem', // شہر میں آن لائن ٹیکسی… under H1
+    taxiLabel: '1.15rem', // کہاں سے؟ / آپ کا نام
+    taxiInput: '1.15rem', // every input + textarea on the page
+    taxiHint: '1.05rem', // ڈرائیور اپنی قیمت بھیجیں گے…
+    taxiButton: '1.25rem', // ڈرائیوروں کو بھیجیں
+    taxiError: '1.05rem', // validation + server errors
+    taxiSectionTitle: '1.2rem', // پہلے سے درخواست بھیج چکے ہیں؟
+    taxiCode: '1.5rem', // the ride code itself
+    taxiBadge: '1rem', // پیشکشوں کا انتظار status pill
+    taxiCardTitle: '1.2rem', // driver name on a bid card
+    taxiCardMeta: '1.05rem', // vehicle / ETA under the name
+    taxiPrice: '1.35rem', // the fare — what people actually compare
+
     /** Registration banners (shop / driver) */
     bannerTitle: '2.35rem', // بطور ڈرائیور… / اپنی دکان…
     bannerSubtitle: '1.4rem', // گھر بیٹھے آرڈر… / اگر آپ ریسٹورنٹ…
@@ -244,6 +265,19 @@ const CSS_VAR_MAP = {
   '--typo-size-place-card-cta': () => scaleSize(TYPOGRAPHY.size.placeCardCta),
   '--typo-size-place-sidebar-heading': () => scaleSize(TYPOGRAPHY.size.placeSidebarHeading),
   '--typo-size-place-sidebar-item': () => scaleSize(TYPOGRAPHY.size.placeSidebarItem),
+  '--typo-size-taxi-page-title': () => scaleSize(TYPOGRAPHY.size.taxiPageTitle),
+  '--typo-size-taxi-page-desc': () => scaleSize(TYPOGRAPHY.size.taxiPageDesc),
+  '--typo-size-taxi-label': () => scaleSize(TYPOGRAPHY.size.taxiLabel),
+  '--typo-size-taxi-input': () => scaleSize(TYPOGRAPHY.size.taxiInput),
+  '--typo-size-taxi-hint': () => scaleSize(TYPOGRAPHY.size.taxiHint),
+  '--typo-size-taxi-button': () => scaleSize(TYPOGRAPHY.size.taxiButton),
+  '--typo-size-taxi-error': () => scaleSize(TYPOGRAPHY.size.taxiError),
+  '--typo-size-taxi-section-title': () => scaleSize(TYPOGRAPHY.size.taxiSectionTitle),
+  '--typo-size-taxi-code': () => scaleSize(TYPOGRAPHY.size.taxiCode),
+  '--typo-size-taxi-badge': () => scaleSize(TYPOGRAPHY.size.taxiBadge),
+  '--typo-size-taxi-card-title': () => scaleSize(TYPOGRAPHY.size.taxiCardTitle),
+  '--typo-size-taxi-card-meta': () => scaleSize(TYPOGRAPHY.size.taxiCardMeta),
+  '--typo-size-taxi-price': () => scaleSize(TYPOGRAPHY.size.taxiPrice),
   '--typo-size-banner-title': () => scaleSize(TYPOGRAPHY.size.bannerTitle),
   '--typo-size-banner-subtitle': () => scaleSize(TYPOGRAPHY.size.bannerSubtitle),
   '--typo-size-banner-highlight': () => scaleSize(TYPOGRAPHY.size.bannerHighlight),

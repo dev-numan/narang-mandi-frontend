@@ -53,7 +53,6 @@ export const FEATURES = {
     icon: '🛒',
     gradient: 'from-brand to-brand-dark',
     image: '/feature-shops.png',
-    comingSoon: true,
   },
   taxi: {
     to: '/taxi',
@@ -62,7 +61,6 @@ export const FEATURES = {
     icon: '🚕',
     gradient: 'from-yellow-500 to-amber-600',
     image: '/feature-taxi.png',
-    comingSoon: true,
   },
 };
 

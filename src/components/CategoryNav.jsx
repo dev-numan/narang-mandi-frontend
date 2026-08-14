@@ -8,7 +8,7 @@ const NAV_ITEMS = [
   { to: '/community', label: 'Community Chat' },
   { to: '/trains', label: 'Train Auqaat' },
   { to: '/shops', label: 'Narang Bazaar' },
-  { to: '/classifieds', label: 'Narang OLX' },
+  { to: '/classifieds', label: 'Kharid o Farokht' },
   { to: '/category/local', label: 'News' },
 ];
 

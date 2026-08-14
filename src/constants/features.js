@@ -8,7 +8,7 @@ import { SITE_NAME, SITE_NAME_URDU } from './brand.js';
 export const FEATURES = {
   classifieds: {
     to: '/classifieds',
-    title: 'Narang OLX',
+    title: 'Kharid o Farokht',
     description: 'خرید و فروخت، نوکریاں اور گاڑیاں — نارنگ منڈی',
     icon: '🏷️',
     gradient: 'from-amber-500 to-orange-600',
@@ -75,7 +75,7 @@ export const FEATURES_LIST = [
   FEATURES.taxi,
 ];
 
-/** SEO title: "Narang Mandi | Narang OLX" */
+/** SEO title: "Narang Mandi | Kharid o Farokht" */
 export function featureSeoTitle(feature) {
   return `${SITE_NAME} | ${feature.title}`;
 }

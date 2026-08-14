@@ -53,7 +53,7 @@ export const TYPOGRAPHY = {
     nav: '1.2rem',
 
     /** Home feature cards */
-    featureCardTitle: '2rem', // Narang OLX, Taaza Khabrein…
+    featureCardTitle: '2rem', // Kharid o Farokht, Taaza Khabrein…
     featureCardDesc: '1.2rem', // Urdu subheading under each card title
 
     /** News article cards (تازہ ترین خبریں grid) */
@@ -70,8 +70,8 @@ export const TYPOGRAPHY = {
     sidebarHeading: '1.5rem', // مقبول خبریں، زمرہ جات
     sidebarItem: '1.2rem', // trending headlines + category pills
 
-    /** Narang OLX / classifieds page */
-    classifiedPageTitle: '1.875rem', // Narang OLX H1
+    /** Kharid o Farokht / classifieds page */
+    classifiedPageTitle: '1.875rem', // Kharid o Farokht H1
     classifiedPageDesc: '1.2rem', // خرید و فروخت… under H1
     classifiedCardTitle: '1.2rem', // listing title e.g. Honda CD 70
     classifiedCardPrice: '1.1rem', // Rs 80,000

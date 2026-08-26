@@ -38,6 +38,10 @@ const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy.jsx'));
 const Terms = lazy(() => import('./pages/Terms.jsx'));
 const RegistrationPage = lazy(() => import('./pages/RegistrationPage.jsx'));
 const DriverGuidePage = lazy(() => import('./pages/DriverGuidePage.jsx'));
+const ShopGuidePage = lazy(() => import('./pages/ShopGuidePage.jsx'));
+const BazaarGuidePage = lazy(() => import('./pages/BazaarGuidePage.jsx'));
+const OlxGuidePage = lazy(() => import('./pages/OlxGuidePage.jsx'));
+const TaxiGuidePage = lazy(() => import('./pages/TaxiGuidePage.jsx'));
 const NotFound = lazy(() => import('./pages/NotFound.jsx'));
 
 // Admin panel (heavy — rich-text editor etc. — split out of the public bundle).
@@ -102,8 +106,13 @@ export default function App() {
           <Route path="/privacy" element={<PrivacyPolicy />} />
           <Route path="/terms" element={<Terms />} />
           <Route path="/register/:type" element={<RegistrationPage />} />
-          {/* Public on purpose: drivers are sent here before their first login. */}
+          {/* Public on purpose: people are sent to these before they sign in,
+              and ordering/booking needs no account at all. */}
           <Route path="/driver/guide" element={<DriverGuidePage />} />
+          <Route path="/shop/guide" element={<ShopGuidePage />} />
+          <Route path="/bazaar/guide" element={<BazaarGuidePage />} />
+          <Route path="/olx/guide" element={<OlxGuidePage />} />
+          <Route path="/taxi/guide" element={<TaxiGuidePage />} />
           <Route path="*" element={<NotFound />} />
         </Route>
 

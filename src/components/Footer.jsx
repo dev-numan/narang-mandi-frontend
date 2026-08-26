@@ -60,6 +60,17 @@ export default function Footer() {
               <li className="text-gray-400">{settings.contactEmail}</li>
             )}
           </ul>
+          {/* The guides are otherwise reachable only from the WhatsApp
+              messages that carry someone's credentials, which leaves everyone
+              else with no way to find them. */}
+          <h4 className="mb-2 mt-4 font-bold text-white">رہنمائی</h4>
+          <ul className="space-y-1 text-sm">
+            <li><Link to="/bazaar/guide" className="hover:text-white">بازار سے آرڈر کیسے کریں</Link></li>
+            <li><Link to="/taxi/guide" className="hover:text-white">سواری کیسے منگوائیں</Link></li>
+            <li><Link to="/olx/guide" className="hover:text-white">چیز کیسے بیچیں</Link></li>
+            <li><Link to="/shop/guide" className="hover:text-white">دکاندار گائیڈ</Link></li>
+            <li><Link to="/driver/guide" className="hover:text-white">ڈرائیور گائیڈ</Link></li>
+          </ul>
           <h4 className="mb-2 mt-4 font-bold text-white">سوشل میڈیا</h4>
           <ul className="space-y-1 text-sm">
             {SOCIAL_ITEMS.filter(([key]) => socialLinks[key]).map(([key, en, ur]) => (

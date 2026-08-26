@@ -222,6 +222,22 @@ body {
   font-family: var(--typo-font-nastaleeq);
 }
 
+/* Jameel Noori Nastaleeq ships a single weight, so `font-bold` on Urdu is
+   synthesised by the browser: it smears the thin connecting strokes and words
+   made mostly of them (کھولیں) come out looking faded rather than heavier.
+   Stroking the glyph in its own colour thickens the outline evenly instead.
+   `paint-order: stroke` puts the stroke behind the fill so counters stay open. */
+.urdu-bold {
+  -webkit-text-stroke: 0.6px currentColor;
+  paint-order: stroke fill;
+}
+
+@media (min-width: 640px) {
+  .urdu-bold {
+    -webkit-text-stroke: 0.8px currentColor;
+  }
+}
+
 /* Nastaleeq has deep descenders — single-line form fields clip them with the
    default line-height. Give Urdu inputs/textareas extra vertical room. */
 input.urdu,

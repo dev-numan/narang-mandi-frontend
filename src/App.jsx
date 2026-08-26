@@ -37,6 +37,7 @@ const Contact = lazy(() => import('./pages/Contact.jsx'));
 const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy.jsx'));
 const Terms = lazy(() => import('./pages/Terms.jsx'));
 const RegistrationPage = lazy(() => import('./pages/RegistrationPage.jsx'));
+const DriverGuidePage = lazy(() => import('./pages/DriverGuidePage.jsx'));
 const NotFound = lazy(() => import('./pages/NotFound.jsx'));
 
 // Admin panel (heavy — rich-text editor etc. — split out of the public bundle).
@@ -101,6 +102,8 @@ export default function App() {
           <Route path="/privacy" element={<PrivacyPolicy />} />
           <Route path="/terms" element={<Terms />} />
           <Route path="/register/:type" element={<RegistrationPage />} />
+          {/* Public on purpose: drivers are sent here before their first login. */}
+          <Route path="/driver/guide" element={<DriverGuidePage />} />
           <Route path="*" element={<NotFound />} />
         </Route>
 

@@ -185,6 +185,10 @@ export default function TaxiDashboard() {
             <NotificationHealth stats={s} />
           </div>
 
+          <div className="mb-6">
+            <WhatsAppCost stats={s} />
+          </div>
+
           {openRides.length > 0 && <OpenRides rides={openRides} />}
         </>
       )}
@@ -344,6 +348,67 @@ function NotificationHealth({ stats }) {
           )}
         </div>
       )}
+    </Panel>
+  );
+}
+
+/**
+ * What WhatsApp is costing.
+ *
+ * Meta's API reports message counts but never prices, so this is derived from
+ * our own delivery log and priced with published rates — an estimate to size the
+ * spend against, not a bill. The real invoice lives in Meta's billing console.
+ */
+function WhatsAppCost({ stats }) {
+  const b = stats.billing;
+  const perDay = b.estimatedUsd / stats.days;
+
+  return (
+    <Panel title="WhatsApp cost" hint={`Last ${stats.days} days · estimated`}>
+      <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+        <Metric label="Est. spend" value={`$${b.estimatedUsd.toFixed(3)}`} />
+        <Metric label="Conversations" value={b.conversations} />
+        <Metric label="Messages accepted" value={b.messagesAccepted} />
+        <Metric label="Failed (free)" value={b.failedFree} />
+      </div>
+
+      <div className="mt-4 space-y-1.5 border-t border-gray-100 pt-4 text-xs text-gray-600">
+        <div className="flex justify-between">
+          <span>
+            Utility conversations <span className="text-gray-400">@ ${b.rates.utility}</span>
+          </span>
+          <b className="text-ink" dir="ltr">
+            {b.utilityConversations} · ${(b.utilityConversations * b.rates.utility).toFixed(3)}
+          </b>
+        </div>
+        <div className="flex justify-between">
+          <span>
+            Marketing conversations <span className="text-gray-400">@ ${b.rates.marketing}</span>
+          </span>
+          <b className="text-ink" dir="ltr">
+            {b.marketingConversations} · ${(b.marketingConversations * b.rates.marketing).toFixed(3)}
+          </b>
+        </div>
+        <div className="flex justify-between border-t border-gray-100 pt-1.5">
+          <span>Projected monthly at this rate</span>
+          <b className="text-ink" dir="ltr">
+            ${(perDay * 30).toFixed(2)}
+          </b>
+        </div>
+      </div>
+
+      {b.marketingConversations > 0 && (
+        <p className="mt-3 rounded-lg bg-amber-50 p-3 text-xs text-amber-900">
+          Marketing-category templates cost roughly twice utility. Ride alerts are transactional and
+          belong in utility — recategorising them halves this line.
+        </p>
+      )}
+
+      <p className="mt-3 text-[11px] text-gray-400">
+        Billing is per recipient per 24h, so repeated alerts to one driver in a day count once. Failed
+        and skipped sends are never charged. Figures are estimates from our delivery log at published
+        rates — Meta does not expose actual charges over the API.
+      </p>
     </Panel>
   );
 }

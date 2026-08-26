@@ -243,6 +243,9 @@ export const adminTaxiApi = {
   updateDriver: (id, payload) => api.put(`/admin/drivers/${id}`, payload).then((r) => r.data.data),
   setDriverStatus: (id, isActive) =>
     api.patch(`/admin/drivers/${id}/status`, { isActive }).then((r) => r.data.data),
+  stats: (params) => api.get('/admin/rides/stats', { params }).then((r) => r.data.data),
+  resetDriverPassword: (id) =>
+    api.patch(`/admin/drivers/${id}/password`).then((r) => r.data.data),
   rides: (params) => api.get('/admin/rides', { params }).then((r) => r.data),
   ride: (id) => api.get(`/admin/rides/${id}`).then((r) => r.data.data),
   setRideStatus: (id, status) =>

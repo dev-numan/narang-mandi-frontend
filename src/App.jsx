@@ -57,6 +57,10 @@ const Classifieds = lazy(() => import('./admin/pages/Classifieds.jsx'));
 const SettingsPage = lazy(() => import('./admin/pages/Settings.jsx'));
 const Profile = lazy(() => import('./admin/pages/Profile.jsx'));
 const Users = lazy(() => import('./admin/pages/Users.jsx'));
+const TaxiDashboard = lazy(() => import('./admin/pages/TaxiDashboard.jsx'));
+const TaxiRides = lazy(() => import('./admin/pages/TaxiRides.jsx'));
+const TaxiRideDetail = lazy(() => import('./admin/pages/TaxiRideDetail.jsx'));
+const TaxiDrivers = lazy(() => import('./admin/pages/TaxiDrivers.jsx'));
 const Messages = lazy(() => import('./admin/pages/Messages.jsx'));
 const Registrations = lazy(() => import('./admin/pages/Registrations.jsx'));
 const Shops = lazy(() => import('./admin/pages/Shops.jsx'));
@@ -148,6 +152,11 @@ export default function App() {
           <Route path="settings" element={<RequireAdmin><SettingsPage /></RequireAdmin>} />
           <Route path="profile" element={<Profile />} />
           <Route path="users" element={<RequireAdmin><Users /></RequireAdmin>} />
+          {/* Taxi. Admin-only throughout: ride rows carry customer phone numbers. */}
+          <Route path="taxi" element={<RequireAdmin><TaxiDashboard /></RequireAdmin>} />
+          <Route path="taxi/rides" element={<RequireAdmin><TaxiRides /></RequireAdmin>} />
+          <Route path="taxi/rides/:id" element={<RequireAdmin><TaxiRideDetail /></RequireAdmin>} />
+          <Route path="taxi/drivers" element={<RequireAdmin><TaxiDrivers /></RequireAdmin>} />
         </Route>
 
         {/* Shopkeeper panel (LTR shell, RTL content) */}

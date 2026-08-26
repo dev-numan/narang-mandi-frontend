@@ -16,6 +16,7 @@ const NAV = [
   { to: '/admin/registrations', label: 'Registrations', icon: '📝' },
   { to: '/admin/settings', label: 'Settings', icon: '⚙️', adminOnly: true },
   { to: '/admin/profile', label: 'Profile', icon: '👤' },
+  { to: '/admin/taxi', label: 'Taxi', icon: '🚕', adminOnly: true },
   { to: '/admin/users', label: 'Users', icon: '👥', adminOnly: true },
 ];
 
